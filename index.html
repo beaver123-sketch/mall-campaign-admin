@@ -48,6 +48,26 @@
 .region-skin-row label{display:block;font-size:11px;color:#738093;margin-bottom:5px}
 .region-skin-row input{width:100%;height:33px;border:1px solid #d9e0e8;border-radius:4px;padding:6px 8px}
 .region-skin-row input[type=color]{padding:3px}
+.country-picker{border:1px solid #d9e0e8;border-radius:4px;padding:10px;background:#fff;min-width:0}
+.country-picker-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.country-picker-tree{flex:1;min-width:0}
+.country-tree-level{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.country-tree-node{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;color:#596575;font-size:13px}
+.country-tree-node label{display:inline-flex;align-items:center;gap:5px;margin:0!important;cursor:pointer}
+.country-tree-node input,.country-tree-country input{width:auto!important;height:auto!important;margin:0}
+.country-tree-expand{border:0;background:transparent;color:#a0a8b4;padding:0 2px;font-size:12px;line-height:1;min-width:12px}
+.country-tree-expanded{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:9px;padding:10px 12px 3px;border-top:1px solid #f0f2f5;background:#fcfdff}
+.country-tree-expanded-group{display:flex;flex-direction:column;gap:7px;min-width:150px}
+.country-tree-expanded-title{font-size:11px;color:#8792a0}
+.country-tree-countries{display:flex;flex-wrap:wrap;gap:7px 13px}
+.country-tree-country{display:inline-flex;align-items:center;gap:5px;color:#687588;font-size:12px;white-space:nowrap;cursor:pointer}
+.country-picker-tools{display:flex;align-items:center;gap:6px;flex:none}
+.country-picker-tools input{width:165px;height:34px;border:1px solid #d9e0e8;border-radius:4px;padding:6px 9px;color:#475569}
+.country-picker-tools button{white-space:nowrap;padding:6px 10px}
+.country-picker-summary{margin-top:8px;color:#98a3b1;font-size:11px;line-height:1.5}
+.country-picker-summary b{color:#687588;font-weight:500}
+.region-skin-countries{grid-column:1/-1;min-width:0}
+@media(max-width:900px){.country-picker-toolbar{flex-direction:column}.country-picker-tools{width:100%}.country-picker-tools input{flex:1;min-width:100px}.region-skin-row{grid-template-columns:1fr 100px}.region-skin-row .region-skin-countries{grid-column:1/-1}}
 .phone-screen{padding-bottom:12px}
 .preview-hero{min-height:148px;height:auto;background:linear-gradient(135deg,#38217f,#6f4cc3);padding:28px 14px 16px}
 .preview-hero h3{font-size:19px;line-height:1.3;margin:12px 0 6px}
@@ -90,7 +110,7 @@
       <div class="control"><label>活动排序</label><input id="a-sort" type="number" value="0"></div>
       <div class="control"><label>活动备注</label><input id="a-note" placeholder="仅后台可见"></div>
       <div class="control"><label>时区</label><select id="a-zone"><option>UTC+8</option><option>UTC</option><option>UTC+5:30</option><option>UTC+5</option><option>UTC+3</option></select></div>
-      <div class="control full"><label>国家地区</label><input id="a-region" value="全部重要地区" placeholder="例如：全部重要地区 / 印度、巴基斯坦"><div class="hint">此处设置活动投放范围；区域皮肤仅覆盖视觉样式，不改变活动内容。</div></div>
+      <div class="control full"><label>国家地区</label><div id="activity-region-picker"></div><div class="hint">此处设置活动投放范围；区域皮肤仅覆盖视觉样式，不改变活动内容。</div></div>
       <div class="control full"><label>适用 APP</label><div class="inline-checks" id="app-checks"><label><input type="checkbox" name="app" value="poppo" checked> poppo</label><label><input type="checkbox" name="app" value="vone"> vone</label><label><input type="checkbox" name="app" value="mimi"> mimi</label><label><input type="checkbox" name="app" value="jolly"> jolly</label><label><input type="checkbox" name="app" value="miti"> miti</label><label><input type="checkbox" name="app" value="pc_client"> pc_client</label></div></div>
       <div class="control full"><label>适用客户端</label><div class="inline-checks" id="client-checks"><label><input type="checkbox" name="client" value="iOS" checked> iOS</label><label><input type="checkbox" name="client" value="Android" checked> Android</label></div></div>
     </div>
@@ -195,6 +215,138 @@ const activityMetrics={
  1572:{visits:'0',clicks:'0',buyers:'0',gmv:'¥ 0',products:[]},
  1556:{visits:'38,210',clicks:'52,640',buyers:'1,842',gmv:'¥ 96,320',products:[['1386','撒糖可爱鬼','3,420','516','568','¥22,600','15.1%'],['1385','暗夜南瓜灯','2,780','402','430','¥19,800','14.5%']]}
 };
+const countryRegionTree=[
+ {id:'south_asia',name:'南亚区',countries:[{code:'IN',name:'印度'},{code:'PK',name:'巴基斯坦'},{code:'BD',name:'孟加拉国'},{code:'NP',name:'尼泊尔'},{code:'LK',name:'斯里兰卡'}]},
+ {id:'philippines',name:'菲律宾区',countries:[{code:'PH',name:'菲律宾'}]},
+ {id:'russian',name:'俄语区',countries:[{code:'RU',name:'俄罗斯'},{code:'UA',name:'乌克兰'},{code:'KZ',name:'哈萨克斯坦'},{code:'UZ',name:'乌兹别克斯坦'},{code:'KG',name:'吉尔吉斯斯坦'},{code:'BY',name:'白俄罗斯'},{code:'TJ',name:'塔吉克斯坦'}]},
+ {id:'south_america',name:'南美洲区',countries:[{code:'BR',name:'巴西'},{code:'AR',name:'阿根廷'},{code:'CO',name:'哥伦比亚'},{code:'PE',name:'秘鲁'},{code:'CL',name:'智利'},{code:'EC',name:'厄瓜多尔'},{code:'BO',name:'玻利维亚'},{code:'VE',name:'委内瑞拉'},{code:'PY',name:'巴拉圭'},{code:'UY',name:'乌拉圭'}]},
+ {id:'europe_americas',name:'欧美区',countries:[{code:'US',name:'美国'},{code:'CA',name:'加拿大'},{code:'GB',name:'英国'},{code:'DE',name:'德国'},{code:'FR',name:'法国'},{code:'IT',name:'意大利'},{code:'ES',name:'西班牙'},{code:'PT',name:'葡萄牙'},{code:'NL',name:'荷兰'},{code:'BE',name:'比利时'},{code:'CH',name:'瑞士'},{code:'AT',name:'奥地利'},{code:'PL',name:'波兰'},{code:'RO',name:'罗马尼亚'},{code:'GR',name:'希腊'},{code:'MX',name:'墨西哥'}]},
+ {id:'africa',name:'非洲区',countries:[{code:'NG',name:'尼日利亚'},{code:'GH',name:'加纳'},{code:'KE',name:'肯尼亚'},{code:'UG',name:'乌干达'},{code:'TZ',name:'坦桑尼亚'},{code:'ZA',name:'南非'},{code:'ET',name:'埃塞俄比亚'},{code:'EG',name:'埃及'},{code:'MA',name:'摩洛哥'},{code:'DZ',name:'阿尔及利亚'}]},
+ {id:'middle_east',name:'中东区',countries:[{code:'SA',name:'沙特阿拉伯'},{code:'AE',name:'阿联酋'},{code:'IQ',name:'伊拉克'},{code:'JO',name:'约旦'},{code:'KW',name:'科威特'},{code:'QA',name:'卡塔尔'},{code:'OM',name:'阿曼'},{code:'BH',name:'巴林'},{code:'YE',name:'也门'},{code:'TR',name:'土耳其'},{code:'LB',name:'黎巴嫩'}]},
+ {id:'virtual',name:'虚拟国区',countries:[{code:'VIRTUAL',name:'虚拟国'}]},
+ {id:'vietnam',name:'越南区',countries:[{code:'VN',name:'越南'}]},
+ {id:'indonesia',name:'印尼区',countries:[{code:'ID',name:'印度尼西亚'}]}
+];
+const allCountryCodes=countryRegionTree.reduce(function(all,group){return all.concat(group.countries.map(function(country){return country.code}))},[]);
+let countryPickerStates={};
+let activityRegionCodes=[];
+function parseRegionCodes(value){
+ const text=String(value||'').trim();
+ if(!text)return [];
+ if(/全部重要|全球/.test(text))return allCountryCodes.slice();
+ const aliases={'印尼':'ID','印度尼西亚':'ID','孟加拉':'BD','斯里兰卡':'LK','菲律宾':'PH','巴基斯坦':'PK','越南':'VN','印度':'IN'};
+ const parts=text.split(/[、,，;；\s]+/),codes=[];
+ parts.forEach(function(part){
+  if(aliases[part])codes.push(aliases[part]);
+  countryRegionTree.forEach(function(group){group.countries.forEach(function(country){if(country.name===part)codes.push(country.code)})});
+ });
+ return Array.from(new Set(codes));
+}
+function countrySelectionSummary(codes){
+ const selected=new Set(codes||[]);
+ if(!selected.size)return '未选择国家/地区';
+ if(allCountryCodes.every(function(code){return selected.has(code)}))return '全部重要地区';
+ const labels=[];
+ countryRegionTree.forEach(function(group){
+  const groupCodes=group.countries.map(function(country){return country.code});
+  const count=groupCodes.filter(function(code){return selected.has(code)}).length;
+  if(count===groupCodes.length)labels.push(group.name);
+  else if(count)group.countries.forEach(function(country){if(selected.has(country.code))labels.push(country.name)});
+ });
+ return labels.join('、');
+}
+function countryPickerMarkup(id,selected){
+ countryPickerStates[id]={selected:Array.from(new Set(selected||[])),expanded:[],query:''};
+ return '<div class="country-picker"><div class="country-picker-toolbar"><div class="country-picker-tree" id="'+id+'-tree"></div><div class="country-picker-tools"><input id="'+id+'-search" type="search" placeholder="请输入国家名称" oninput="filterCountryPicker(&#39;'+id+'&#39;)"><button type="button" onclick="expandSelectedCountryGroups(&#39;'+id+'&#39;)">展开已选</button><button type="button" onclick="clearCountrySelection(&#39;'+id+'&#39;)">取消已选</button></div></div><div class="country-picker-summary" id="'+id+'-summary"></div></div>';
+}
+function mountCountryPicker(id,selected){
+ const target=$(id);
+ if(!target)return;
+ target.innerHTML=countryPickerMarkup(id,selected);
+ renderCountryPickerTree(id);
+}
+function renderCountryPickerTree(id){
+ const state=countryPickerStates[id];
+ if(!state)return;
+ const selected=new Set(state.selected),query=String(state.query||'').trim();
+ const totalSelected=allCountryCodes.filter(function(code){return selected.has(code)}).length;
+ const rootChecked=totalSelected===allCountryCodes.length;
+ const rootIndeterminate=totalSelected>0&&!rootChecked;
+ const rootExpanded=state.expanded.length===countryRegionTree.length;
+ let html='<div class="country-tree-level"><div class="country-tree-node"><button class="country-tree-expand" type="button" onclick="toggleCountryGroup(&#39;'+id+'&#39;,&#39;__all__&#39;)">'+(rootExpanded?'▾':'▸')+'</button><label><input type="checkbox" '+(rootChecked?'checked':'')+' '+(rootIndeterminate?'data-indeterminate="true"':'')+' onchange="toggleCountryNode(&#39;'+id+'&#39;,&#39;all_important&#39;,this.checked)">全部重要</label></div>';
+ const visibleGroups=countryRegionTree.filter(function(group){return !query||group.name.indexOf(query)>=0||group.countries.some(function(country){return country.name.indexOf(query)>=0})});
+ visibleGroups.forEach(function(group){
+  const codes=group.countries.map(function(country){return country.code});
+  const count=codes.filter(function(code){return selected.has(code)}).length;
+  const checked=count===codes.length,indeterminate=count>0&&!checked;
+  const expanded=state.expanded.indexOf(group.id)>=0||(query&&group.countries.some(function(country){return country.name.indexOf(query)>=0}));
+  html+='<div class="country-tree-node"><button class="country-tree-expand" type="button" onclick="toggleCountryGroup(&#39;'+id+'&#39;,&#39;'+group.id+'&#39;)">'+(expanded?'▾':'▸')+'</button><label><input type="checkbox" '+(checked?'checked':'')+' '+(indeterminate?'data-indeterminate="true"':'')+' onchange="toggleCountryNode(&#39;'+id+'&#39;,&#39;'+group.id+'&#39;,this.checked)">'+group.name+'</label></div>';
+ });
+ html+='</div>';
+ const expandedGroups=visibleGroups.filter(function(group){return state.expanded.indexOf(group.id)>=0||(query&&group.countries.some(function(country){return country.name.indexOf(query)>=0}))});
+ const panels=expandedGroups.map(function(group){
+  const matches=query&&!group.name.includes(query)?group.countries.filter(function(country){return country.name.includes(query)}):group.countries;
+  return '<div class="country-tree-expanded-group"><div class="country-tree-expanded-title">'+group.name+'</div><div class="country-tree-countries">'+matches.map(function(country){return '<label class="country-tree-country"><input type="checkbox" '+(selected.has(country.code)?'checked':'')+' onchange="toggleCountryNode(&#39;'+id+'&#39;,&#39;'+country.code+'&#39;,this.checked)">'+country.name+'</label>'}).join('')+'</div></div>';
+ }).join('');
+ html+='<div class="country-tree-expanded">'+(panels||(query?'<span class="muted">未找到匹配的国家/地区</span>':''))+'</div>';
+ $(id+'-tree').innerHTML=html;
+ $(id+'-tree').querySelectorAll('input[data-indeterminate="true"]').forEach(function(input){input.indeterminate=true});
+ $(id+'-summary').innerHTML='已选：<b>'+esc(countrySelectionSummary(state.selected))+'</b>';
+}
+function filterCountryPicker(id){
+ const input=$(id+'-search'),state=countryPickerStates[id];
+ if(!state||!input)return;
+ state.query=input.value.trim();
+ renderCountryPickerTree(id);
+}
+function toggleCountryGroup(id,groupId){
+ const state=countryPickerStates[id];if(!state)return;
+ if(groupId==='__all__'){
+  const allExpanded=state.expanded.length===countryRegionTree.length;
+  state.expanded=allExpanded?[]:countryRegionTree.map(function(group){return group.id});
+ }else{
+  const index=state.expanded.indexOf(groupId);
+  if(index>=0)state.expanded.splice(index,1);else state.expanded.push(groupId);
+ }
+ renderCountryPickerTree(id);
+}
+function toggleCountryNode(id,nodeId,checked){
+ const state=countryPickerStates[id];if(!state)return;
+ let codes=[];
+ if(nodeId==='all_important')codes=allCountryCodes.slice();
+ else{
+  const group=countryRegionTree.find(function(item){return item.id===nodeId});
+  codes=group?group.countries.map(function(country){return country.code}):[nodeId];
+ }
+ const selected=new Set(state.selected);
+ codes.forEach(function(code){if(checked)selected.add(code);else selected.delete(code)});
+ state.selected=Array.from(selected);
+ if(id==='activity-region-picker')activityRegionCodes=state.selected.slice();
+ const skinMatch=id.match(/^skin-region-picker-(\d+)$/);
+ if(skinMatch&&editorConfig&&editorConfig.skin.regions[Number(skinMatch[1])]){
+  const row=editorConfig.skin.regions[Number(skinMatch[1])];
+  row.countryCodes=state.selected.slice();
+  row.region=countrySelectionSummary(row.countryCodes);
+ }
+ renderCountryPickerTree(id);
+}
+function expandSelectedCountryGroups(id){
+ const state=countryPickerStates[id];if(!state)return;
+ const selected=new Set(state.selected);
+ state.expanded=countryRegionTree.filter(function(group){return group.countries.some(function(country){return selected.has(country.code)})}).map(function(group){return group.id});
+ renderCountryPickerTree(id);
+}
+function clearCountrySelection(id){
+ const state=countryPickerStates[id];if(!state)return;
+ state.selected=[];
+ if(id==='activity-region-picker')activityRegionCodes=[];
+ const skinMatch=id.match(/^skin-region-picker-(\d+)$/);
+ if(skinMatch&&editorConfig&&editorConfig.skin.regions[Number(skinMatch[1])]){
+  editorConfig.skin.regions[Number(skinMatch[1])].countryCodes=[];
+  editorConfig.skin.regions[Number(skinMatch[1])].region='';
+ }
+ renderCountryPickerTree(id);
+}
 let editingId=null;
 let editorConfig=null;
 let moduleDraft=null;
@@ -320,7 +472,8 @@ function openEditor(id){
  setValue('a-start',activity&&activity.start?String(activity.start).replace(' ','T'):'2026-11-25T00:00');
  setValue('a-end',activity&&activity.end?String(activity.end).replace(' ','T'):'2026-12-01T23:59');
  setValue('a-zone',activity&&activity.timezone||'UTC+8');
- setValue('a-region',activity&&activity.region||'全部重要地区');
+ activityRegionCodes=activity&&Array.isArray(activity.regionCodes)?activity.regionCodes.slice():parseRegionCodes(activity&&activity.region||'全部重要地区');
+ mountCountryPicker('activity-region-picker',activityRegionCodes);
  const apps=activity&&activity.apps?activity.apps:String(activity&&activity.app||'poppo').split(/[、,，]/).map(function(x){return x.trim()});
  const clients=activity&&activity.clients?activity.clients:['iOS','Android'];
  setChecked('app',apps);
@@ -434,14 +587,16 @@ function getModuleArray(scope){
  return tab.modules;
 }
 function addRegion(){
- editorConfig.skin.regions.push({region:'',bgColor:'#321b78',bgImageKey:''});
+ editorConfig.skin.regions.push({region:'',countryCodes:[],bgColor:'#321b78',bgImageKey:''});
  renderRegionSkins();
 }
 function renderRegionSkins(){
  const rows=editorConfig.skin.regions||[];
+ rows.forEach(function(r){if(!Array.isArray(r.countryCodes))r.countryCodes=parseRegionCodes(r.region)});
  $('region-skins').innerHTML=rows.map(function(r,index){
-  return '<div class="region-skin-row"><div><label>适用国家 / 地区</label><input value="'+esc(r.region)+'" placeholder="例如 印度、巴基斯坦" oninput="updateRegion('+index+',\'region\',this.value)"></div><div><label>背景色</label><input type="color" value="'+esc(r.bgColor||'#321b78')+'" onchange="updateRegion('+index+',\'bgColor\',this.value)"></div><div><label>背景图 Key</label><input value="'+esc(r.bgImageKey)+'" placeholder="可选" oninput="updateRegion('+index+',\'bgImageKey\',this.value)"></div><div><label>&nbsp;</label><button class="text small" onclick="removeRegion('+index+')">删除</button></div></div>';
+  return '<div class="region-skin-row"><div class="region-skin-countries"><label>适用国家 / 地区</label><div id="skin-region-picker-'+index+'"></div></div><div><label>背景色</label><input type="color" value="'+esc(r.bgColor||'#321b78')+'" onchange="updateRegion('+index+',\'bgColor\',this.value)"></div><div><label>背景图 Key</label><input value="'+esc(r.bgImageKey)+'" placeholder="可选" oninput="updateRegion('+index+',\'bgImageKey\',this.value)"></div><div><label>&nbsp;</label><button class="text small" onclick="removeRegion('+index+')">删除</button></div></div>';
  }).join('')||'<div class="module-empty">暂无区域皮肤定制，默认皮肤将应用于全部国家。</div>';
+ rows.forEach(function(r,index){mountCountryPicker('skin-region-picker-'+index,r.countryCodes)});
 }
 function updateRegion(index,key,value){if(editorConfig.skin.regions[index])editorConfig.skin.regions[index][key]=value}
 function removeRegion(index){editorConfig.skin.regions.splice(index,1);renderRegionSkins()}
@@ -565,7 +720,7 @@ function saveActivity(publish){
  const apps=checkedValues('app'),clients=checkedValues('client');
  Object.assign(activity,{
   name:name,type:$('a-type').value,sort:Number($('a-sort').value)||0,note:$('a-note').value.trim(),
-  preheat:preheat,preheatEnd:preheatEnd,start:start,end:end,timezone:$('a-zone').value,region:$('a-region').value.trim()||'全部重要地区',
+  preheat:preheat,preheatEnd:preheatEnd,start:start,end:end,timezone:$('a-zone').value,region:countrySelectionSummary(activityRegionCodes),regionCodes:activityRegionCodes.slice(),
   apps:apps,clients:clients,app:apps.join('、'),online:publish?'上架':'下架',
   status:getActivityStatus(start,end,preheat,preheatEnd),updated:formatNow(),config:config,
   url:activity.url||''
