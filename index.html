@@ -892,33 +892,64 @@ function loadChristmasDemo(){
  editorConfig.tabs=[deals,rank];editorConfig.modules=[];previewTabId=deals.id;
  renderTabsAndModules();renderPreview();toast('已填充完整圣诞活动测试配置，默认下架，请检查后保存');
 }
-function renderPreviewModule(m){
- let title=esc(m.title||moduleTypeName(m.type)),body='';
- if(m.type==='product'){
-  const labels={single:'单品促销',grid:'商品列表',carousel:'横向轮播',bundle:'促销套装'};
+function renderPreviewModule(raw){
+ const m=normalizedModule(raw);
+ if(m.enabled===false)return '';
+ const title=esc(m.title||moduleTypeName(m.type));
+ let body='';
+ if(m.type==='promo'){
   const ids=m.productIds||[];
-  body='<p>'+esc(labels[m.layout]||'商品展示')+' · '+ids.length+' 个关联商品</p><div class="preview-product-row">'+(ids.slice(0,3).map(function(id){return '<div class="preview-product-item">商品 '+esc(id)+'</div>'}).join('')||'<div class="preview-product-item">待关联商品</div>')+'</div>'+(m.promotionId?'<p>促销配置：'+esc(m.promotionId)+'</p>':'')+'<span class="preview-cta">'+esc(m.buttonText||'Buy Now')+'</span>';
- }else if(m.type==='ranking'){
-  body='<p>关联榜单：'+esc(m.rankingId||'待关联')+' · '+(m.displayMode==='embed'?'页面内嵌':'入口卡片')+'</p><div class="preview-rank-row"><span>1　User A</span><b>120,000</b></div><div class="preview-rank-row"><span>2　User B</span><b>98,000</b></div><div class="preview-rank-row"><span>3　User C</span><b>76,000</b></div>';
+  if(m.imageKey)body+=imageByKey(m.imageKey,'促销商品标题','demo-preview-image');
+  body+='<div class="preview-product-row">';
+  ids.forEach(function(id){
+   const p=demoProducts[id];
+   body+='<div class="preview-product-item">'+
+    (p?imageByKey(p.imageKey,p.name,'preview-product-picture'):'<div class="asset-placeholder">商品 '+esc(id)+'</div>')+
+    '<b>'+esc(p?p.name:'商品 '+id)+'</b>'+
+    (p?'<del>'+esc(p.oldPrice)+'</del><span>🪙 '+esc(p.price)+'</span>':'<small>未关联演示商品</small>')+
+    '</div>';
+  });
+  body+='</div><button type="button" class="preview-cta preview-cta-link" onclick="toast(\'购买由正式商城商品系统处理，当前为演示预览\')">'+esc(demoText(m.buttonTextKey,'Buy Now'))+'</button>';
+ }else if(m.type==='bundle'){
+  const product=demoProducts[m.bundleProductId];
+  if(m.imageKey)body+=imageByKey(m.imageKey,'圣诞套装','demo-preview-image');
+  else if(product)body+=imageByKey(product.imageKey,product.name,'demo-preview-image');
+  body+=(product?'<p>🪙 '+esc(product.price)+'　<del>'+esc(product.oldPrice)+'</del></p>':'<p>套装商品 ID：'+esc(m.bundleProductId||'待关联')+'</p>');
+  body+='<button type="button" class="preview-cta preview-cta-link" onclick="toast(\'演示套装不触发实际购买\')">'+esc(demoText(m.buttonTextKey,'Buy Now'))+'</button>';
  }else if(m.type==='jump'){
-  body='<p>跳转：'+esc(m.targetType)+' · '+esc(m.targetValue)+'</p><span class="preview-cta">'+esc(m.buttonText||'Explore Now')+'</span>';
- }else{
-  body='<p>展示形式：'+esc(m.displayMode||'图片')+'</p><p>图片 Key：'+esc(m.imageKey||'未配置')+'</p><p>内容 Key：'+esc(m.contentKey||'未配置')+'</p>';
+  body+=imageByKey(m.bannerKey||m.imageKey,'圣诞活动跳转 Banner','preview-jump-img');
+  const rule=selectedJumpRule(m);
+  body+='<p>当前预览时段：'+esc(rule?(rule.start||'不限')+' → '+(rule.type==='url'?'网址':'目标 ID'):'未命中跳转规则')+'</p>';
+  body+='<button type="button" class="preview-cta preview-cta-link" onclick="openDemoJump(\''+esc(m.id)+'\')">'+esc(demoText(m.buttonTextKey,'Explore Now'))+'</button>';
+ }else if(m.type==='ranking'){
+  const ranking=demoRankingData[m.rankingId];
+  body+='<p>上榜条件：累计金币消费 ≥ '+esc(m.entryCondition&&m.entryCondition.threshold||'-')+'　· 入榜奖励：'+(m.entryReward&&m.entryReward.enabled?'开启':'关闭')+'</p>';
+  if(m.imageKey)body+=imageByKey(m.imageKey,'榜单入口','demo-preview-image');
+  const entries=ranking?ranking.entries:[['1','User A','120,000'],['2','User B','98,000'],['3','User C','76,000']];
+  body+=entries.map(function(row){return '<div class="preview-rank-row"><span>'+esc(row[0])+'　'+esc(row[1])+'</span><b>🪙 '+esc(row[2])+'</b></div>'}).join('');
+  body+='<button type="button" class="preview-cta preview-cta-link" onclick="toast(\'正式客户端将复用已有商城榜单弹窗\')">查看榜单</button>';
+ }else if(m.type==='rank_reward'){
+  body+=m.rewardImageKey?imageByKey(m.rewardImageKey,'榜单排名奖励','demo-preview-image'):'<p>排名奖励资源待配置</p>';
+  body+='<p>奖励配置：'+esc(m.rewardConfigId||'-')+'</p><p>结算完成后自动下发 · 无需用户领取</p>';
  }
  return '<div class="preview-block"><h4>'+title+'</h4>'+body+'</div>';
 }
 function renderPreview(){
  if(!$('phone-screen'))return;
  const name=$('a-name').value.trim()||'活动名称';
- const imageKey=$('hero-image-key').value.trim()||'未配置头图 Key';
+ const imageKey=$('hero-image-key').value.trim();
  const bg=validHex($('skin-bg-color').value)?$('skin-bg-color').value:'#321B78';
  const tabs=editorConfig?editorConfig.tabs:[];
- let body='<div class="preview-hero" style="background:linear-gradient(135deg,'+esc(bg)+',#7653bd)"><small>商城活动 · 顶部头图</small><h3>'+esc(name)+'</h3><div class="preview-key">头图资源：'+esc(imageKey)+'</div></div>';
+ let body='<div class="preview-hero" style="background:linear-gradient(135deg,'+esc(bg)+',#7653bd)">'+imageByKey(imageKey,name,'demo-preview-image')+'</div>';
  if(tabs&&tabs.length){
-  const active=tabs.find(function(t){return t.isDefault})||tabs[0];
-  body+='<div class="preview-tabs">'+tabs.map(function(t){const selected=t.id===active.id;const stateKey=selected?t.activeImageKey:t.inactiveImageKey;return '<span class="preview-tab-item '+(selected?'selected':'')+'" title="多语言 Key：'+esc(t.textKey||'未配置')+'"><b>'+esc(t.name||'Tab')+'</b><small>'+(selected?'亮态':'暗态')+'图片：'+esc(stateKey||'未配置')+'</small></span>'}).join('')+'</div>';
+  const active=tabs.find(function(t){return t.id===previewTabId})||tabs.find(function(t){return t.isDefault})||tabs[0];
+  body+='<div class="preview-tabs">'+tabs.map(function(t){
+   const selected=t.id===active.id,stateKey=selected?t.activeImageKey:t.inactiveImageKey;
+   return '<button type="button" class="preview-tab-item '+(selected?'selected':'')+'" onclick="selectPreviewTab(\''+esc(t.id)+'\')" title="'+esc(demoText(t.textKey,t.name))+'">'+
+    imageByKey(stateKey,demoText(t.textKey,t.name),'demo-preview-image')+'</button>';
+  }).join('')+'</div>';
   (active.modules||[]).forEach(function(m){body+=renderPreviewModule(m)});
-  if(!(active.modules||[]).length)body+='<div class="preview-block"><p>当前 Tab 暂无内容模块</p></div>';
+  if(!(active.modules||[]).length)body+='<div class="preview-block"><p>此 Tab 暂无内容模块</p></div>';
  }else{
   (editorConfig&&editorConfig.modules||[]).forEach(function(m){body+=renderPreviewModule(m)});
   if(!(editorConfig&&editorConfig.modules||[]).length)body+='<div class="preview-block"><p>尚未添加页面内容模块</p></div>';
