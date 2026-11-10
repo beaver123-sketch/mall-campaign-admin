@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="115" viewBox="0 0 720 115" role="img"><defs>
+<linearGradient id="red" x2="1" y2="1"><stop stop-color="#770916"/><stop offset=".57" stop-color="#BA1730"/><stop offset="1" stop-color="#5D0718"/></linearGradient>
+<linearGradient id="green" x2="1" y2="1"><stop stop-color="#006A4B"/><stop offset="1" stop-color="#063D36"/></linearGradient>
+<linearGradient id="gold" x2="0" y2="1"><stop stop-color="#FFF1AC"/><stop offset=".42" stop-color="#EFC06F"/><stop offset="1" stop-color="#C58829"/></linearGradient>
+<linearGradient id="cream" x2="0" y2="1"><stop stop-color="#FFFCF1"/><stop offset="1" stop-color="#F8DDAE"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#200000" flood-opacity=".28"/></filter>
+</defs><rect x="7" y="15" width="706" height="86" rx="30" fill="url(#cream)" stroke="#DCA858" stroke-width="5"/><circle cx="45" cy="58" r="14" fill="#0E764D"/><circle cx="671" cy="58" r="14" fill="#0E764D"/><text x="360" y="75" text-anchor="middle" font-family="Georgia,serif" fill="#A61932" font-size="48" font-weight="bold">Featured Christmas Set</text></svg>
