@@ -690,7 +690,7 @@ function renderModuleModalFields(){
  }else if(type==='bundle'){
   fields='<div class="subsection-title">促销套装配置</div><div class="modal-form-grid">'+
    mfInput('m-bundle-id','套装商品 ID',m.bundleProductId,'关联现有可购买的套装商品 ID',true)+
-   mfInput('m-promotion','促销配置 ID',m.promotionId,'可选')+
+   mfInput('m-promotion','促销配置 ID',m.promotionId,'可选；仅需额外关联独立优惠规则时填写')+
    mfInput('m-image','套装主视觉 Key',m.imageKey||m.bundleImageKey,'可选')+
    mfSelect('m-layout','展示样式',[['featured','主推大卡'],['carousel','套装轮播']],m.layout||'featured')+
    mfInput('m-button','购买按钮文案 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_buy')+
@@ -898,7 +898,7 @@ function loadChristmasDemo(){
  setValue('share-image-key','xmas_hero_2026');setValue('share-title-key','xmas_share_title');setValue('share-desc-key','xmas_share_desc');
  document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
  const deals={id:'tab_xmas_deals',name:'圣诞特惠',textKey:'xmas_tab_deals',activeImageKey:'xmas_tab_deals_on',inactiveImageKey:'xmas_tab_deals_off',isDefault:true,modules:[
-  {id:'xmas_bundle_mod',type:'bundle',title:'精选圣诞套装',enabled:true,bundleProductId:'990501',promotionId:'PR-XMAS-SET-26',imageKey:'xmas_bundle_2026',layout:'featured',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
+  {id:'xmas_bundle_mod',type:'bundle',title:'精选圣诞套装',enabled:true,bundleProductId:'990501',promotionId:'',imageKey:'xmas_bundle_2026',layout:'featured',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
   {id:'xmas_promo_mod',type:'promo',title:'圣诞限定促销商品',enabled:true,productIds:['990101','990102','990103'],promotionId:'PR-XMAS-DEALS-26',imageKey:'xmas_title_deals_2026',layout:'grid',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
   {id:'xmas_jump_mod',type:'jump',title:'探索更多圣诞活动',enabled:true,bannerKey:'xmas_explore_2026',buttonTextKey:'xmas_btn_explore',jumpRules:[
    {start:'2026-12-20T00:00',end:'2026-12-24T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/xmas-preheat.html'},
@@ -931,7 +931,7 @@ function loadNewYearDemo(){
  document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
  setValue('preview-date','2027-01-01T12:00');
  const deals={id:'tab_newyear_deals',name:'新年特惠',textKey:'newyear_tab_deals',activeImageKey:'newyear_tab_deals_on',inactiveImageKey:'newyear_tab_deals_off',isDefault:true,modules:[
-  {id:'newyear_bundle_mod',type:'bundle',title:'精选新年套装',enabled:true,bundleProductId:'990601',promotionId:'PR-2027-NY-SET',imageKey:'newyear_bundle_2027',layout:'featured',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
+  {id:'newyear_bundle_mod',type:'bundle',title:'精选新年套装',enabled:true,bundleProductId:'990601',promotionId:'',imageKey:'newyear_bundle_2027',layout:'featured',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
   {id:'newyear_promo_mod',type:'promo',title:'新年限定促销商品',enabled:true,productIds:['100201','100202','100203'],promotionId:'PR-2027-NY-DEALS',imageKey:'newyear_title_deals_2027',layout:'grid',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
   {id:'newyear_jump_mod',type:'jump',title:'探索更多新年活动',enabled:true,bannerKey:'newyear_explore_2027',buttonTextKey:'newyear_btn_explore',jumpRules:[
    {start:'2026-12-28T00:00',end:'2026-12-31T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/newyear-preheat.html'},
