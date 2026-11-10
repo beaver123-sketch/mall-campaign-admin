@@ -30,6 +30,7 @@ https://beaver123-sketch.github.io/mall-campaign-admin/
 
 - 推送到 `main` 分支会触发部署。
 - 也可以在 GitHub Actions 中手动运行 `Deploy static site to GitHub Pages`。
+- 最近一次部署触发：2026-11-10。
 
 ## 原型说明
 
