@@ -99,6 +99,24 @@
 .jump-rule-row{border:1px solid #e6ebf1;border-radius:6px;padding:12px;margin:10px 0;background:#fafcff}
 .jump-rule-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .custom-target-panel{margin-top:12px;padding:13px;border-radius:6px;border:1px solid #d7e7fb;background:#f7fbff}
+
+.preview-date-field{display:flex;align-items:center;gap:8px;padding:0 4px 10px;color:#8793a3;font-size:11px}
+.preview-date-field input{width:190px;max-width:100%;font-size:11px;border:1px solid #d8e1ec;border-radius:4px;padding:4px}
+.demo-preview-image{width:100%;height:auto;object-fit:contain;display:block}
+.preview-product-picture{width:100%;height:68px;object-fit:contain;border-radius:7px}
+.preview-product-item{flex:1;min-width:68px}
+.preview-product-item b{display:block;font-size:10px;line-height:1.35;white-space:normal;color:#75425c;margin:3px auto}
+.preview-product-item span{display:block;font-size:11px;color:#a92c38;font-weight:bold}
+.preview-product-item del{display:block;color:#9f9aa4;font-size:9px}
+.preview-hero{padding:0!important;min-height:90px}
+.preview-hero img{width:100%;height:auto;display:block}
+.preview-tab-item{cursor:pointer;padding:0!important;min-width:113px;flex:1;border:0!important}
+.preview-tab-item img{width:100%;height:auto;display:block}
+.preview-tabs{gap:5px}
+.preview-tab-item small{display:none}
+.preview-block .asset-placeholder{border:1px dashed #e3e7ee;background:#fafbff;color:#a2aabb;border-radius:6px;font-size:10px;padding:18px 8px}
+.preview-cta.preview-cta-link{cursor:pointer;border:0;font:inherit;font-size:10px}
+.preview-jump-img{width:100%;height:auto;border-radius:8px;display:block}
 </style></head>
 <body><div class="app">
 <aside class="sidebar"><div class="brand"><span class="brand-mark">M</span><span>模块管理后台</span></div><div class="nav-group"><div class="nav-item"><span class="nav-icon">▣</span><span>商城管理</span></div><div class="nav-item nav-sub"><span>商城配置</span></div><div class="nav-item nav-sub"><span>商品管理</span></div><div class="nav-item nav-sub"><span>资源管理</span></div><div class="nav-item nav-sub"><span>订单管理</span></div><div class="nav-item nav-sub"><span>商城数据</span></div><div class="nav-item active" id="nav-campaign"><span class="nav-icon">▤</span><span>商城活动</span></div><div class="nav-item nav-sub active" data-page="list"><span>活动列表</span></div></div></aside>
@@ -107,7 +125,7 @@
 <div class="card"><div class="card-hd">查询条件 <span class="muted" style="font-weight:400;font-size:12px">支持按活动信息筛选</span></div><div class="card-bd"><div class="filter-grid"><div class="field"><label>活动ID</label><input id="f-id" placeholder="请输入活动ID"></div><div class="field"><label>活动名称</label><input id="f-name" placeholder="请输入活动名称"></div><div class="field"><label>活动类型</label><select id="f-type"><option value="">全部</option><option>商品促销</option><option>榜单活动</option><option>综合活动</option></select></div><div class="field"><label>上架状态</label><select id="f-online"><option value="">全部</option><option>上架</option><option>下架</option></select></div><div class="field"><label>活动状态</label><select id="f-status"><option value="">全部</option><option>未开始</option><option>预热中</option><option>进行中</option><option>已结束</option></select></div><div class="field"><label>开始日期</label><input type="date" id="f-start"></div><div class="field"><label>结束日期</label><input type="date" id="f-end"></div><div class="field"><label>APP</label><select id="f-app"><option value="">全部</option><option>poppo</option><option>vone</option><option>mimi</option><option>jolly</option><option>miti</option></select></div></div><div class="filter-actions"><button class="primary" onclick="renderTable()">⌕ 查询</button><button onclick="resetFilters()">↻ 重置</button></div></div></div>
 <div class="card"><div class="card-hd"><span>活动列表 <span class="muted" id="result-count" style="font-weight:400;font-size:12px"></span></span><div class="right"><button class="primary small" onclick="openEditor()">＋ 新建活动</button><button class="small" onclick="openActivityLogs()">操作记录</button><button class="small" onclick="renderTable();toast('已刷新活动列表')">↻ 刷新</button></div></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>活动名称</th><th>活动类型</th><th>国家地区</th><th>APP</th><th>上架状态</th><th>活动状态</th><th>排序</th><th>开始时间</th><th>结束时间</th><th>最近修改时间</th><th>操作</th></tr></thead><tbody id="activity-rows"></tbody></table></div><div class="card-bd" style="display:flex;justify-content:space-between;align-items:center;padding:10px 15px"><span class="muted" style="font-size:12px">演示数据 · 配置保存在当前浏览器</span><span class="muted" style="font-size:12px">共 <b id="total-count">0</b> 条　　每页 10 条　　1 / 1</span></div></div></section>
 <section class="page-panel" id="page-editor">
-<div class="backline"><button class="small" onclick="showPage('list')">← 返回</button><b id="editor-title">新建商城活动</b><span class="muted" id="editor-id">未保存</span></div>
+<div class="backline"><button class="small" onclick="showPage('list')">← 返回</button><b id="editor-title">新建商城活动</b><span class="muted" id="editor-id">未保存</span><div class="right" style="margin-left:auto"><button class="small" onclick="loadChristmasDemo()">🎄 填充圣诞示例配置</button></div></div>
 <div class="editor-layout">
 <div class="editor-main card">
   <div class="section builder-section" id="basic-section">
@@ -184,7 +202,7 @@
 </div>
 
 <aside class="phone-card">
-  <div class="phone-head"><span>H5 页面实时预览</span><button class="text small" onclick="refreshPreview()">刷新</button></div>
+  <div class="phone-head"><span>H5 页面实时预览</span><button class="text small" onclick="refreshPreview()">刷新</button></div><div class="preview-date-field"><span>预览日期</span><input type="datetime-local" id="preview-date" value="2026-12-25T12:00" onchange="renderPreview()" title="切换时间查看预热 / 正式活动的不同跳转"></div>
   <div class="phone"><div class="phone-notch"></div><div class="phone-screen" id="phone-screen"></div></div>
   <div class="footer-note">预览用于检查模块顺序及页面结构；资源 Key、商品数据和榜单数据需在正式业务系统中读取。</div>
 </aside>
@@ -796,6 +814,83 @@ function deleteModule(scope,id){
  const arr=getModuleArray(scope),index=arr.findIndex(function(x){return x.id===id});
  if(index>=0)arr.splice(index,1);
  renderTabsAndModules();renderPreview();toast('模块已删除');
+}
+const demoAssetKeys=new Set([
+ 'xmas_hero_2026','xmas_tab_deals_on','xmas_tab_deals_off','xmas_tab_rank_on','xmas_tab_rank_off',
+ 'xmas_bundle_2026','xmas_hat_2026','xmas_antlers_2026','xmas_snowflake_2026',
+ 'xmas_explore_2026','xmas_rank_rewards_2026','xmas_title_bundle_2026','xmas_title_deals_2026'
+]);
+const demoTexts={
+ xmas_tab_deals:'Special Deals',xmas_tab_rank:'Holiday Ranking',
+ xmas_btn_buy:'Buy Now',xmas_btn_explore:'Explore Now',
+ xmas_title_bundle:'Featured Christmas Set',xmas_title_deals:'Christmas Exclusives',
+ xmas_title_rewards:'Holiday Ranking Rewards',
+ xmas_share_title:'Christmas Special Sale',
+ xmas_share_desc:'Limited-time deals, festive bundles and ranking rewards!'
+};
+const demoProducts={
+ '990501':{name:'Christmas Deluxe Set',price:'89,900',oldPrice:'123,000',imageKey:'xmas_bundle_2026'},
+ '990101':{name:'Santa Hat',price:'19,900',oldPrice:'29,900',imageKey:'xmas_hat_2026'},
+ '990102':{name:'Reindeer Antlers',price:'25,900',oldPrice:'39,900',imageKey:'xmas_antlers_2026'},
+ '990103':{name:'Snowflake Effect',price:'32,900',oldPrice:'49,900',imageKey:'xmas_snowflake_2026'}
+};
+const demoPromotionData={
+ 'PR-XMAS-SET-26':{name:'Christmas Deluxe Set promotion'},
+ 'PR-XMAS-DEALS-26':{name:'Christmas Exclusives promotion'}
+};
+const demoRankingData={'R-XMAS-26':{name:'Christmas Spending Ranking',entries:[['1','SantaStar','888,000'],['2','SnowQueen','765,000'],['3','ReindeerKing','620,000']]}};
+let previewTabId=null;
+function demoAssetUrl(key){return demoAssetKeys.has(String(key||''))?'./demo-assets/'+String(key)+'.svg':''}
+function imageByKey(key,alt,cssClass){
+ const url=demoAssetUrl(key);
+ return url?'<img loading="lazy" class="'+(cssClass||'demo-preview-image')+'" src="'+esc(url)+'" alt="'+esc(alt||key)+'">':'<div class="asset-placeholder">未匹配测试图片 Key：'+esc(key||'未填写')+'</div>';
+}
+function demoText(key,fallback){return demoTexts[key]||fallback||key||''}
+function selectPreviewTab(id){previewTabId=id;renderPreview()}
+function previewAt(){const e=$('preview-date');return e?e.value:'2026-12-25T12:00'}
+function selectedJumpRule(m){
+ const now=previewAt();
+ return (m.jumpRules||[]).find(function(r){return (!r.start||now>=r.start)&&(!r.end||now<=r.end)});
+}
+function openDemoJump(moduleId){
+ const all=editorConfig.tabs.length?editorConfig.tabs.reduce(function(a,t){return a.concat(t.modules||[])},[]):editorConfig.modules;
+ const m=all.find(function(x){return x.id===moduleId});
+ const r=m?selectedJumpRule(m):null;
+ if(!r){toast('此预览时间段未配置跳转');return}
+ if(r.type==='url'&&/^https?:\/\//i.test(r.target)){window.open(r.target,'_blank','noopener,noreferrer');return}
+ toast('测试跳转：'+r.type+' → '+r.target+'（正式环境由客户端处理）');
+}
+function loadChristmasDemo(){
+ if(!editorConfig){openEditor()}
+ const data={
+  name:'2026 圣诞商城特别活动',type:'综合活动',start:'2026-12-25T00:00',end:'2026-12-31T23:59',
+  preheat:'2026-12-20T00:00',preheatEnd:'2026-12-25T00:00'
+ };
+ Object.keys(data).forEach(function(k){const id=({name:'a-name',type:'a-type',start:'a-start',end:'a-end',preheat:'a-preheat',preheatEnd:'a-preheat-end'})[k];setValue(id,data[k])});
+ setValue('a-zone','UTC+8');setValue('a-note','圣诞活动演示数据（商品、促销、榜单、奖励 ID 仅用于此原型测试）');
+ setValue('a-sort',1);setChecked('app',['poppo']);setChecked('client',['iOS','Android']);
+ activityRegionCodes=allCountryCodes.slice();mountCountryPicker('activity-region-picker',activityRegionCodes);
+ setValue('hero-image-key','xmas_hero_2026');
+ setValue('skin-bg-color','#A4151D');updateBgHexPreview();
+ setValue('skin-bg-image','');
+ setValue('rules-key','xmas_rules_2026');
+ $('share-internal').checked=true;$('share-external').checked=true;toggleShareConfig();
+ setValue('share-image-key','xmas_hero_2026');setValue('share-title-key','xmas_share_title');setValue('share-desc-key','xmas_share_desc');
+ document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
+ const deals={id:'tab_xmas_deals',name:'圣诞特惠',textKey:'xmas_tab_deals',activeImageKey:'xmas_tab_deals_on',inactiveImageKey:'xmas_tab_deals_off',isDefault:true,modules:[
+  {id:'xmas_bundle_mod',type:'bundle',title:'精选圣诞套装',enabled:true,bundleProductId:'990501',promotionId:'PR-XMAS-SET-26',imageKey:'xmas_bundle_2026',layout:'featured',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
+  {id:'xmas_promo_mod',type:'promo',title:'圣诞限定促销商品',enabled:true,productIds:['990101','990102','990103'],promotionId:'PR-XMAS-DEALS-26',imageKey:'xmas_title_deals_2026',layout:'grid',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
+  {id:'xmas_jump_mod',type:'jump',title:'探索更多圣诞活动',enabled:true,bannerKey:'xmas_explore_2026',buttonTextKey:'xmas_btn_explore',jumpRules:[
+   {start:'2026-12-20T00:00',end:'2026-12-24T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/xmas-preheat.html'},
+   {start:'2026-12-25T00:00',end:'2026-12-31T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/xmas-event.html'}
+  ]}
+ ]};
+ const rank={id:'tab_xmas_rank',name:'圣诞排行榜',textKey:'xmas_tab_rank',activeImageKey:'xmas_tab_rank_on',inactiveImageKey:'xmas_tab_rank_off',isDefault:false,modules:[
+  {id:'xmas_ranking_mod',type:'ranking',title:'圣诞金币消费榜',enabled:true,rankingId:'R-XMAS-26',imageKey:'xmas_tab_rank_on',displayMode:'entry',defaultType:'coin',entryCondition:{metric:'coin',threshold:'50000',start:'2026-12-25T00:00',end:'2026-12-31T23:59'},entryReward:{enabled:true,rewardConfigId:'ER-XMAS-26',maxPerCycle:1,grantMode:'auto'}},
+  {id:'xmas_reward_mod',type:'rank_reward',title:'圣诞排名奖励（自动下发）',enabled:true,rankingId:'R-XMAS-26',rewardConfigId:'RR-XMAS-26',rewardImageKey:'xmas_rank_rewards_2026',rewardTitleKey:'xmas_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
+ ]};
+ editorConfig.tabs=[deals,rank];editorConfig.modules=[];previewTabId=deals.id;
+ renderTabsAndModules();renderPreview();toast('已填充完整圣诞活动测试配置，默认下架，请检查后保存');
 }
 function renderPreviewModule(m){
  let title=esc(m.title||moduleTypeName(m.type)),body='';
