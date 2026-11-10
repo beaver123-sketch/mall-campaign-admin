@@ -657,7 +657,8 @@ function normalizedModule(item){
  if(m.type==='ranking'){
   m.rankingType=m.rankingType|| (m.defaultType==='voucher'||(m.entryCondition&&m.entryCondition.metric==='voucher')?'voucher':'coin');
   m.displayMode=m.displayMode||'entry';
-  m.entryCondition=m.entryCondition||{threshold:'',start:'',end:''};
+  m.entryCondition=m.entryCondition||{maxRank:'',start:'',end:''};
+  m.entryCondition.maxRank=m.entryCondition.maxRank||'';
   if(m.entryCondition.metric&& !m.rankingType)m.rankingType=m.entryCondition.metric==='voucher'?'voucher':'coin';
   m.activityCondition=m.activityCondition||{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'};
   if(!Array.isArray(m.activityCondition.productIds))m.activityCondition.productIds=[];
@@ -676,7 +677,7 @@ function moduleSummary(raw){
  if(m.type==='jump')return '卡片底图：'+(m.cardImageKey||'未配置')+' · 按钮：'+(m.buttonImageKey||'未配置')+' · '+(m.jumpRules||[]).length+' 个分时段跳转规则'+suffix;
  if(m.type==='ranking'){
   const typeName={coin:'金币榜',voucher:'荣誉券榜',activity:'活动榜'}[m.rankingType]||'未设置类型';
-  return typeName+' · 入榜门槛：'+(m.entryCondition&&m.entryCondition.threshold||'待配置')+' · 奖励规则：'+(m.rewardRules||[]).length+' 条'+suffix;
+  return typeName+' · 上榜范围：前 '+(m.entryCondition&&m.entryCondition.maxRank||'待配置')+' 名 · 奖励规则：'+(m.rewardRules||[]).length+' 条'+suffix;
  }
  if(m.type==='rank_reward'){const linked=findRankingModule(m.rankingModuleId);return '奖励展示：'+(linked?linked.title:'待关联本页面榜单')+' · 按奖励条件自动下发'+suffix;}
  return '待配置';
@@ -874,8 +875,8 @@ function renderModuleModalFields(){
     '</select></div>'+
     (metricMode==='both'?mfInput('m-coin-ratio','金币折算比例',a.coinRatio||'1','例如 1，按消费数量 × 比例计分',true,false,'number')+mfInput('m-voucher-ratio','荣誉券折算比例',a.voucherRatio||'1','例如 2，按消费数量 × 比例计分',true,false,'number'):'')+
     '</div><div class="hint">仅购买所配置商品的订单参与活动榜统计。双币种模式下，榜单积分 = 金币消费数量 × 金币比例 + 荣誉券消费数量 × 荣誉券比例。</div>':'')+
-   '<div class="divider"></div><div class="subsection-title">入榜条件配置</div><div class="modal-form-grid">'+
-    mfInput('m-threshold','入榜门槛',c.threshold||'','达到该统计值后进入榜单',true,false,'number')+
+   '<div class="divider"></div><div class="subsection-title">入榜名次配置</div><div class="modal-form-grid">'+
+    mfInput('m-max-rank','上榜名次上限（前 N 名）',c.maxRank||'','例如 100，仅展示最终排名前 100 名的用户',true,false,'number')+
     mfInput('m-condition-start','统计开始时间',c.start||'','可选，默认跟随活动开始时间',false,false,'datetime-local')+
     mfInput('m-condition-end','统计结束时间',c.end||'','可选，默认跟随活动结束时间',false,false,'datetime-local')+
    '</div><div class="divider"></div><div class="subsection-title">榜单奖励规则 <button class="small" type="button" onclick="addRankingRewardRule()">＋ 添加奖励规则</button></div>'+
@@ -913,7 +914,7 @@ function captureModuleFields(){
  }else if(type==='ranking'){
   m.rankingType=readModuleInput('m-ranking-type');m.displayMode=readModuleInput('m-display');
   m.imageKey=readModuleInput('m-image');m.bottomImageKey=readModuleInput('m-bottom-image');
-  m.entryCondition={threshold:readModuleInput('m-threshold'),start:readModuleInput('m-condition-start'),end:readModuleInput('m-condition-end')};
+  m.entryCondition={maxRank:readModuleInput('m-max-rank'),start:readModuleInput('m-condition-start'),end:readModuleInput('m-condition-end')};
   m.activityCondition=m.activityCondition||{};
   if($('m-activity-products'))m.activityCondition.productIds=readModuleInput('m-activity-products').split(/[,，\s]+/).filter(Boolean);
   if($('m-activity-metric'))m.activityCondition.metricMode=readModuleInput('m-activity-metric');
@@ -966,7 +967,7 @@ function saveModuleFromModal(){
  }
  if(type==='ranking'){
   if(!m.rankingType){toast('请选择榜单类型');return}
-  if(!m.entryCondition.threshold||Number(m.entryCondition.threshold)<=0){toast('请填写正数入榜门槛');return}
+  if(!m.entryCondition.maxRank||!Number.isInteger(Number(m.entryCondition.maxRank))||Number(m.entryCondition.maxRank)<=0){toast('请填写正整数上榜名次上限');return}
   if(m.entryCondition.start&&m.entryCondition.end&&m.entryCondition.start>=m.entryCondition.end){toast('榜单统计结束时间必须晚于开始时间');return}
   if(m.rankingType==='activity'){
    const a=m.activityCondition||{};
@@ -977,7 +978,7 @@ function saveModuleFromModal(){
   for(let i=0;i<(m.rewardRules||[]).length;i++){
    const r=m.rewardRules[i];
    if(!r.conditionType||!r.rewardType||!r.quantity||Number(r.quantity)<=0){toast('请完整填写第 '+(i+1)+' 条奖励规则及正数奖励数量');return}
-   if(r.conditionType==='rank'&&(!r.rankStart||!r.rankEnd||Number(r.rankStart)<1||Number(r.rankEnd)<Number(r.rankStart))){toast('第 '+(i+1)+' 条奖励规则的排名区间不正确');return}
+   if(r.conditionType==='rank'&&(!r.rankStart||!r.rankEnd||Number(r.rankStart)<1||Number(r.rankEnd)<Number(r.rankStart)||Number(r.rankEnd)>Number(m.entryCondition.maxRank))){toast('第 '+(i+1)+' 条奖励规则的排名区间不正确，且不能超过上榜名次上限');return}
    if(r.conditionType==='score'&&(!r.minScore||Number(r.minScore)<=0)){toast('第 '+(i+1)+' 条奖励规则请填写正数统计值');return}
    if(r.rewardType==='product'&&!r.productId){toast('第 '+(i+1)+' 条商品奖励请填写商品 ID');return}
   }
@@ -1092,7 +1093,7 @@ function loadChristmasDemo(){
   ]}
  ]};
  const rank={id:'tab_xmas_rank',name:'圣诞排行榜',textKey:'xmas_tab_rank',activeImageKey:'xmas_tab_rank_on',inactiveImageKey:'xmas_tab_rank_off',isDefault:false,modules:[
-  {id:'xmas_ranking_mod',type:'ranking',title:'圣诞金币消费榜',enabled:true,rankingType:'coin',imageKey:'xmas_tab_rank_on',bottomImageKey:'xmas_rank_rewards_2026',displayMode:'entry',entryCondition:{threshold:'50000',start:'2026-12-25T00:00',end:'2026-12-31T23:59'},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[{conditionType:'entry',rewardType:'coin',quantity:'5000'},{conditionType:'rank',rankStart:'1',rankEnd:'3',rewardType:'product',productId:'990103',quantity:'1'}]},
+  {id:'xmas_ranking_mod',type:'ranking',title:'圣诞金币消费榜',enabled:true,rankingType:'coin',imageKey:'xmas_tab_rank_on',bottomImageKey:'xmas_rank_rewards_2026',displayMode:'entry',entryCondition:{maxRank:'100',start:'2026-12-25T00:00',end:'2026-12-31T23:59'},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[{conditionType:'entry',rewardType:'coin',quantity:'5000'},{conditionType:'rank',rankStart:'1',rankEnd:'3',rewardType:'product',productId:'990103',quantity:'1'}]},
   {id:'xmas_reward_mod',type:'rank_reward',title:'圣诞排名奖励（自动下发）',enabled:true,rankingModuleId:'xmas_ranking_mod',rewardImageKey:'xmas_rank_rewards_2026',rewardTitleKey:'xmas_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
  ]};
  editorConfig.tabs=[deals,rank];editorConfig.modules=[];editorConfig.pageMode='tabs';previewTabId=deals.id;
@@ -1138,7 +1139,7 @@ function loadNewYearDemo(){
   ]}
  ]};
  const rank={id:'tab_newyear_rank',name:'新年排行榜',textKey:'newyear_tab_rank',activeImageKey:'newyear_tab_rank_on',inactiveImageKey:'newyear_tab_rank_off',isDefault:false,modules:[
-  {id:'newyear_ranking_mod',type:'ranking',title:'新年金币消费榜',enabled:true,rankingType:'coin',imageKey:'newyear_tab_rank_on',bottomImageKey:'newyear_rank_rewards_2027',displayMode:'entry',entryCondition:{threshold:'50000',start:'2027-01-01T00:00',end:'2027-01-07T23:59'},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[{conditionType:'entry',rewardType:'coin',quantity:'5000'},{conditionType:'rank',rankStart:'1',rankEnd:'3',rewardType:'product',productId:'100203',quantity:'1'}]},
+  {id:'newyear_ranking_mod',type:'ranking',title:'新年金币消费榜',enabled:true,rankingType:'coin',imageKey:'newyear_tab_rank_on',bottomImageKey:'newyear_rank_rewards_2027',displayMode:'entry',entryCondition:{maxRank:'100',start:'2027-01-01T00:00',end:'2027-01-07T23:59'},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[{conditionType:'entry',rewardType:'coin',quantity:'5000'},{conditionType:'rank',rankStart:'1',rankEnd:'3',rewardType:'product',productId:'100203',quantity:'1'}]},
   {id:'newyear_reward_mod',type:'rank_reward',title:'新年排名奖励（自动下发）',enabled:true,rankingModuleId:'newyear_ranking_mod',rewardImageKey:'newyear_rank_rewards_2027',rewardTitleKey:'newyear_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
  ]};
  editorConfig.tabs=[deals,rank];editorConfig.modules=[];editorConfig.pageMode='tabs';previewTabId=deals.id;
@@ -1207,7 +1208,7 @@ function renderPreviewModule(raw){
   const typeName={coin:'金币榜',voucher:'荣誉券榜',activity:'活动榜'}[m.rankingType]||'榜单';
   const condition=m.entryCondition||{},activity=m.activityCondition||{};
   const metricName=m.rankingType==='coin'?'金币消费':m.rankingType==='voucher'?'荣誉券消费':({coin:'金币消费',voucher:'荣誉券消费',both:'金币 + 荣誉券'}[activity.metricMode]||'活动统计');
-  body+='<p>'+esc(typeName)+' · '+esc(metricName)+' · 入榜门槛 ≥ '+esc(condition.threshold||'-')+'</p>';
+  body+='<p>'+esc(typeName)+' · '+esc(metricName)+' · 仅展示前 '+esc(condition.maxRank||'-')+' 名</p>';
   if(m.rankingType==='activity'){
    body+='<p>参与商品 ID：'+esc((activity.productIds||[]).join('、')||'-')+'</p>';
    if(activity.metricMode==='both')body+='<p>折算比例：金币 '+esc(activity.coinRatio||'1')+' : 荣誉券 '+esc(activity.voucherRatio||'1')+'</p>';
