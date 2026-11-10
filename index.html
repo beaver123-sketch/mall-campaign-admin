@@ -55,7 +55,6 @@
 .modal.wide .modal-bd{max-height:72vh}
 .modal-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px 16px}
 .modal-form-grid .full{grid-column:1/-1}
-#hero-target-wrap.is-disabled{opacity:.45;pointer-events:none}
 @media(max-width:1100px){.editor-layout{grid-template-columns:1fr}.phone-card{position:static}.phone{max-width:360px;margin:auto}.region-skin-row{grid-template-columns:1fr 100px}}
 @media(max-width:760px){.tab-config-row{align-items:flex-start;flex-direction:column}.tab-config-main{flex-wrap:wrap}.module-item{align-items:flex-start;flex-direction:column}.module-actions{width:100%;justify-content:flex-end}.modal-form-grid{grid-template-columns:1fr}.modal-form-grid .full{grid-column:auto}.builder-section{padding:15px}.region-skin-row{grid-template-columns:1fr 1fr}}
 
@@ -91,8 +90,7 @@
     <div class="section-title"><span>02 顶部头图</span><span class="tag green">必选模块</span></div>
     <div class="form-grid">
       <div class="control full"><label class="required">活动头图 Key</label><input id="hero-image-key" placeholder="请输入头图图片资源 Key" oninput="renderPreview()"><div class="hint">头图视觉中已包含的主标题、副标题不再单独配置，避免重复维护。</div></div>
-      <div class="control"><label>头图点击行为</label><select id="hero-click-type" onchange="toggleHeroTarget()"><option value="none">不跳转</option><option value="activity">跳转活动页面</option><option value="product">跳转商品详情</option><option value="category">跳转商城分类</option><option value="url">跳转指定 URL</option></select></div>
-      <div class="control" id="hero-target-wrap"><label>跳转目标</label><input id="hero-target" placeholder="填写活动 ID / 商品 ID / 分类 ID / URL"></div>
+      <div class="control full"><div class="hint">头图仅用于展示活动视觉，不配置点击跳转。如需设置页面入口，请通过下方「活动跳转模块」单独配置。</div></div>
     </div>
   </div>
 
@@ -190,7 +188,7 @@ function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,funct
 function clone(value){return JSON.parse(JSON.stringify(value))}
 function blankConfig(){
  return {
-  hero:{imageKey:'',clickType:'none',target:''},
+  hero:{imageKey:''},
   tabs:[],
   modules:[],
   skin:{bgColor:'#321b78',bgImageKey:'',cardStyle:'rounded',tabStyle:'underline',decorationKey:'',regions:[]},
@@ -202,7 +200,7 @@ function blankConfig(){
 function normalizeConfig(value){
  const base=blankConfig(),c=value||{};
  return {
-  hero:Object.assign(base.hero,c.hero||{}),
+  hero:{imageKey:(c.hero&&c.hero.imageKey)||''},
   tabs:Array.isArray(c.tabs)?c.tabs:[],
   modules:Array.isArray(c.modules)?c.modules:[],
   skin:Object.assign(base.skin,c.skin||{},{regions:Array.isArray(c.skin&&c.skin.regions)?c.skin.regions:[]}),
@@ -309,8 +307,6 @@ function openEditor(id){
  setChecked('app',apps);
  setChecked('client',clients);
  setValue('hero-image-key',editorConfig.hero.imageKey);
- setValue('hero-click-type',editorConfig.hero.clickType||'none');
- setValue('hero-target',editorConfig.hero.target);
  setValue('skin-bg-color',editorConfig.skin.bgColor||'#321b78');
  setValue('skin-bg-image',editorConfig.skin.bgImageKey);
  setValue('skin-card-style',editorConfig.skin.cardStyle||'rounded');
@@ -328,12 +324,11 @@ function openEditor(id){
  $('auto-offline-products').checked=!!editorConfig.publish.autoOfflineProducts;
  renderTabsAndModules();
  renderRegionSkins();
- toggleHeroTarget();
  renderPreview();
  showPage('editor');
 }
 function syncEditorConfig(){
- editorConfig.hero={imageKey:$('hero-image-key').value.trim(),clickType:$('hero-click-type').value,target:$('hero-target').value.trim()};
+ editorConfig.hero={imageKey:$('hero-image-key').value.trim()};
  editorConfig.skin={
   bgColor:$('skin-bg-color').value,
   bgImageKey:$('skin-bg-image').value.trim(),
@@ -345,12 +340,6 @@ function syncEditorConfig(){
  editorConfig.rulesKey=$('rules-key').value.trim();
  editorConfig.share={enabled:$('share-enabled').value==='yes',imageKey:$('share-image-key').value.trim(),titleKey:$('share-title-key').value.trim(),descKey:$('share-desc-key').value.trim()};
  editorConfig.publish={autoCloseEntry:$('auto-close-entry').checked,autoHidePage:$('auto-hide-page').checked,autoOfflineProducts:$('auto-offline-products').checked};
-}
-function toggleHeroTarget(){
- const type=$('hero-click-type').value,wrap=$('hero-target-wrap');
- wrap.classList.toggle('is-disabled',type==='none');
- $('hero-target').disabled=type==='none';
- $('hero-target').placeholder=type==='none'?'无需填写':type==='url'?'请输入完整 URL':'请输入对应活动 ID / 商品 ID / 分类 ID';
 }
 function renderTabsAndModules(){
  const tabs=editorConfig.tabs||[];
