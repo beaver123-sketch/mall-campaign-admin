@@ -5,6 +5,60 @@
 <style>
 :root{--nav:#001529;--blue:#409eff;--blue2:#1677ff;--bg:#f3f6fa;--line:#e8edf3;--text:#303846;--muted:#8b96a5;--green:#52c41a;--red:#f56c6c;--orange:#e6a23c;--shadow:0 2px 10px rgba(20,40,70,.06)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid #dcdfe6;background:#fff;color:#536170;border-radius:4px;padding:7px 14px}button:hover{border-color:var(--blue);color:var(--blue)}button.primary{background:var(--blue);border-color:var(--blue);color:#fff}button.primary:hover{background:#66b1ff}button.danger{color:var(--red);border-color:#fbc4c4}button.text{border:0;background:transparent;padding:4px 7px;color:var(--blue)}button.small{padding:4px 10px;font-size:12px}.app{min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:182px;background:var(--nav);color:#d7e3ef;z-index:10;overflow:auto}.brand{height:54px;display:flex;align-items:center;padding:0 15px;font-size:17px;font-weight:700;color:#fff;gap:9px;border-bottom:1px solid rgba(255,255,255,.08)}.brand-mark{width:27px;height:27px;border-radius:7px;background:#050c18;color:#45d5c3;display:grid;place-items:center;font-size:18px}.nav-group{padding:10px 0}.nav-title{padding:11px 22px;color:#a9bdcf;font-size:12px;letter-spacing:.3px}.nav-item{height:43px;display:flex;align-items:center;padding:0 22px;gap:11px;color:#c7d4e0;cursor:pointer;border-left:3px solid transparent}.nav-item:hover{background:#0b2942;color:#fff}.nav-item.active{background:#1d5b91;border-left-color:#58a6ff;color:#fff}.nav-icon{width:15px;text-align:center;font-size:15px}.nav-sub{padding-left:36px;font-size:13px;height:37px}.main{margin-left:182px;min-height:100vh}.topbar{height:46px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 18px;justify-content:space-between;position:sticky;top:0;z-index:5}.crumb{color:#8b96a5}.crumb b{color:#354253;font-weight:600}.top-actions{display:flex;align-items:center;gap:17px;color:#7e8998;font-size:13px}.content{padding:18px 20px 30px}.pagehead{display:flex;align-items:center;justify-content:space-between;margin:2px 0 15px}.pagehead h2{font-size:18px;margin:0;font-weight:650}.pagehead .sub{color:var(--muted);font-size:12px;margin-top:4px}.card{background:#fff;border:1px solid var(--line);border-radius:5px;box-shadow:var(--shadow);margin-bottom:14px}.card-hd{height:49px;padding:0 17px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;font-weight:650}.card-bd{padding:17px}.filter-grid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:13px 18px;align-items:center}.field{display:flex;align-items:center;gap:10px;min-width:0}.field label{color:#657284;white-space:nowrap;min-width:66px}.field input,.field select,.field textarea,.control input,.control select,.control textarea{width:100%;min-width:0;border:1px solid #d9e0e8;border-radius:4px;padding:8px 10px;background:#fff;color:#475569;outline:none}.field input:focus,.control input:focus,.control select:focus,.control textarea:focus{border-color:#79bbff;box-shadow:0 0 0 2px rgba(64,158,255,.1)}.filter-actions{display:flex;gap:9px;margin-top:15px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{background:#fafbfd;color:#7d8998;font-weight:600;font-size:12px}th,td{padding:12px 11px;border:1px solid #edf0f4;text-align:left}td{color:#4c5969;font-size:13px}tbody tr:hover{background:#fafcff}.link{color:var(--blue);cursor:pointer}.tag{display:inline-block;border-radius:3px;padding:2px 8px;font-size:12px;background:#ecf5ff;color:#409eff}.tag.green{background:#f0f9eb;color:#67c23a}.tag.orange{background:#fdf6ec;color:#e6a23c}.tag.gray{background:#f4f4f5;color:#909399}.tag.red{background:#fef0f0;color:#f56c6c}.row-actions{display:flex;gap:5px}.empty{padding:35px;text-align:center;color:#a0a8b4}.editor-layout{display:grid;grid-template-columns:minmax(650px,1fr) 340px;gap:15px;align-items:start}.editor-main{min-width:0}.steps{display:flex;gap:4px;flex-wrap:wrap;padding:12px 15px;border-bottom:1px solid var(--line)}.step{padding:7px 12px;border-radius:4px;color:#7a8797;cursor:pointer}.step.active{color:var(--blue);background:#ecf5ff}.step.done{color:#67c23a}.section{padding:18px;border-bottom:1px solid #f0f2f5}.section:last-child{border-bottom:0}.section-title{font-weight:650;margin:0 0 16px;display:flex;align-items:center;justify-content:space-between}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 22px}.control{min-width:0}.control label{display:block;color:#687588;margin-bottom:6px;font-size:13px}.control .hint{color:#9aa4b2;font-size:11px;margin-top:4px}.control input,.control select{height:36px}.control textarea{min-height:76px;resize:vertical}.control.full{grid-column:1/-1}.required:before{content:'*';color:#f56c6c;margin-right:4px}.inline-checks{display:flex;gap:16px;flex-wrap:wrap;align-items:center;min-height:36px;color:#5d6978}.inline-checks label{margin:0;display:flex;gap:5px;align-items:center}.inline-checks input{width:auto;height:auto}.editor-actions{display:flex;justify-content:space-between;padding:14px 18px;border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0}.phone-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px;position:sticky;top:62px}.phone-head{font-size:12px;font-weight:650;display:flex;justify-content:space-between;margin:0 4px 9px}.phone{width:100%;height:610px;background:#202124;border-radius:27px;padding:10px 9px 13px;position:relative;box-shadow:0 5px 16px rgba(0,0,0,.12)}.phone-notch{width:90px;height:17px;border-radius:0 0 12px 12px;background:#090a0b;position:absolute;top:0;left:calc(50% - 45px);z-index:2}.phone-screen{height:100%;border-radius:19px;background:#f5f7fb;overflow:auto;position:relative}.preview-hero{height:145px;background:linear-gradient(130deg,#172f59,#5b75a5);color:white;padding:27px 15px 12px;position:relative}.preview-hero h3{margin:8px 0 4px;font-size:19px}.preview-hero p{font-size:11px;opacity:.85;margin:0}.preview-tabs{display:flex;background:#fff;padding:9px 10px;gap:18px;font-size:12px;color:#7a8796}.preview-tabs span:first-child{color:#286bce;border-bottom:2px solid #286bce;padding-bottom:5px}.preview-module{margin:9px;background:#fff;border-radius:8px;padding:11px;box-shadow:0 1px 4px rgba(0,0,0,.04)}.preview-module b{font-size:12px}.preview-product{display:flex;gap:8px;margin-top:9px}.preview-product div{height:75px;flex:1;border-radius:6px;background:linear-gradient(140deg,#fff0d9,#ffd08a);display:grid;place-items:center;color:#b77726;font-size:11px}.preview-rank{display:flex;justify-content:space-between;font-size:10px;color:#8792a0;padding:7px 0;border-bottom:1px solid #f0f1f3}.editor-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.module-list{display:flex;flex-direction:column;gap:9px}.module-item{border:1px solid #e6ebf1;border-radius:5px;padding:12px;display:flex;align-items:center;justify-content:space-between;background:#fff}.module-item .meta{display:flex;align-items:center;gap:10px}.module-icon{width:30px;height:30px;border-radius:6px;background:#eef5ff;color:#428be7;display:grid;place-items:center}.module-item small{display:block;color:#9aa4b2;margin-top:2px}.pill{border:1px solid #e3e9f0;border-radius:14px;padding:3px 9px;font-size:11px;color:#7d8998}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}.skin-preview{height:230px;border-radius:8px;background:linear-gradient(145deg,#172f59,#5c74a4);color:white;padding:20px;position:relative;overflow:hidden}.skin-preview:after{content:'';position:absolute;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.1);right:-35px;bottom:-70px}.skin-preview h3{margin:35px 0 5px;font-size:22px}.skin-preview small{opacity:.8}.region-row{border:1px solid #e7edf3;border-radius:5px;padding:12px;margin-top:9px;display:flex;justify-content:space-between;align-items:center}.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:14px}.stat{background:#fff;border:1px solid var(--line);border-radius:5px;padding:16px}.stat small{color:#8b96a5}.stat strong{display:block;font-size:25px;margin-top:7px;font-weight:650}.bar-chart{height:190px;display:flex;align-items:end;gap:15px;padding:15px 20px 0;border-bottom:1px solid #edf0f4}.bar{flex:1;background:linear-gradient(180deg,#75b8ff,#409eff);border-radius:4px 4px 0 0;position:relative;min-width:15px}.bar span{position:absolute;bottom:-25px;left:50%;transform:translateX(-50%);font-size:11px;color:#8b96a5}.modal-mask{position:fixed;inset:0;background:rgba(20,30,45,.4);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}.modal-mask.show{display:flex}.modal{width:min(620px,100%);background:#fff;border-radius:7px;box-shadow:0 12px 45px rgba(0,0,0,.2)}.modal.wide{width:min(1080px,100%);max-height:90vh;display:flex;flex-direction:column}.modal.wide .modal-bd{overflow:auto}.modal-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}.modal-stat{border:1px solid var(--line);border-radius:5px;padding:14px;background:#fff}.modal-stat small{color:#8b96a5}.modal-stat strong{display:block;font-size:23px;margin-top:6px;font-weight:650}.modal-hd,.modal-ft{padding:15px 19px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-weight:650}.modal-ft{border-top:1px solid var(--line);border-bottom:0;justify-content:flex-end;gap:9px}.modal-bd{padding:18px}.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);background:#263445;color:#fff;padding:9px 18px;border-radius:5px;z-index:50;display:none;box-shadow:var(--shadow)}.toast.show{display:block}.muted{color:#98a2b0}.hidden{display:none!important}.page-panel{display:none}.page-panel.active{display:block}.backline{display:flex;align-items:center;gap:10px;margin-bottom:14px;color:#697789}.divider{height:1px;background:#eef1f4;margin:14px 0}.footer-note{font-size:11px;color:#a0a8b4;margin-top:10px}.badge-dot{width:7px;height:7px;border-radius:50%;background:#67c23a;display:inline-block;margin-right:5px}.right{display:flex;gap:8px;align-items:center}.section-note{font-size:12px;color:#99a3b1;font-weight:400}.subtabs{display:flex;gap:5px;border-bottom:1px solid var(--line);margin:-2px 0 15px}.subtab{padding:8px 13px;color:#7f8a98;cursor:pointer;border-bottom:2px solid transparent}.subtab.active{color:var(--blue);border-color:var(--blue)}
 @media(max-width:1100px){.editor-layout{grid-template-columns:1fr}.phone-card{position:static}.phone{height:500px}.filter-grid{grid-template-columns:repeat(2,minmax(160px,1fr))}}@media(max-width:760px){.sidebar{width:58px}.brand{padding:0 15px}.brand span:not(.brand-mark),.nav-title,.nav-item span:not(.nav-icon),.nav-sub{display:none}.nav-item{padding:0 19px}.main{margin-left:58px}.content{padding:12px}.filter-grid,.form-grid,.two-col,.stat-grid,.modal-stat-grid{grid-template-columns:1fr}.editor-layout{display:block}.phone-card{margin-top:14px}.pagehead{align-items:flex-start;gap:10px}.row-actions{flex-wrap:wrap}}
+
+/* Flexible campaign page builder */
+.editor-main{overflow:hidden}
+.builder-section{padding:21px 20px}
+.builder-section .section-title{margin-bottom:17px}
+.subsection-title{display:flex;align-items:center;justify-content:space-between;font-weight:650;margin:3px 0 13px;color:#465365}
+.builder-section .hint,.hint{font-size:11px;color:#98a3b1;line-height:1.6;margin-top:5px}
+.tab-empty,.module-empty{padding:17px 15px;border:1px dashed #dbe3ec;border-radius:5px;background:#fafcff;color:#929eac;font-size:12px}
+.tab-config-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid #e6ebf1;border-radius:5px;margin-bottom:8px;background:#fff}
+.tab-config-main{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.tab-index{width:28px;height:28px;border-radius:5px;background:#eef5ff;color:#438be2;display:grid;place-items:center;font-weight:650;flex:none}
+.tab-config-main input[type=text]{height:34px;max-width:280px;width:100%;border:1px solid #d9e0e8;border-radius:4px;padding:6px 9px}
+.tab-default{font-size:12px;color:#738093;white-space:nowrap}
+.tab-default input{vertical-align:middle}
+.module-scope{border:1px solid #e6ebf1;border-radius:6px;padding:14px;margin-bottom:13px;background:#fff}
+.module-scope-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+.module-scope-hd strong{font-size:14px}
+.module-scope-hd small{display:block;color:#98a3b1;font-size:11px;margin-top:2px}
+.module-item{gap:12px}
+.module-item .meta{min-width:0;flex:1}
+.module-item .meta>div{min-width:0}
+.module-item .meta b{font-size:13px}
+.module-item .meta small{max-width:540px;white-space:normal;line-height:1.5}
+.module-actions{display:flex;align-items:center;gap:3px;flex:none}
+.module-actions button{padding:4px 7px}
+.module-kind{font-size:11px;color:#4b88cf;background:#eef5ff;border-radius:3px;padding:3px 7px;white-space:nowrap}
+.region-skin-row{display:grid;grid-template-columns:1.1fr 100px 1.5fr 60px;gap:10px;align-items:end;border:1px solid #e6ebf1;border-radius:5px;padding:12px;margin-top:9px}
+.region-skin-row label{display:block;font-size:11px;color:#738093;margin-bottom:5px}
+.region-skin-row input{width:100%;height:33px;border:1px solid #d9e0e8;border-radius:4px;padding:6px 8px}
+.region-skin-row input[type=color]{padding:3px}
+.phone-screen{padding-bottom:12px}
+.preview-hero{min-height:148px;height:auto;background:linear-gradient(135deg,#38217f,#6f4cc3);padding:28px 14px 16px}
+.preview-hero h3{font-size:19px;line-height:1.3;margin:12px 0 6px}
+.preview-hero .preview-key{font-size:9px;opacity:.8;overflow-wrap:anywhere}
+.preview-tabs{position:sticky;top:0;z-index:1;overflow:auto;white-space:nowrap}
+.preview-tabs span{padding:4px 2px}
+.preview-tabs span:first-child{border-bottom:0}
+.preview-tabs .selected{color:#286bce;border-bottom:2px solid #286bce;padding-bottom:5px}
+.preview-block{margin:9px;background:#fff;border-radius:8px;padding:11px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.preview-block h4{font-size:12px;margin:0 0 8px;color:#39485b}
+.preview-block p{font-size:10px;color:#8792a0;margin:5px 0;overflow-wrap:anywhere}
+.preview-product-row{display:flex;gap:7px;flex-wrap:wrap}
+.preview-product-item{flex:1;min-width:65px;background:#f4f0ff;border-radius:6px;padding:10px 5px;text-align:center;color:#6c55a8;font-size:10px}
+.preview-cta{display:inline-block;background:#409eff;color:white;border-radius:18px;padding:5px 14px;font-size:10px;margin-top:7px}
+.preview-rank-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f1f3;font-size:10px;color:#7d8998}
+.preview-key-note{font-size:9px;color:#9aa4b2;overflow-wrap:anywhere}
+.modal.wide{width:min(760px,100%)}
+.modal.wide .modal-bd{max-height:72vh}
+.modal-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px 16px}
+.modal-form-grid .full{grid-column:1/-1}
+#hero-target-wrap.is-disabled{opacity:.45;pointer-events:none}
+@media(max-width:1100px){.editor-layout{grid-template-columns:1fr}.phone-card{position:static}.phone{max-width:360px;margin:auto}.region-skin-row{grid-template-columns:1fr 100px}}
+@media(max-width:760px){.tab-config-row{align-items:flex-start;flex-direction:column}.tab-config-main{flex-wrap:wrap}.module-item{align-items:flex-start;flex-direction:column}.module-actions{width:100%;justify-content:flex-end}.modal-form-grid{grid-template-columns:1fr}.modal-form-grid .full{grid-column:auto}.builder-section{padding:15px}.region-skin-row{grid-template-columns:1fr 1fr}}
+
 </style></head>
 <body><div class="app">
 <aside class="sidebar"><div class="brand"><span class="brand-mark">M</span><span>模块管理后台</span></div><div class="nav-group"><div class="nav-item"><span class="nav-icon">▣</span><span>商城管理</span></div><div class="nav-item nav-sub"><span>商城配置</span></div><div class="nav-item nav-sub"><span>商品管理</span></div><div class="nav-item nav-sub"><span>资源管理</span></div><div class="nav-item nav-sub"><span>订单管理</span></div><div class="nav-item nav-sub"><span>商城数据</span></div><div class="nav-item active" id="nav-campaign"><span class="nav-icon">▤</span><span>商城活动</span></div><div class="nav-item nav-sub active" data-page="list"><span>活动列表</span></div></div></aside>
@@ -12,22 +66,107 @@
 <section class="page-panel active" id="page-list"><div class="pagehead"><div><h2>商城活动</h2><div class="sub">统一管理商城促销、活动页面及榜单联动</div></div><button class="primary" onclick="openEditor()">＋ 新建活动</button></div>
 <div class="card"><div class="card-hd">查询条件 <span class="muted" style="font-weight:400;font-size:12px">支持按活动信息筛选</span></div><div class="card-bd"><div class="filter-grid"><div class="field"><label>活动ID</label><input id="f-id" placeholder="请输入活动ID"></div><div class="field"><label>活动名称</label><input id="f-name" placeholder="请输入活动名称"></div><div class="field"><label>活动类型</label><select id="f-type"><option value="">全部</option><option>商品促销</option><option>榜单活动</option><option>综合活动</option></select></div><div class="field"><label>上架状态</label><select id="f-online"><option value="">全部</option><option>上架</option><option>下架</option></select></div><div class="field"><label>活动状态</label><select id="f-status"><option value="">全部</option><option>未开始</option><option>预热中</option><option>进行中</option><option>已结束</option></select></div><div class="field"><label>开始日期</label><input type="date" id="f-start"></div><div class="field"><label>结束日期</label><input type="date" id="f-end"></div><div class="field"><label>APP</label><select id="f-app"><option value="">全部</option><option>poppo</option><option>vone</option><option>mimi</option><option>jolly</option><option>miti</option></select></div></div><div class="filter-actions"><button class="primary" onclick="renderTable()">⌕ 查询</button><button onclick="resetFilters()">↻ 重置</button></div></div></div>
 <div class="card"><div class="card-hd"><span>活动列表 <span class="muted" id="result-count" style="font-weight:400;font-size:12px"></span></span><div class="right"><button class="small" onclick="openActivityLogs()">操作记录</button><button class="small" onclick="toast('已刷新活动列表')">↻ 刷新</button></div></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>活动名称</th><th>活动类型</th><th>国家地区</th><th>APP</th><th>上架状态</th><th>活动状态</th><th>排序</th><th>开始时间</th><th>结束时间</th><th>最近修改时间</th><th>操作</th></tr></thead><tbody id="activity-rows"></tbody></table></div><div class="card-bd" style="display:flex;justify-content:space-between;align-items:center;padding:10px 15px"><span class="muted" style="font-size:12px">演示数据 · 配置保存在当前浏览器</span><span class="muted" style="font-size:12px">共 <b id="total-count">0</b> 条　　每页 10 条　　1 / 1</span></div></div></section>
-<section class="page-panel" id="page-editor"><div class="backline"><button class="small" onclick="showPage('list')">← 返回</button><b id="editor-title">新建商城活动</b><span class="muted" id="editor-id"></span></div><div class="editor-layout"><div class="editor-main card"><div class="steps" id="steps"><div class="step active" data-step="base">01 基础信息</div><div class="step" data-step="entry">02 活动入口</div><div class="step" data-step="page">03 页面搭建</div><div class="step" data-step="products">04 商品促销</div><div class="step" data-step="ranking">05 榜单关联</div><div class="step" data-step="rules">06 规则分享</div><div class="step" data-step="publish">07 发布管理</div></div>
-<div id="step-base" class="step-content"><div class="section"><div class="section-title">基础信息</div><div class="form-grid"><div class="control"><label class="required">活动名称</label><input id="a-name" placeholder="请输入活动名称"></div><div class="control"><label class="required">活动类型</label><select id="a-type"><option>综合活动</option><option>商品促销</option><option>榜单活动</option></select></div><div class="control"><label>活动排序</label><input id="a-sort" type="number" value="0"></div><div class="control"><label>活动备注</label><input id="a-note" placeholder="仅后台可见"></div><div class="control"><label class="required">预热开始时间</label><input id="a-preheat" type="datetime-local"></div><div class="control"><label class="required">活动开始时间</label><input id="a-start" type="datetime-local"></div><div class="control"><label class="required">活动结束时间</label><input id="a-end" type="datetime-local"></div><div class="control"><label>时区</label><select id="a-zone"><option>UTC+8</option><option>UTC</option><option>UTC+5:30</option></select></div><div class="control full"><label>国家地区</label><div class="inline-checks"><label><input type="checkbox" checked> 全部重要地区</label><label><input type="checkbox"> 南亚区</label><label><input type="checkbox"> 东南亚区</label><label><input type="checkbox"> 中东区</label><label><input type="checkbox"> 欧美区</label><label><input type="checkbox"> 非洲区</label><button class="small" onclick="toast('国家选择器：支持区域展开及国家搜索')">选择国家</button></div></div><div class="control full"><label>适用 APP</label><div class="inline-checks"><label><input type="checkbox" checked> poppo</label><label><input type="checkbox"> vone</label><label><input type="checkbox"> mimi</label><label><input type="checkbox"> jolly</label><label><input type="checkbox"> miti</label><label><input type="checkbox"> pc_client</label></div></div><div class="control full"><label>适用客户端</label><div class="inline-checks"><label><input type="checkbox" checked> iOS</label><label><input type="checkbox" checked> Android</label></div></div></div></div><div class="section"><div class="section-title">活动状态 <span class="section-note">活动时间状态由开始、结束时间自动计算；上架状态独立控制</span></div><div class="inline-checks"><label><input type="radio" name="online" value="下架" checked> 草稿 / 下架</label><label><input type="radio" name="online" value="上架"> 上架</label></div></div></div>
-<div id="step-entry" class="step-content hidden"><div class="section"><div class="section-title">活动入口配置 <span class="section-note">按需启用入口，素材及广告频控可复用现有配置</span></div><div class="two-col"><div class="card" style="margin:0"><div class="card-hd">商城首页 Banner <label class="inline-checks"><input type="checkbox" id="entry-banner"> 启用</label></div><div class="card-bd"><div class="control"><label>Banner 图片 Key</label><input placeholder="请输入图片资源 Key"></div><div class="control" style="margin-top:10px"><label>跳转目标</label><select><option>当前活动页面</option><option>指定页面 URL</option></select></div><div class="control" style="margin-top:10px"><label>展示排序</label><input type="number" placeholder="请输入排序值"></div></div></div><div class="card" style="margin:0"><div class="card-hd">首页弹窗 <label class="inline-checks"><input type="checkbox" id="entry-popup"> 启用</label></div><div class="card-bd"><div class="control"><label>弹窗图片 Key</label><input placeholder="请输入图片资源 Key"></div><div class="control" style="margin-top:10px"><label>展示频次</label><select><option>活动期间一次</option><option>每日一次</option><option>每次进入</option></select></div><div class="control" style="margin-top:10px"><label>触发条件</label><select><option>进入商城首页</option><option>指定页面触发</option></select></div></div></div></div><div class="card" style="margin-top:14px"><div class="card-hd">商品详情页入口 <label class="inline-checks"><input type="checkbox" id="entry-detail"> 启用</label></div><div class="card-bd"><div class="form-grid"><div class="control"><label>入口图片 Key</label><input placeholder="请输入图片资源 Key"></div><div class="control"><label>跳转链接</label><input placeholder="默认跳转当前活动页面"></div><div class="control"><label>展示位置</label><select><option>商品详情页推广位</option><option>商品购买区域下方</option></select></div><div class="control"><label>展示时间</label><input placeholder="默认跟随活动时间"></div></div></div></div></div></div>
-<div id="step-page" class="step-content hidden"><div class="section"><div class="section-title">页面基础配置</div><div class="form-grid"><div class="control"><label>页面标题</label><input id="p-title" placeholder="请输入页面标题"></div><div class="control"><label>活动头图 Key</label><input id="p-hero" placeholder="请输入图片 Key"></div><div class="control"><label>主标题 Key</label><input placeholder="请输入多语言 Key"></div><div class="control"><label>副标题 Key</label><input placeholder="请输入多语言 Key"></div><div class="control"><label>页面背景</label><input placeholder="颜色值或图片 Key"></div><div class="control"><label>页面结构</label><select id="p-structure"><option>单页面</option><option>多 Tab 页面</option></select></div></div></div><div class="section"><div class="section-title">页面 Tab 配置 <button class="small" onclick="addTab()">＋ 新增 Tab</button></div><div id="tabs-list"><div class="module-item"><div class="meta"><span class="module-icon">T</span><div><b>限时优惠</b><small>关联商品促销模块</small></div></div><span class="pill">Tab 1　默认</span></div><div class="module-item"><div class="meta"><span class="module-icon">T</span><div><b>消费榜</b><small>关联榜单展示模块</small></div></div><span class="pill">Tab 2</span></div></div></div><div class="section"><div class="section-title">页面模块配置 <button class="primary small" onclick="openModuleModal()">＋ 添加模块</button></div><div class="module-list" id="module-list"><div class="module-item"><div class="meta"><span class="module-icon">▦</span><div><b>商品展示模块</b><small>关联商品 ID · 展示商品列表</small></div></div><div class="right"><span class="pill">展示中</span><button class="small" onclick="toast('模块编辑示意')">编辑</button><button class="text" onclick="removeModule(this)">删除</button></div></div><div class="module-item"><div class="meta"><span class="module-icon">％</span><div><b>商品促销模块</b><small>关联促销配置 · 展示优惠权益</small></div></div><div class="right"><span class="pill">展示中</span><button class="small" onclick="toast('模块编辑示意')">编辑</button><button class="text" onclick="removeModule(this)">删除</button></div></div><div class="module-item"><div class="meta"><span class="module-icon">♛</span><div><b>榜单展示模块</b><small>关联商城现有榜单</small></div></div><div class="right"><span class="pill">展示中</span><button class="small" onclick="toast('模块编辑示意')">编辑</button><button class="text" onclick="removeModule(this)">删除</button></div></div></div></div><div class="section"><div class="section-title">页面皮肤配置 <span class="section-note">参考现有皮肤编辑后台</span></div><div class="subtabs"><div class="subtab active" data-skin="default">默认皮肤</div><div class="subtab" data-skin="region">区域定制</div></div><div id="skin-default"><div class="form-grid"><div class="control"><label>顶部颜色</label><input type="color" value="#8b4919"></div><div class="control"><label>顶部显示名称</label><input placeholder="例如 Lucky Gift Party"></div><div class="control"><label>背景色</label><input type="color" value="#713a09"></div><div class="control"><label>头图 Key</label><input placeholder="请输入图片 Key"></div><div class="control"><label>副标题 Key</label><input placeholder="请输入多语言 Key"></div><div class="control"><label>导航底图</label><input placeholder="请输入图片资源地址"></div><div class="control"><label>底部图案 Key</label><input placeholder="请输入图片 Key"></div><div class="control"><label>直播间头图 Key</label><input placeholder="请输入图片 Key"></div></div></div><div id="skin-region" class="hidden"><div class="region-row"><div><b>印度、巴基斯坦</b><small class="muted" style="display:block">区域专属皮肤 · 覆盖默认皮肤</small></div><div class="right"><button class="small" onclick="toast('打开区域皮肤编辑')">编辑</button><button class="text" onclick="this.closest('.region-row').remove()">删除</button></div></div><button class="small" style="margin-top:10px" onclick="addRegion()">＋ 新增区域定制</button></div><div class="footer-note">默认皮肤作为兜底；区域皮肤仅覆盖所选国家，不重复配置页面业务内容。</div></div></div>
-<div id="step-products" class="step-content hidden"><div class="section"><div class="section-title">活动商品关联 <button class="primary small" onclick="openProductModal()">＋ 关联商品</button></div><p class="muted" style="font-size:12px;margin-top:-7px">只需关联现有商品 ID；商品名称、图片、价格、会员类型、售卖区域、有效期等均从商品管理后台读取。</p><div class="table-wrap"><table><thead><tr><th>商品 ID</th><th>商品名称</th><th>商品类型</th><th>商品价格</th><th>支付方式</th><th>所属模块</th><th>展示排序</th><th>状态</th><th>操作</th></tr></thead><tbody id="products-rows"><tr><td>1386</td><td>撒糖可爱鬼</td><td>头像框</td><td>12,000金币</td><td>金币</td><td>商品展示</td><td>1</td><td><span class="tag green">展示中</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr><tr><td>1385</td><td>暗夜南瓜灯</td><td>派对主题</td><td>18,000金币</td><td>金币</td><td>商品展示</td><td>2</td><td><span class="tag green">展示中</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr></tbody></table></div></div><div class="section"><div class="section-title">促销配置关联 <button class="primary small" onclick="openPromotionModal()">＋ 关联促销</button></div><p class="muted" style="font-size:12px;margin-top:-7px">促销规则、价格计算及支付校验由现有商品促销系统负责；本模块只关联配置并设置活动页展示。</p><div class="table-wrap"><table><thead><tr><th>促销配置 ID</th><th>促销名称</th><th>促销类型</th><th>适用商品</th><th>优惠内容</th><th>活动页展示标题</th><th>状态</th><th>操作</th></tr></thead><tbody id="promotions-rows"><tr><td>PR-018</td><td>黑五靓号买赠</td><td>有效期赠送</td><td>指定靓号</td><td>买180天送180天</td><td>靓号优惠</td><td><span class="tag green">有效</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr></tbody></table></div></div></div>
-<div id="step-ranking" class="step-content hidden"><div class="section"><div class="section-title">关联商城榜单 <button class="primary small" onclick="openRankingModal()">＋ 关联榜单</button></div><p class="muted" style="font-size:12px;margin-top:-7px">榜单统计、排名、奖励及领奖规则由榜单后台维护；活动后台仅负责关联和页面展示。</p><div class="table-wrap"><table><thead><tr><th>榜单 ID</th><th>榜单名称</th><th>榜单类型</th><th>统计周期</th><th>页面展示标题</th><th>默认展示</th><th>展示排序</th><th>状态</th><th>操作</th></tr></thead><tbody id="rankings-rows"><tr><td>R-007</td><td>7日金币消费榜</td><td>金币消费</td><td>周榜</td><td>消费排行榜</td><td>是</td><td>1</td><td><span class="tag green">正常</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr></tbody></table></div><div class="footer-note">注意：金币消费榜、荣誉券消费榜、赠送榜与金币充值榜属于不同统计口径，关联时需校验榜单来源。</div></div></div>
-<div id="step-rules" class="step-content hidden"><div class="section"><div class="section-title">活动规则配置</div><div class="form-grid"><div class="control"><label>规则标题 Key</label><input placeholder="例如 yyhd_event_rules"></div><div class="control"><label>规则展示位置</label><select><option>活动页面</option><option>弹窗</option><option>活动页面及弹窗</option></select></div><div class="control full"><label>规则内容 Key</label><textarea placeholder="请输入多语言 Key；完整规则建议使用一个 Key 管理"></textarea></div><div class="control"><label>权益说明标题 Key</label><input placeholder="请输入多语言 Key"></div><div class="control"><label>权益图片 Key</label><input placeholder="请输入图片 Key"></div></div></div><div class="section"><div class="section-title">分享配置</div><div class="form-grid"><div class="control"><label>分享开关</label><select><option>开启</option><option>关闭</option></select></div><div class="control"><label>分享渠道</label><div class="inline-checks"><label><input type="checkbox" checked> 站内</label><label><input type="checkbox" checked> 站外</label></div></div><div class="control"><label>分享图片 Key</label><input placeholder="请输入图片 Key"></div><div class="control"><label>分享标题 Key</label><input placeholder="请输入多语言 Key"></div><div class="control full"><label>分享描述 Key</label><input placeholder="请输入多语言 Key"></div><div class="control full"><label>分享链接</label><input placeholder="默认使用活动页面 URL"></div></div></div></div>
-<div id="step-publish" class="step-content hidden"><div class="section"><div class="section-title">发布前检查</div><div class="module-list"><div class="module-item"><span>基础信息完整性</span><span class="tag green">已配置</span></div><div class="module-item"><span>活动时间及参与范围</span><span class="tag green">已配置</span></div><div class="module-item"><span>活动页面及皮肤</span><span class="tag orange">待预览确认</span></div><div class="module-item"><span>商品及促销关联</span><span class="tag green">已配置</span></div><div class="module-item"><span>榜单关联</span><span class="tag green">已配置</span></div></div></div><div class="section"><div class="section-title">发布设置</div><div class="form-grid"><div class="control"><label>活动 URL</label><input id="a-url" placeholder="保存后生成活动页面地址"></div><div class="control"><label>发布状态</label><select id="a-publish"><option>保存为草稿</option><option>发布并上架</option></select></div><div class="control full"><label>活动结束处理</label><div class="inline-checks"><label><input type="checkbox" checked> 自动关闭活动入口</label><label><input type="checkbox" checked> 活动页面停止展示</label><label><input type="checkbox"> 自动下架关联商品（默认不勾选）</label></div><div class="hint">活动结束不应默认改变商品自身售卖状态；已购买权益继续按商品原有规则执行。</div></div></div></div></div>
-<div class="editor-actions"><button onclick="showPage('list')">取消</button><div class="right"><button onclick="saveActivity(false)">保存草稿</button><button class="primary" onclick="saveActivity(true)">保存并发布</button></div></div></div>
-<aside class="phone-card"><div class="phone-head"><span>H5 页面预览</span><button class="text small" onclick="refreshPreview()">刷新</button></div><div class="phone"><div class="phone-notch"></div><div class="phone-screen" id="phone-screen"><div class="preview-hero"><small>活动页面预览</small><h3 id="preview-title">活动主标题</h3><p>活动副标题及时间说明</p></div><div class="preview-tabs"><span>限时优惠</span><span>消费榜</span></div><div class="preview-module"><b>精选商品</b><div class="preview-product"><div>商品 01</div><div>商品 02</div></div></div><div class="preview-module"><b>活动专属优惠</b><p class="muted" style="font-size:10px">展示促销权益及购买入口</p></div><div class="preview-module"><b>消费排行榜</b><div class="preview-rank"><span>01　User A</span><span>120,000</span></div><div class="preview-rank"><span>02　User B</span><span>98,000</span></div><div class="preview-rank"><span>03　User C</span><span>76,000</span></div></div></div></div><div class="footer-note">预览为交互原型示意，正式 H5 数据由页面服务提供。</div></aside></div></section>
+<section class="page-panel" id="page-editor">
+<div class="backline"><button class="small" onclick="showPage('list')">← 返回</button><b id="editor-title">新建商城活动</b><span class="muted" id="editor-id">未保存</span></div>
+<div class="editor-layout">
+<div class="editor-main card">
+  <div class="section builder-section" id="basic-section">
+    <div class="section-title"><span>01 基础信息</span><span class="section-note">活动基本信息及投放范围</span></div>
+    <div class="form-grid">
+      <div class="control"><label class="required">活动名称</label><input id="a-name" placeholder="仅用于后台识别"></div>
+      <div class="control"><label class="required">活动类型</label><select id="a-type"><option>综合活动</option><option>商品促销</option><option>榜单活动</option></select></div>
+      <div class="control"><label>活动排序</label><input id="a-sort" type="number" value="0"></div>
+      <div class="control"><label>活动备注</label><input id="a-note" placeholder="仅后台可见"></div>
+      <div class="control"><label>预热开始时间</label><input id="a-preheat" type="datetime-local"></div>
+      <div class="control"><label class="required">活动开始时间</label><input id="a-start" type="datetime-local"></div>
+      <div class="control"><label class="required">活动结束时间</label><input id="a-end" type="datetime-local"></div>
+      <div class="control"><label>时区</label><select id="a-zone"><option>UTC+8</option><option>UTC</option><option>UTC+5:30</option><option>UTC+5</option><option>UTC+3</option></select></div>
+      <div class="control full"><label>国家地区</label><input id="a-region" value="全部重要地区" placeholder="例如：全部重要地区 / 印度、巴基斯坦"><div class="hint">此处设置活动投放范围；区域皮肤仅覆盖视觉样式，不改变活动内容。</div></div>
+      <div class="control full"><label>适用 APP</label><div class="inline-checks" id="app-checks"><label><input type="checkbox" name="app" value="poppo" checked> poppo</label><label><input type="checkbox" name="app" value="vone"> vone</label><label><input type="checkbox" name="app" value="mimi"> mimi</label><label><input type="checkbox" name="app" value="jolly"> jolly</label><label><input type="checkbox" name="app" value="miti"> miti</label><label><input type="checkbox" name="app" value="pc_client"> pc_client</label></div></div>
+      <div class="control full"><label>适用客户端</label><div class="inline-checks" id="client-checks"><label><input type="checkbox" name="client" value="iOS" checked> iOS</label><label><input type="checkbox" name="client" value="Android" checked> Android</label></div></div>
+    </div>
+  </div>
+
+  <div class="section builder-section" id="hero-section">
+    <div class="section-title"><span>02 顶部头图</span><span class="tag green">必选模块</span></div>
+    <div class="form-grid">
+      <div class="control full"><label class="required">活动头图 Key</label><input id="hero-image-key" placeholder="请输入头图图片资源 Key" oninput="renderPreview()"><div class="hint">头图视觉中已包含的主标题、副标题不再单独配置，避免重复维护。</div></div>
+      <div class="control"><label>头图点击行为</label><select id="hero-click-type" onchange="toggleHeroTarget()"><option value="none">不跳转</option><option value="activity">跳转活动页面</option><option value="product">跳转商品详情</option><option value="category">跳转商城分类</option><option value="url">跳转指定 URL</option></select></div>
+      <div class="control" id="hero-target-wrap"><label>跳转目标</label><input id="hero-target" placeholder="填写活动 ID / 商品 ID / 分类 ID / URL"></div>
+    </div>
+  </div>
+
+  <div class="section builder-section" id="tabs-section">
+    <div class="section-title"><span>03 Tab 导航</span><div class="right"><span class="section-note">可选；不添加 Tab 时直接配置单页面内容</span><button class="small" onclick="addTab()">＋ 新增 Tab</button></div></div>
+    <div id="builder-tabs"></div>
+  </div>
+
+  <div class="section builder-section" id="modules-section">
+    <div class="section-title"><span>04 页面内容模块</span><span class="section-note">按前台展示顺序配置；支持重复添加及排序</span></div>
+    <div id="builder-content"></div>
+  </div>
+
+  <div class="section builder-section" id="skin-section">
+    <div class="section-title"><span>05 页面皮肤</span><span class="section-note">只控制视觉样式，不重复配置业务内容</span></div>
+    <div class="subsection-title">默认皮肤</div>
+    <div class="form-grid">
+      <div class="control"><label>页面背景色</label><input id="skin-bg-color" type="color" value="#321b78"></div>
+      <div class="control"><label>页面背景图 Key</label><input id="skin-bg-image" placeholder="可选，填写背景图资源 Key"></div>
+      <div class="control"><label>商品卡片样式</label><select id="skin-card-style"><option value="rounded">圆角卡片</option><option value="flat">简洁平铺</option><option value="glass">半透明卡片</option></select></div>
+      <div class="control"><label>Tab 导航样式</label><select id="skin-tab-style"><option value="underline">底部横线选中</option><option value="pill">胶囊选中</option><option value="block">色块选中</option></select></div>
+      <div class="control full"><label>装饰资源 Key</label><input id="skin-decoration" placeholder="可选，填写页面底部或模块装饰资源 Key"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="subsection-title">区域皮肤定制 <button class="small" onclick="addRegion()">＋ 新增区域</button></div>
+    <div class="hint">区域皮肤仅覆盖对应国家的背景、卡片及装饰资源；未命中区域时使用默认皮肤。</div>
+    <div id="region-skins"></div>
+  </div>
+
+  <div class="section builder-section" id="publish-section">
+    <div class="section-title"><span>06 发布设置</span><span class="section-note">活动规则与分享为可选配置</span></div>
+    <div class="subsection-title">活动规则</div>
+    <div class="form-grid">
+      <div class="control full"><label>活动规则内容 Key</label><input id="rules-key" placeholder="例如 yyhd_halloween_rules"><div class="hint">完整规则建议使用一个多语言 Key 管理；也可通过图文内容模块在页面内展示。</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="subsection-title">分享设置</div>
+    <div class="form-grid">
+      <div class="control"><label>分享功能</label><select id="share-enabled"><option value="yes">开启</option><option value="no">关闭</option></select></div>
+      <div class="control"><label>分享图片 Key</label><input id="share-image-key" placeholder="请输入分享图片 Key"></div>
+      <div class="control"><label>分享标题 Key</label><input id="share-title-key" placeholder="请输入分享标题 Key"></div>
+      <div class="control"><label>分享描述 Key</label><input id="share-desc-key" placeholder="请输入分享描述 Key"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="subsection-title">发布状态</div>
+    <div class="form-grid">
+      <div class="control"><label>发布状态</label><select id="a-publish"><option value="draft">保存为草稿 / 下架</option><option value="online">发布并上架</option></select></div>
+      <div class="control"><label>活动页面 URL</label><input id="a-url" placeholder="保存后由活动服务生成" readonly></div>
+      <div class="control full"><label>活动结束处理</label><div class="inline-checks"><label><input type="checkbox" id="auto-close-entry" checked> 自动关闭活动入口</label><label><input type="checkbox" id="auto-hide-page" checked> 活动结束后停止展示页面</label><label><input type="checkbox" id="auto-offline-products"> 自动下架关联商品</label></div><div class="hint">默认不自动下架商品；活动结束不改变已购买权益的原有生效规则。</div></div>
+    </div>
+  </div>
+
+  <div class="editor-actions"><button onclick="showPage('list')">取消</button><div class="right"><button onclick="saveActivity(false)">保存草稿</button><button class="primary" onclick="saveActivity(true)">保存并发布</button></div></div>
+</div>
+
+<aside class="phone-card">
+  <div class="phone-head"><span>H5 页面实时预览</span><button class="text small" onclick="refreshPreview()">刷新</button></div>
+  <div class="phone"><div class="phone-notch"></div><div class="phone-screen" id="phone-screen"></div></div>
+  <div class="footer-note">预览用于检查模块顺序及页面结构；资源 Key、商品数据和榜单数据需在正式业务系统中读取。</div>
+</aside>
+</div>
+</section>
 
 
 </div></main></div>
 <div class="modal-mask" id="modal-mask"><div class="modal"><div class="modal-hd"><span id="modal-title">添加</span><button class="text" onclick="closeModal()">✕</button></div><div class="modal-bd" id="modal-body"></div><div class="modal-ft"><button onclick="closeModal()">取消</button><button class="primary" id="modal-confirm">确定</button></div></div></div><div class="toast" id="toast"></div>
 <script>
-const seed=[{id:1590,name:'11月幸运礼物活动',type:'商品促销',region:'巴基斯坦、孟加拉国',app:'poppo',online:'上架',status:'进行中',sort:0,start:'2026-11-06 00:00',end:'2026-11-13 23:59',updated:'2026-11-10 14:20'},{id:1588,name:'商城消费榜单激励',type:'榜单活动',region:'全部重要地区',app:'poppo、vone',online:'上架',status:'进行中',sort:1,start:'2026-11-01 00:00',end:'2026-11-30 23:59',updated:'2026-11-09 17:42'},{id:1572,name:'黑五促销活动',type:'综合活动',region:'全球',app:'poppo',online:'下架',status:'未开始',sort:2,start:'2026-11-25 00:00',end:'2026-12-01 23:59',updated:'2026-11-08 11:05'},{id:1556,name:'万圣节限定商品活动',type:'商品促销',region:'全球',app:'poppo',online:'下架',status:'已结束',sort:3,start:'2026-10-10 00:00',end:'2026-10-31 23:59',updated:'2026-10-31 23:58'}];let activities=JSON.parse(localStorage.getItem('mallCampaigns')||'null')||seed;
+const seed=[
+ {id:1590,name:'11月幸运礼物活动',type:'商品促销',region:'巴基斯坦、孟加拉国',app:'poppo',online:'上架',status:'进行中',sort:0,start:'2026-11-06 00:00',end:'2026-11-13 23:59',updated:'2026-11-10 14:20'},
+ {id:1588,name:'商城消费榜单激励',type:'榜单活动',region:'全部重要地区',app:'poppo、vone',online:'上架',status:'进行中',sort:1,start:'2026-11-01 00:00',end:'2026-11-30 23:59',updated:'2026-11-09 17:42'},
+ {id:1572,name:'黑五促销活动',type:'综合活动',region:'全球',app:'poppo',online:'下架',status:'未开始',sort:2,start:'2026-11-25 00:00',end:'2026-12-01 23:59',updated:'2026-11-08 11:05'},
+ {id:1556,name:'万圣节限定商品活动',type:'商品促销',region:'全球',app:'poppo',online:'下架',status:'已结束',sort:3,start:'2026-10-10 00:00',end:'2026-10-31 23:59',updated:'2026-10-31 23:58'}
+];
+let activities=JSON.parse(localStorage.getItem('mallCampaigns')||'null')||seed;
 const seedOperationLogs=[
  {time:'2026-11-10 14:20:18',id:1590,name:'11月幸运礼物活动',action:'编辑',detail:'更新页面皮肤配置',operator:'LunaY张悦'},
  {time:'2026-11-09 17:42:03',id:1588,name:'商城消费榜单激励',action:'发布',detail:'活动发布并上架',operator:'LunaY张悦'},
@@ -40,69 +179,397 @@ const activityMetrics={
  1572:{visits:'0',clicks:'0',buyers:'0',gmv:'¥ 0',products:[]},
  1556:{visits:'38,210',clicks:'52,640',buyers:'1,842',gmv:'¥ 96,320',products:[['1386','撒糖可爱鬼','3,420','516','568','¥22,600','15.1%'],['1385','暗夜南瓜灯','2,780','402','430','¥19,800','14.5%']]}
 };
-let editingId=null;let currentStep='base';
-function persist(){localStorage.setItem('mallCampaigns',JSON.stringify(activities))}function statusTag(s){let c=s==='上架'||s==='进行中'?'green':s==='预热中'?'orange':s==='已结束'||s==='下架'?'gray':'red';return `<span class="tag ${c}">${s}</span>`}
-function renderTable(){
- let id=document.getElementById('f-id').value.trim(),name=document.getElementById('f-name').value.trim(),type=document.getElementById('f-type').value,on=document.getElementById('f-online').value,st=document.getElementById('f-status').value,app=document.getElementById('f-app').value;
- let rows=activities.filter(a=>(!id||String(a.id).includes(id))&&(!name||a.name.includes(name))&&(!type||a.type===type)&&(!on||a.online===on)&&(!st||a.status===st)&&(!app||a.app.includes(app)));
- document.getElementById('activity-rows').innerHTML=rows.map(function(a){
-  return '<tr><td>'+a.id+'</td><td><b>'+a.name+'</b></td><td>'+a.type+'</td><td>'+a.region+'</td><td>'+a.app+'</td><td>'+statusTag(a.online)+'</td><td>'+statusTag(a.status)+'</td><td>'+a.sort+'</td><td>'+a.start+'</td><td>'+a.end+'</td><td>'+a.updated+'</td><td><div class="row-actions"><button class="small" onclick="openEditor('+a.id+')">编辑</button><button class="small" onclick="copyActivity('+a.id+')">复制</button><button class="small '+(a.online==='上架'?'danger':'')+'" onclick="toggleOnline('+a.id+')">'+(a.online==='上架'?'下架':'上架')+'</button><button class="text small" onclick="openActivityData('+a.id+')">数据</button><button class="text small" onclick="openActivityLogs('+a.id+')">记录</button></div></td></tr>';
- }).join('')||'<tr><td colspan="12" class="empty">暂无符合条件的活动</td></tr>';
- document.getElementById('result-count').textContent='（'+rows.length+'）';
- document.getElementById('total-count').textContent=rows.length;
+let editingId=null;
+let editorConfig=null;
+let moduleDraft=null;
+let moduleScope='page';
+let moduleEditingId=null;
+
+function $(id){return document.getElementById(id)}
+function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function clone(value){return JSON.parse(JSON.stringify(value))}
+function blankConfig(){
+ return {
+  hero:{imageKey:'',clickType:'none',target:''},
+  tabs:[],
+  modules:[],
+  skin:{bgColor:'#321b78',bgImageKey:'',cardStyle:'rounded',tabStyle:'underline',decorationKey:'',regions:[]},
+  rulesKey:'',
+  share:{enabled:true,imageKey:'',titleKey:'',descKey:''},
+  publish:{autoCloseEntry:true,autoHidePage:true,autoOfflineProducts:false}
+ };
 }
-function resetFilters(){['f-id','f-name','f-type','f-online','f-status','f-start','f-end','f-app'].forEach(id=>document.getElementById(id).value='');renderTable()}
+function normalizeConfig(value){
+ const base=blankConfig(),c=value||{};
+ return {
+  hero:Object.assign(base.hero,c.hero||{}),
+  tabs:Array.isArray(c.tabs)?c.tabs:[],
+  modules:Array.isArray(c.modules)?c.modules:[],
+  skin:Object.assign(base.skin,c.skin||{},{regions:Array.isArray(c.skin&&c.skin.regions)?c.skin.regions:[]}),
+  rulesKey:c.rulesKey||'',
+  share:Object.assign(base.share,c.share||{}),
+  publish:Object.assign(base.publish,c.publish||{})
+ };
+}
+function persist(){localStorage.setItem('mallCampaigns',JSON.stringify(activities))}
+function saveOperationLogs(){localStorage.setItem('mallCampaignLogs',JSON.stringify(operationLogs))}
+function statusTag(s){
+ const c=s==='上架'||s==='进行中'?'green':s==='预热中'?'orange':s==='已结束'||s==='下架'?'gray':'red';
+ return '<span class="tag '+c+'">'+esc(s)+'</span>';
+}
+function formatNow(){return new Date().toLocaleString('zh-CN',{hour12:false}).replaceAll('/','-')}
+function getActivityStatus(start,end,preheat){
+ const now=new Date(),s=new Date(String(start||'').replace(' ','T')),e=new Date(String(end||'').replace(' ','T')),p=preheat?new Date(String(preheat).replace(' ','T')):null;
+ if(!isNaN(e)&&now>e)return '已结束';
+ if(!isNaN(s)&&now>=s)return '进行中';
+ if(p&&!isNaN(p)&&now>=p)return '预热中';
+ return '未开始';
+}
+function renderTable(){
+ const id=$('f-id').value.trim(),name=$('f-name').value.trim(),type=$('f-type').value,on=$('f-online').value,st=$('f-status').value,app=$('f-app').value,start=$('f-start').value,end=$('f-end').value;
+ const rows=activities.filter(function(a){
+  return (!id||String(a.id).includes(id))&&(!name||String(a.name||'').includes(name))&&(!type||a.type===type)&&(!on||a.online===on)&&(!st||a.status===st)&&(!app||String(a.app||'').includes(app))&&(!start||String(a.start||'').slice(0,10)>=start)&&(!end||String(a.end||'').slice(0,10)<=end);
+ }).sort(function(a,b){return Number(a.sort||0)-Number(b.sort||0)});
+ $('activity-rows').innerHTML=rows.map(function(a){
+  return '<tr><td>'+esc(a.id)+'</td><td><b>'+esc(a.name)+'</b></td><td>'+esc(a.type)+'</td><td>'+esc(a.region)+'</td><td>'+esc(a.app)+'</td><td>'+statusTag(a.online)+'</td><td>'+statusTag(a.status)+'</td><td>'+esc(a.sort)+'</td><td>'+esc(a.start)+'</td><td>'+esc(a.end)+'</td><td>'+esc(a.updated)+'</td><td><div class="row-actions"><button class="small" onclick="openEditor('+Number(a.id)+')">编辑</button><button class="small" onclick="copyActivity('+Number(a.id)+')">复制</button><button class="text small" onclick="openActivityData('+Number(a.id)+')">数据</button><button class="text small" onclick="openActivityLogs('+Number(a.id)+')">记录</button><button class="small '+(a.online==='上架'?'danger':'')+'" onclick="toggleOnline('+Number(a.id)+')">'+(a.online==='上架'?'下架':'上架')+'</button></div></td></tr>';
+ }).join('')||'<tr><td colspan="12" class="empty">暂无符合条件的活动</td></tr>';
+ $('result-count').textContent='（'+rows.length+'）';
+ $('total-count').textContent=rows.length;
+}
+function resetFilters(){
+ ['f-id','f-name','f-type','f-online','f-status','f-start','f-end','f-app'].forEach(function(id){$(id).value=''});
+ renderTable();
+}
 function showPage(name){
  document.querySelectorAll('.page-panel').forEach(function(x){x.classList.remove('active')});
- document.getElementById('page-'+name).classList.add('active');
+ $('page-'+name).classList.add('active');
  document.querySelectorAll('[data-page]').forEach(function(x){x.classList.toggle('active',x.dataset.page===name)});
- document.getElementById('crumb-current').textContent=name==='list'?'商城活动':'新建 / 编辑活动';
+ $('crumb-current').textContent=name==='list'?'商城活动':'新建 / 编辑活动';
  if(name==='list')renderTable();
 }
 document.querySelectorAll('[data-page]').forEach(function(x){x.addEventListener('click',function(){showPage(x.dataset.page)})});
-function setStep(s){currentStep=s;document.querySelectorAll('.step-content').forEach(x=>x.classList.add('hidden'));document.getElementById('step-'+s).classList.remove('hidden');document.querySelectorAll('.step').forEach(x=>x.classList.toggle('active',x.dataset.step===s));document.querySelector('.phone-card').style.display='block'}document.querySelectorAll('.step').forEach(x=>x.addEventListener('click',()=>setStep(x.dataset.step)));
-function openEditor(id){editingId=id||null;let a=id?activities.find(x=>x.id===id):null;document.getElementById('editor-title').textContent=a?'编辑商城活动':'新建商城活动';document.getElementById('editor-id').textContent=a?`活动 ID：${a.id}`:'未保存';document.getElementById('a-name').value=a?.name||'';document.getElementById('a-type').value=a?.type||'综合活动';document.getElementById('a-sort').value=a?.sort??0;document.getElementById('a-note').value='';document.getElementById('a-start').value=(a?.start||'2026-11-25 00:00').replace(' ','T');document.getElementById('a-end').value=(a?.end||'2026-12-01 23:59').replace(' ','T');document.getElementById('a-preheat').value='2026-11-24T00:00';document.getElementById('a-publish').value=a?.online==='上架'?'发布并上架':'保存为草稿';setStep('base');showPage('editor');document.getElementById('crumb-current').textContent='新建 / 编辑活动'}
-function saveActivity(publish){let name=document.getElementById('a-name').value.trim();if(!name){toast('请先填写活动名称');setStep('base');return}let start=document.getElementById('a-start').value.replace('T',' '),end=document.getElementById('a-end').value.replace('T',' ');if(!start||!end){toast('请填写活动开始及结束时间');setStep('base');return}let isNew=!editingId,a=editingId?activities.find(x=>x.id===editingId):null;if(!a){a={id:Math.max(1600,...activities.map(x=>Number(x.id)||0))+1};activities.unshift(a)}Object.assign(a,{name,type:document.getElementById('a-type').value,sort:Number(document.getElementById('a-sort').value)||0,start,end,region:'全部重要地区',app:'poppo',online:publish?'上架':'下架',status:new Date(start.replace(' ','T'))>new Date()?'未开始':'进行中',updated:new Date().toLocaleString('zh-CN',{hour12:false}).replaceAll('/','-')});persist();recordOperation(a,isNew?'创建':(publish?'发布':'编辑'),isNew?'创建活动':(publish?'保存并发布活动':'保存活动配置'));toast(publish?'活动已保存并发布':'活动草稿已保存');showPage('list')}
-function copyActivity(id){let a=activities.find(x=>x.id===id),b={...a,id:Math.max(1600,...activities.map(x=>Number(x.id)||0))+1,name:a.name+'（副本）',online:'下架',updated:'刚刚'};activities.unshift(b);persist();recordOperation(b,'复制','复制活动生成副本');renderTable();toast('已复制活动，请编辑副本配置')}
-function toggleOnline(id){let a=activities.find(x=>x.id===id);a.online=a.online==='上架'?'下架':'上架';a.updated='刚刚';persist();recordOperation(a,a.online,a.online==='上架'?'活动上架':'活动下架');renderTable();toast('活动已'+a.online)}
-function toast(t){let e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
-function openModal(title,html,fn,wide,closeOnly){document.getElementById('modal-title').textContent=title;document.getElementById('modal-body').innerHTML=html;document.getElementById('modal-confirm').onclick=fn;document.getElementById('modal-confirm').textContent=closeOnly?'关闭':'确定';document.querySelector('.modal-ft button:first-child').classList.toggle('hidden',!!closeOnly);document.querySelector('.modal').classList.toggle('wide',!!wide);document.getElementById('modal-mask').classList.add('show')}function closeModal(){document.getElementById('modal-mask').classList.remove('show');document.querySelector('.modal').classList.remove('wide')}
-function saveOperationLogs(){localStorage.setItem('mallCampaignLogs',JSON.stringify(operationLogs))}
+function toast(message){
+ const el=$('toast');el.textContent=message;el.classList.add('show');
+ setTimeout(function(){el.classList.remove('show')},2200);
+}
+function openModal(title,body,handler,wide){
+ $('modal-title').textContent=title;
+ $('modal-body').innerHTML=body;
+ $('modal-confirm').onclick=handler;
+ document.querySelector('.modal').classList.toggle('wide',!!wide);
+ $('modal-mask').classList.add('show');
+}
+function closeModal(){
+ $('modal-mask').classList.remove('show');
+ document.querySelector('.modal').classList.remove('wide');
+}
 function recordOperation(activity,action,detail){
- operationLogs.unshift({time:new Date().toLocaleString('zh-CN',{hour12:false}).replaceAll('/','-'),id:activity.id,name:activity.name,action:action,detail:detail,operator:'LunaY张悦'});
+ operationLogs.unshift({time:formatNow(),id:activity.id,name:activity.name,action:action,detail:detail,operator:'LunaY张悦'});
  saveOperationLogs();
 }
 function openActivityData(id){
- let activity=activities.find(function(a){return a.id===id}),d=activityMetrics[id]||{visits:'0',clicks:'0',buyers:'0',gmv:'¥ 0',products:[]};
- let productRows=d.products.map(function(p){return '<tr><td>'+p.join('</td><td>')+'</td></tr>'}).join('');
- let html='<div class="modal-stat-grid">'+
-  '<div class="modal-stat"><small>活动访问人数</small><strong>'+d.visits+'</strong></div>'+
-  '<div class="modal-stat"><small>页面点击量</small><strong>'+d.clicks+'</strong></div>'+
-  '<div class="modal-stat"><small>商品购买人数</small><strong>'+d.buyers+'</strong></div>'+
-  '<div class="modal-stat"><small>活动 GMV</small><strong>'+d.gmv+'</strong></div></div>'+
-  '<div class="card" style="margin:0"><div class="card-hd">商品转化明细 <span class="section-note">演示数据</span></div><div class="table-wrap"><table><thead><tr><th>商品 ID</th><th>商品名称</th><th>点击人数</th><th>购买人数</th><th>订单数</th><th>GMV</th><th>转化率</th></tr></thead><tbody>'+
-  (productRows||'<tr><td colspan="7" class="empty">暂无商品转化数据</td></tr>')+
-  '</tbody></table></div></div><div class="footer-note">当前为原型演示数据，正式环境需接入活动数据接口。</div>';
- openModal('活动数据 · '+(activity?activity.name:'活动'),html,function(){closeModal()},true,true);
+ const activity=activities.find(function(a){return Number(a.id)===Number(id)}),d=activityMetrics[id]||{visits:'0',clicks:'0',buyers:'0',gmv:'¥ 0',products:[]};
+ const productRows=d.products.map(function(p){return '<tr><td>'+p.map(esc).join('</td><td>')+'</td></tr>'}).join('');
+ const body='<div class="modal-stat-grid"><div class="modal-stat"><small>活动访问人数</small><strong>'+d.visits+'</strong></div><div class="modal-stat"><small>页面点击量</small><strong>'+d.clicks+'</strong></div><div class="modal-stat"><small>商品购买人数</small><strong>'+d.buyers+'</strong></div><div class="modal-stat"><small>活动 GMV</small><strong>'+d.gmv+'</strong></div></div><div class="card" style="margin:0"><div class="card-hd">商品转化明细 <span class="section-note">演示数据</span></div><div class="table-wrap"><table><thead><tr><th>商品 ID</th><th>商品名称</th><th>点击人数</th><th>购买人数</th><th>订单数</th><th>GMV</th><th>转化率</th></tr></thead><tbody>'+(productRows||'<tr><td colspan="7" class="empty">暂无商品转化数据</td></tr>')+'</tbody></table></div></div><div class="footer-note">当前为原型演示数据，正式环境需接入活动数据接口。</div>';
+ openModal('活动数据 · '+esc(activity?activity.name:'活动'),body,closeModal,true);
 }
 function openActivityLogs(id){
- let logs=id===undefined?operationLogs:operationLogs.filter(function(item){return String(item.id)===String(id)});
- let activity=activities.find(function(a){return String(a.id)===String(id)});
- let title=id===undefined?'全部操作记录':'操作记录 · '+(activity?activity.name:'活动');
- let rows=logs.map(function(item){return '<tr><td>'+item.time+'</td><td>'+item.id+'</td><td>'+item.name+'</td><td><span class="tag">'+item.action+'</span></td><td>'+item.detail+'</td><td>'+item.operator+'</td></tr>'}).join('');
- let html='<div class="table-wrap"><table><thead><tr><th>操作时间</th><th>活动 ID</th><th>活动名称</th><th>操作类型</th><th>操作内容</th><th>操作人</th></tr></thead><tbody>'+
-  (rows||'<tr><td colspan="6" class="empty">暂无操作记录</td></tr>')+
-  '</tbody></table></div><div class="footer-note">记录本原型中的创建、编辑、复制、发布及上下架操作。</div>';
- openModal(title,html,function(){closeModal()},true,true);
+ const logs=id===undefined?operationLogs:operationLogs.filter(function(item){return String(item.id)===String(id)});
+ const activity=activities.find(function(a){return String(a.id)===String(id)});
+ const title=id===undefined?'全部操作记录':'操作记录 · '+(activity?activity.name:'活动');
+ const rows=logs.map(function(item){return '<tr><td>'+esc(item.time)+'</td><td>'+esc(item.id)+'</td><td>'+esc(item.name)+'</td><td><span class="tag">'+esc(item.action)+'</span></td><td>'+esc(item.detail)+'</td><td>'+esc(item.operator)+'</td></tr>'}).join('');
+ const body='<div class="table-wrap"><table><thead><tr><th>操作时间</th><th>活动 ID</th><th>活动名称</th><th>操作类型</th><th>操作内容</th><th>操作人</th></tr></thead><tbody>'+(rows||'<tr><td colspan="6" class="empty">暂无操作记录</td></tr>')+'</tbody></table></div><div class="footer-note">记录本原型中的创建、编辑、复制、发布及上下架操作。</div>';
+ openModal(title,body,closeModal,true);
 }
-function openProductModal(){openModal('关联商城商品',`<div class="control"><label class="required">商品 ID</label><input id="modal-product-id" placeholder="请输入现有商品 ID，例如 1386"></div><div class="hint">关联后自动读取商品名称、资源、价格、支付方式等属性，不在活动后台重复配置。</div>`,()=>{let id=document.getElementById('modal-product-id').value.trim();if(!id){toast('请输入商品 ID');return}let map={'1386':['撒糖可爱鬼','头像框','12,000金币','金币'],'1385':['暗夜南瓜灯','派对主题','18,000金币','金币'],'1387':['万圣节魔法夜','派对主题','25,000金币','金币']};let p=map[id]||['商品 '+id,'商城商品','读取中','—'];document.getElementById('products-rows').insertAdjacentHTML('beforeend',`<tr><td>${id}</td><td>${p[0]}</td><td>${p[1]}</td><td>${p[2]}</td><td>${p[3]}</td><td>商品展示</td><td>99</td><td><span class="tag green">展示中</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr>`);closeModal();toast('商品关联成功（演示数据）')})}
-function openPromotionModal(){openModal('关联促销配置',`<div class="control"><label class="required">促销配置 ID</label><input id="modal-promo-id" placeholder="请输入现有促销配置 ID"></div><div class="control" style="margin-top:12px"><label>活动页展示标题</label><input id="modal-promo-title" placeholder="例如 黑五靓号优惠"></div><div class="hint">促销优惠及支付逻辑仍由现有商品促销后台负责。</div>`,()=>{let id=document.getElementById('modal-promo-id').value.trim(),title=document.getElementById('modal-promo-title').value||'活动促销';if(!id){toast('请输入促销配置 ID');return}document.getElementById('promotions-rows').insertAdjacentHTML('beforeend',`<tr><td>${id}</td><td>${title}</td><td>读取现有配置</td><td>关联商品</td><td>自动读取</td><td>${title}</td><td><span class="tag green">已关联</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr>`);closeModal();toast('促销配置关联成功（演示数据）')})}
-function openRankingModal(){openModal('关联商城榜单',`<div class="control"><label class="required">榜单 ID</label><select id="modal-rank-id"><option value="R-007">R-007 · 7日金币消费榜</option><option value="R-008">R-008 · 7日荣誉券消费榜</option><option value="R-009">R-009 · 7日赠送消费榜</option><option value="R-021">R-021 · 7日金币充值榜（其他业务来源）</option></select></div><div class="control" style="margin-top:12px"><label>页面展示标题</label><input id="modal-rank-title" value="活动排行榜"></div><div class="hint">选择后读取榜单类型、周期、统计规则及奖励配置。不同业务来源的榜单不可混淆。</div>`,()=>{let id=document.getElementById('modal-rank-id').value,title=document.getElementById('modal-rank-title').value||'活动排行榜',names={'R-007':['7日金币消费榜','金币消费','周榜'],'R-008':['7日荣誉券消费榜','荣誉券消费','周榜'],'R-009':['7日赠送消费榜','赠送消费','周榜'],'R-021':['7日金币充值榜','金币充值','活动周期']},v=names[id];document.getElementById('rankings-rows').insertAdjacentHTML('beforeend',`<tr><td>${id}</td><td>${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td><td>${title}</td><td>否</td><td>99</td><td><span class="tag green">正常</span></td><td><button class="text" onclick="this.closest('tr').remove()">移除</button></td></tr>`);closeModal();toast('榜单关联成功（演示数据）')})}
-function openModuleModal(){openModal('添加页面模块',`<div class="control"><label class="required">模块类型</label><select id="modal-module-type"><option>商品展示模块</option><option>商品促销模块</option><option>榜单展示模块</option><option>权益展示模块</option><option>图文介绍模块</option><option>活动跳转模块</option></select></div><div class="control" style="margin-top:12px"><label>模块标题</label><input id="modal-module-name" placeholder="请输入模块名称"></div><div class="control" style="margin-top:12px"><label>所属 Tab</label><select><option>限时优惠</option><option>消费榜</option></select></div>`,()=>{let t=document.getElementById('modal-module-type').value,n=document.getElementById('modal-module-name').value||t;document.getElementById('module-list').insertAdjacentHTML('beforeend',`<div class="module-item"><div class="meta"><span class="module-icon">＋</span><div><b>${n}</b><small>${t} · 待配置关联资源</small></div></div><div class="right"><span class="pill">展示中</span><button class="text small" onclick="removeModule(this)">删除</button></div></div>`);closeModal();toast('页面模块已添加')})}
-function removeModule(btn){btn.closest('.module-item').remove();toast('模块已移除')}
-function addTab(){let n=document.querySelectorAll('#tabs-list .module-item').length+1;document.getElementById('tabs-list').insertAdjacentHTML('beforeend',`<div class="module-item"><div class="meta"><span class="module-icon">T</span><div><b>新 Tab ${n}</b><small>尚未关联页面模块</small></div></div><div class="right"><span class="pill">Tab ${n}</span><button class="text small" onclick="this.closest('.module-item').remove()">删除</button></div></div>`);toast('Tab 已添加')}
-function addRegion(){document.getElementById('skin-region').insertAdjacentHTML('afterbegin',`<div class="region-row"><div><b>新增区域</b><small class="muted" style="display:block">尚未选择国家及皮肤</small></div><div class="right"><button class="small" onclick="toast('区域皮肤编辑')">编辑</button><button class="text" onclick="this.closest('.region-row').remove()">删除</button></div></div>`)}
-document.querySelectorAll('[data-skin]').forEach(x=>x.addEventListener('click',()=>{document.querySelectorAll('[data-skin]').forEach(t=>t.classList.toggle('active',t===x));document.getElementById('skin-default').classList.toggle('hidden',x.dataset.skin!=='default');document.getElementById('skin-region').classList.toggle('hidden',x.dataset.skin!=='region')}));
-function refreshPreview(){let title=document.getElementById('p-title').value||document.getElementById('a-name').value||'活动主标题';document.getElementById('preview-title').textContent=title;toast('H5 预览已刷新')}
+function setValue(id,value){$(id).value=value==null?'':value}
+function setChecked(name,values){
+ const set=new Set(values||[]);
+ document.querySelectorAll('input[name="'+name+'"]').forEach(function(x){x.checked=set.has(x.value)});
+}
+function checkedValues(name){
+ return Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(function(x){return x.value});
+}
+function openEditor(id){
+ editingId=id||null;
+ const activity=id?activities.find(function(a){return Number(a.id)===Number(id)}):null;
+ editorConfig=normalizeConfig(activity&&activity.config);
+ $('editor-title').textContent=activity?'编辑商城活动':'新建商城活动';
+ $('editor-id').textContent=activity?'活动 ID：'+activity.id:'未保存';
+ setValue('a-name',activity&&activity.name);
+ setValue('a-type',activity&&activity.type||'综合活动');
+ setValue('a-sort',activity&&activity.sort!=null?activity.sort:0);
+ setValue('a-note',activity&&activity.note);
+ setValue('a-preheat',activity&&activity.preheat?String(activity.preheat).replace(' ','T'):'');
+ setValue('a-start',activity&&activity.start?String(activity.start).replace(' ','T'):'2026-11-25T00:00');
+ setValue('a-end',activity&&activity.end?String(activity.end).replace(' ','T'):'2026-12-01T23:59');
+ setValue('a-zone',activity&&activity.timezone||'UTC+8');
+ setValue('a-region',activity&&activity.region||'全部重要地区');
+ const apps=activity&&activity.apps?activity.apps:String(activity&&activity.app||'poppo').split(/[、,，]/).map(function(x){return x.trim()});
+ const clients=activity&&activity.clients?activity.clients:['iOS','Android'];
+ setChecked('app',apps);
+ setChecked('client',clients);
+ setValue('hero-image-key',editorConfig.hero.imageKey);
+ setValue('hero-click-type',editorConfig.hero.clickType||'none');
+ setValue('hero-target',editorConfig.hero.target);
+ setValue('skin-bg-color',editorConfig.skin.bgColor||'#321b78');
+ setValue('skin-bg-image',editorConfig.skin.bgImageKey);
+ setValue('skin-card-style',editorConfig.skin.cardStyle||'rounded');
+ setValue('skin-tab-style',editorConfig.skin.tabStyle||'underline');
+ setValue('skin-decoration',editorConfig.skin.decorationKey);
+ setValue('rules-key',editorConfig.rulesKey);
+ setValue('share-enabled',editorConfig.share.enabled===false?'no':'yes');
+ setValue('share-image-key',editorConfig.share.imageKey);
+ setValue('share-title-key',editorConfig.share.titleKey);
+ setValue('share-desc-key',editorConfig.share.descKey);
+ setValue('a-publish',activity&&activity.online==='上架'?'online':'draft');
+ setValue('a-url',activity&&activity.url||'');
+ $('auto-close-entry').checked=editorConfig.publish.autoCloseEntry!==false;
+ $('auto-hide-page').checked=editorConfig.publish.autoHidePage!==false;
+ $('auto-offline-products').checked=!!editorConfig.publish.autoOfflineProducts;
+ renderTabsAndModules();
+ renderRegionSkins();
+ toggleHeroTarget();
+ renderPreview();
+ showPage('editor');
+}
+function syncEditorConfig(){
+ editorConfig.hero={imageKey:$('hero-image-key').value.trim(),clickType:$('hero-click-type').value,target:$('hero-target').value.trim()};
+ editorConfig.skin={
+  bgColor:$('skin-bg-color').value,
+  bgImageKey:$('skin-bg-image').value.trim(),
+  cardStyle:$('skin-card-style').value,
+  tabStyle:$('skin-tab-style').value,
+  decorationKey:$('skin-decoration').value.trim(),
+  regions:editorConfig.skin.regions||[]
+ };
+ editorConfig.rulesKey=$('rules-key').value.trim();
+ editorConfig.share={enabled:$('share-enabled').value==='yes',imageKey:$('share-image-key').value.trim(),titleKey:$('share-title-key').value.trim(),descKey:$('share-desc-key').value.trim()};
+ editorConfig.publish={autoCloseEntry:$('auto-close-entry').checked,autoHidePage:$('auto-hide-page').checked,autoOfflineProducts:$('auto-offline-products').checked};
+}
+function toggleHeroTarget(){
+ const type=$('hero-click-type').value,wrap=$('hero-target-wrap');
+ wrap.classList.toggle('is-disabled',type==='none');
+ $('hero-target').disabled=type==='none';
+ $('hero-target').placeholder=type==='none'?'无需填写':type==='url'?'请输入完整 URL':'请输入对应活动 ID / 商品 ID / 分类 ID';
+}
+function renderTabsAndModules(){
+ const tabs=editorConfig.tabs||[];
+ if(!tabs.length){
+  $('builder-tabs').innerHTML='<div class="tab-empty">当前为单页面结构。无需配置 Tab，页面内容将直接按下方模块顺序展示。</div>';
+  $('builder-content').innerHTML='<div class="module-scope"><div class="module-scope-hd"><div><strong>单页面内容</strong><small>模块按添加顺序从上到下展示</small></div><button class="primary small" onclick="openModuleEditor(\'page\')">＋ 添加内容模块</button></div>'+moduleListHTML(editorConfig.modules,'page')+'</div>';
+  return;
+ }
+ $('builder-tabs').innerHTML=tabs.map(function(tab,index){
+  return '<div class="tab-config-row"><div class="tab-config-main"><span class="tab-index">'+(index+1)+'</span><input type="text" value="'+esc(tab.name)+'" placeholder="请输入 Tab 名称" onchange="updateTabName(\''+esc(tab.id)+'\',this.value)"><label class="tab-default"><input type="radio" name="default-tab" '+(tab.isDefault?'checked':'')+' onclick="setDefaultTab(\''+esc(tab.id)+'\')"> 默认展示</label></div><div class="right"><button class="small" onclick="moveTab(\''+esc(tab.id)+'\',-1)">↑</button><button class="small" onclick="moveTab(\''+esc(tab.id)+'\',1)">↓</button><button class="text small" onclick="deleteTab(\''+esc(tab.id)+'\')">删除</button></div></div>';
+ }).join('');
+ $('builder-content').innerHTML=tabs.map(function(tab,index){
+  return '<div class="module-scope"><div class="module-scope-hd"><div><strong>'+esc(tab.name||('Tab '+(index+1)))+'</strong><small>此 Tab 下的内容模块，按添加顺序展示</small></div><button class="primary small" onclick="openModuleEditor(\''+esc(tab.id)+'\')">＋ 添加模块</button></div>'+moduleListHTML(tab.modules||[],tab.id)+'</div>';
+ }).join('');
+}
+function moduleTypeName(type){return {product:'商品模块',ranking:'榜单模块',jump:'活动跳转模块',rich:'图文内容模块'}[type]||'页面模块'}
+function moduleSummary(m){
+ if(m.type==='product'){
+  const layouts={single:'单品促销',grid:'商品列表',carousel:'横向轮播',bundle:'促销套装'};
+  return (layouts[m.layout]||'商品展示')+' · 商品 ID：'+((m.productIds||[]).join('、')||'待关联')+' · 促销 ID：'+(m.promotionId||'未关联');
+ }
+ if(m.type==='ranking')return (m.rankingId||'未关联榜单')+' · '+(m.displayMode==='embed'?'页面内嵌榜单':'榜单入口卡片');
+ if(m.type==='jump')return (m.targetType||'跳转目标')+'：'+(m.targetValue||'待配置');
+ return (m.displayMode||'图文内容')+' · 内容 Key：'+(m.contentKey||'待配置');
+}
+function moduleListHTML(modules,scope){
+ if(!modules||!modules.length)return '<div class="module-empty">暂无内容模块，点击「添加模块」开始配置。</div>';
+ return '<div class="module-list">'+modules.map(function(m,index){
+  return '<div class="module-item"><div class="meta"><span class="module-icon">'+({product:'▦',ranking:'♛',jump:'↗',rich:'▤'}[m.type]||'＋')+'</span><div><b>'+esc(m.title||moduleTypeName(m.type))+'</b><small><span class="module-kind">'+moduleTypeName(m.type)+'</span>　'+esc(moduleSummary(m))+'</small></div></div><div class="module-actions"><button class="small" onclick="moveModule(\''+esc(scope)+'\',\''+esc(m.id)+'\',-1)">↑</button><button class="small" onclick="moveModule(\''+esc(scope)+'\',\''+esc(m.id)+'\',1)">↓</button><button class="small" onclick="openModuleEditor(\''+esc(scope)+'\',\''+esc(m.id)+'\')">编辑</button><button class="text small" onclick="deleteModule(\''+esc(scope)+'\',\''+esc(m.id)+'\')">删除</button></div></div>';
+ }).join('')+'</div>';
+}
+function addTab(){
+ if(!editorConfig.tabs.length){
+  const first={id:'tab_'+Date.now(),name:'Tab 1',isDefault:true,modules:editorConfig.modules||[]};
+  editorConfig.modules=[];
+  editorConfig.tabs.push(first);
+ }else{
+  editorConfig.tabs.push({id:'tab_'+Date.now(),name:'Tab '+(editorConfig.tabs.length+1),isDefault:false,modules:[]});
+ }
+ renderTabsAndModules();renderPreview();toast('Tab 已添加');
+}
+function updateTabName(id,name){
+ const tab=editorConfig.tabs.find(function(x){return x.id===id});if(tab){tab.name=name;renderTabsAndModules();renderPreview()}
+}
+function setDefaultTab(id){
+ editorConfig.tabs.forEach(function(tab){tab.isDefault=tab.id===id});
+ renderTabsAndModules();renderPreview();
+}
+function moveTab(id,direction){
+ const index=editorConfig.tabs.findIndex(function(x){return x.id===id}),next=index+direction;
+ if(index<0||next<0||next>=editorConfig.tabs.length)return;
+ const item=editorConfig.tabs.splice(index,1)[0];editorConfig.tabs.splice(next,0,item);
+ renderTabsAndModules();renderPreview();
+}
+function deleteTab(id){
+ const index=editorConfig.tabs.findIndex(function(x){return x.id===id});if(index<0)return;
+ const removed=editorConfig.tabs.splice(index,1)[0];
+ if(!editorConfig.tabs.length)editorConfig.modules=removed.modules||[];
+ else if(removed.isDefault)editorConfig.tabs[0].isDefault=true;
+ renderTabsAndModules();renderPreview();toast('Tab 已删除');
+}
+function getModuleArray(scope){
+ if(scope==='page')return editorConfig.modules;
+ const tab=editorConfig.tabs.find(function(x){return x.id===scope});
+ if(!tab)return [];
+ if(!Array.isArray(tab.modules))tab.modules=[];
+ return tab.modules;
+}
+function addRegion(){
+ editorConfig.skin.regions.push({region:'',bgColor:'#321b78',bgImageKey:''});
+ renderRegionSkins();
+}
+function renderRegionSkins(){
+ const rows=editorConfig.skin.regions||[];
+ $('region-skins').innerHTML=rows.map(function(r,index){
+  return '<div class="region-skin-row"><div><label>适用国家 / 地区</label><input value="'+esc(r.region)+'" placeholder="例如 印度、巴基斯坦" oninput="updateRegion('+index+',\'region\',this.value)"></div><div><label>背景色</label><input type="color" value="'+esc(r.bgColor||'#321b78')+'" onchange="updateRegion('+index+',\'bgColor\',this.value)"></div><div><label>背景图 Key</label><input value="'+esc(r.bgImageKey)+'" placeholder="可选" oninput="updateRegion('+index+',\'bgImageKey\',this.value)"></div><div><label>&nbsp;</label><button class="text small" onclick="removeRegion('+index+')">删除</button></div></div>';
+ }).join('')||'<div class="module-empty">暂无区域皮肤定制，默认皮肤将应用于全部国家。</div>';
+}
+function updateRegion(index,key,value){if(editorConfig.skin.regions[index])editorConfig.skin.regions[index][key]=value}
+function removeRegion(index){editorConfig.skin.regions.splice(index,1);renderRegionSkins()}
+function openModuleEditor(scope,id){
+ moduleScope=scope;moduleEditingId=id||null;
+ const arr=getModuleArray(scope),existing=id?arr.find(function(x){return x.id===id}):null;
+ moduleDraft=existing?clone(existing):{id:'module_'+Date.now(),type:'product',title:'',layout:'grid',productIds:[],promotionId:'',buttonText:'Buy Now',clickBehavior:'detail'};
+ const body='<div class="control"><label class="required">模块类型</label><select id="module-type" onchange="renderModuleModalFields()"><option value="product">商品模块</option><option value="ranking">榜单模块</option><option value="jump">活动跳转模块</option><option value="rich">图文内容模块</option></select></div><div id="module-fields" style="margin-top:15px"></div>';
+ openModal(id?'编辑页面模块':'添加页面模块',body,saveModuleFromModal,true);
+ $('module-type').value=moduleDraft.type||'product';
+ renderModuleModalFields();
+}
+function fieldOption(value,label,current){return '<option value="'+esc(value)+'" '+(value===current?'selected':'')+'>'+esc(label)+'</option>'}
+function renderModuleModalFields(){
+ const type=$('module-type').value;
+ if(!moduleDraft)moduleDraft={};
+ moduleDraft.type=type;
+ let body='';
+ if(type==='product'){
+  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title)+'" placeholder="例如 Featured Halloween Set"></div><div class="control"><label class="required">展示类型</label><select id="m-layout">'+fieldOption('single','单品促销',moduleDraft.layout)+fieldOption('grid','商品列表',moduleDraft.layout)+fieldOption('carousel','横向轮播',moduleDraft.layout)+fieldOption('bundle','促销套装',moduleDraft.layout)+'</select></div><div class="control"><label>关联促销配置 ID</label><input id="m-promotion" value="'+esc(moduleDraft.promotionId)+'" placeholder="可选，关联现有促销 ID"></div><div class="control full"><label class="required">关联商品 ID</label><input id="m-products" value="'+esc((moduleDraft.productIds||[]).join(', '))+'" placeholder="多个商品 ID 用逗号分隔，例如 1386, 1385"></div><div class="control"><label>按钮文案</label><input id="m-button" value="'+esc(moduleDraft.buttonText||'Buy Now')+'" placeholder="Buy Now"></div><div class="control"><label>点击行为</label><select id="m-click">'+fieldOption('detail','跳转商品详情页',moduleDraft.clickBehavior||'detail')+fieldOption('buy','直接购买',moduleDraft.clickBehavior)+fieldOption('custom','自定义跳转',moduleDraft.clickBehavior)+'</select></div></div><div class="hint">商品名称、图片、价格、支付方式及商品属性均由商品管理读取；促销规则由现有促销系统负责。真正的组合购买需商品系统支持套装商品。</div>';
+ }else if(type==='ranking'){
+  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title||'活动排行榜')+'"></div><div class="control"><label class="required">关联商城榜单</label><select id="m-ranking">'+fieldOption('R-007','R-007 · 7日金币消费榜',moduleDraft.rankingId)+fieldOption('R-008','R-008 · 7日荣誉券消费榜',moduleDraft.rankingId)+fieldOption('R-009','R-009 · 7日赠送榜',moduleDraft.rankingId)+fieldOption('R-021','R-021 · 7日金币充值榜（需确认接入）',moduleDraft.rankingId)+'</select></div><div class="control"><label>展示方式</label><select id="m-display">'+fieldOption('entry','榜单入口卡片',moduleDraft.displayMode||'entry')+fieldOption('embed','页面内嵌榜单',moduleDraft.displayMode)+'</select></div><div class="control"><label>入口图片 Key</label><input id="m-image" value="'+esc(moduleDraft.imageKey)+'" placeholder="可选"></div><div class="control"><label>默认榜单类型</label><select id="m-ranking-default">'+fieldOption('coin','金币',moduleDraft.defaultType||'coin')+fieldOption('voucher','荣誉券',moduleDraft.defaultType)+'</select></div></div><div class="hint">榜单数据、排名、用户信息、倒计时及奖励规则由商城现有榜单系统提供；此处仅配置关联和展示方式。榜单 ID 列表为原型示例，正式接入时读取真实榜单。</div>';
+ }else if(type==='jump'){
+  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title)+'" placeholder="例如 Explore More Halloween Events"></div><div class="control"><label>入口图片 Key</label><input id="m-image" value="'+esc(moduleDraft.imageKey)+'" placeholder="请输入图片 Key"></div><div class="control"><label>按钮文案</label><input id="m-button" value="'+esc(moduleDraft.buttonText||'Explore Now')+'"></div><div class="control"><label>跳转类型</label><select id="m-target-type">'+fieldOption('activity','活动页面',moduleDraft.targetType||'activity')+fieldOption('product','商品详情页',moduleDraft.targetType)+fieldOption('category','商城分类',moduleDraft.targetType)+fieldOption('url','指定 URL',moduleDraft.targetType)+'</select></div><div class="control"><label class="required">跳转目标</label><input id="m-target-value" value="'+esc(moduleDraft.targetValue)+'" placeholder="填写活动 ID / 商品 ID / 分类 ID / URL"></div><div class="control full"><label>描述文案 Key</label><input id="m-desc-key" value="'+esc(moduleDraft.descKey)+'" placeholder="可选，多语言 Key"></div></div>';
+ }else{
+  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title)+'" placeholder="请输入模块标题"></div><div class="control"><label>内容展示形式</label><select id="m-display">'+fieldOption('image','图片',moduleDraft.displayMode||'image')+fieldOption('text','纯文本',moduleDraft.displayMode)+fieldOption('imageText','图文组合',moduleDraft.displayMode)+'</select></div><div class="control"><label>图片 Key</label><input id="m-image" value="'+esc(moduleDraft.imageKey)+'" placeholder="可选"></div><div class="control full"><label>正文内容 Key</label><input id="m-content-key" value="'+esc(moduleDraft.contentKey)+'" placeholder="请输入多语言 Key"></div></div><div class="hint">可用于活动规则、奖励说明、注意事项及宣传图文。</div>';
+ }
+ $('module-fields').innerHTML=body;
+}
+function saveModuleFromModal(){
+ const type=$('module-type').value,title=$('m-title')?$('m-title').value.trim():'';
+ if(!title){toast('请填写模块标题');return}
+ const next=Object.assign({},moduleDraft,{type:type,title:title});
+ if(type==='product'){
+  const ids=$('m-products').value.split(/[,，\s]+/).map(function(x){return x.trim()}).filter(Boolean);
+  if(!ids.length){toast('请至少关联一个商品 ID');return}
+  next.layout=$('m-layout').value;next.productIds=ids;next.promotionId=$('m-promotion').value.trim();next.buttonText=$('m-button').value.trim();next.clickBehavior=$('m-click').value;
+ }else if(type==='ranking'){
+  next.rankingId=$('m-ranking').value;next.displayMode=$('m-display').value;next.imageKey=$('m-image').value.trim();next.defaultType=$('m-ranking-default').value;
+ }else if(type==='jump'){
+  next.imageKey=$('m-image').value.trim();next.buttonText=$('m-button').value.trim();next.targetType=$('m-target-type').value;next.targetValue=$('m-target-value').value.trim();next.descKey=$('m-desc-key').value.trim();
+  if(!next.targetValue){toast('请填写跳转目标');return}
+ }else{
+  next.displayMode=$('m-display').value;next.imageKey=$('m-image').value.trim();next.contentKey=$('m-content-key').value.trim();
+ }
+ const arr=getModuleArray(moduleScope);
+ if(moduleEditingId){
+  const index=arr.findIndex(function(x){return x.id===moduleEditingId});if(index>=0)arr[index]=next;
+ }else arr.push(next);
+ renderTabsAndModules();renderPreview();closeModal();toast('页面模块已保存');
+}
+function moveModule(scope,id,direction){
+ const arr=getModuleArray(scope),index=arr.findIndex(function(x){return x.id===id}),next=index+direction;
+ if(index<0||next<0||next>=arr.length)return;
+ const item=arr.splice(index,1)[0];arr.splice(next,0,item);
+ renderTabsAndModules();renderPreview();
+}
+function deleteModule(scope,id){
+ const arr=getModuleArray(scope),index=arr.findIndex(function(x){return x.id===id});
+ if(index>=0)arr.splice(index,1);
+ renderTabsAndModules();renderPreview();toast('模块已删除');
+}
+function renderPreviewModule(m){
+ let title=esc(m.title||moduleTypeName(m.type)),body='';
+ if(m.type==='product'){
+  const labels={single:'单品促销',grid:'商品列表',carousel:'横向轮播',bundle:'促销套装'};
+  const ids=m.productIds||[];
+  body='<p>'+esc(labels[m.layout]||'商品展示')+' · '+ids.length+' 个关联商品</p><div class="preview-product-row">'+(ids.slice(0,3).map(function(id){return '<div class="preview-product-item">商品 '+esc(id)+'</div>'}).join('')||'<div class="preview-product-item">待关联商品</div>')+'</div>'+(m.promotionId?'<p>促销配置：'+esc(m.promotionId)+'</p>':'')+'<span class="preview-cta">'+esc(m.buttonText||'Buy Now')+'</span>';
+ }else if(m.type==='ranking'){
+  body='<p>关联榜单：'+esc(m.rankingId||'待关联')+' · '+(m.displayMode==='embed'?'页面内嵌':'入口卡片')+'</p><div class="preview-rank-row"><span>1　User A</span><b>120,000</b></div><div class="preview-rank-row"><span>2　User B</span><b>98,000</b></div><div class="preview-rank-row"><span>3　User C</span><b>76,000</b></div>';
+ }else if(m.type==='jump'){
+  body='<p>跳转：'+esc(m.targetType)+' · '+esc(m.targetValue)+'</p><span class="preview-cta">'+esc(m.buttonText||'Explore Now')+'</span>';
+ }else{
+  body='<p>展示形式：'+esc(m.displayMode||'图片')+'</p><p>图片 Key：'+esc(m.imageKey||'未配置')+'</p><p>内容 Key：'+esc(m.contentKey||'未配置')+'</p>';
+ }
+ return '<div class="preview-block"><h4>'+title+'</h4>'+body+'</div>';
+}
+function renderPreview(){
+ if(!$('phone-screen'))return;
+ const name=$('a-name').value.trim()||'活动名称';
+ const imageKey=$('hero-image-key').value.trim()||'未配置头图 Key';
+ const bg=$('skin-bg-color').value||'#321b78';
+ const tabs=editorConfig?editorConfig.tabs:[];
+ let body='<div class="preview-hero" style="background:linear-gradient(135deg,'+esc(bg)+',#7653bd)"><small>商城活动 · 顶部头图</small><h3>'+esc(name)+'</h3><div class="preview-key">头图资源：'+esc(imageKey)+'</div></div>';
+ if(tabs&&tabs.length){
+  const active=tabs.find(function(t){return t.isDefault})||tabs[0];
+  body+='<div class="preview-tabs">'+tabs.map(function(t){return '<span class="'+(t.id===active.id?'selected':'')+'">'+esc(t.name)+'</span>'}).join('')+'</div>';
+  (active.modules||[]).forEach(function(m){body+=renderPreviewModule(m)});
+  if(!(active.modules||[]).length)body+='<div class="preview-block"><p>当前 Tab 暂无内容模块</p></div>';
+ }else{
+  (editorConfig&&editorConfig.modules||[]).forEach(function(m){body+=renderPreviewModule(m)});
+  if(!(editorConfig&&editorConfig.modules||[]).length)body+='<div class="preview-block"><p>尚未添加页面内容模块</p></div>';
+ }
+ if($('skin-decoration').value.trim())body+='<div class="preview-key-note" style="padding:8px 12px">装饰资源：'+esc($('skin-decoration').value.trim())+'</div>';
+ $('phone-screen').style.background=bg;
+ $('phone-screen').innerHTML=body;
+}
+function refreshPreview(){renderPreview();toast('页面预览已刷新')}
+function collectEditorConfig(){
+ syncEditorConfig();
+ return clone(editorConfig);
+}
+function saveActivity(publish){
+ const name=$('a-name').value.trim(),start=$('a-start').value.replace('T',' '),end=$('a-end').value.replace('T',' '),preheat=$('a-preheat').value.replace('T',' ');
+ if(!name){toast('请填写活动名称');$('a-name').focus();return}
+ if(!start||!end){toast('请填写活动开始及结束时间');return}
+ if(new Date(start.replace(' ','T'))>new Date(end.replace(' ','T'))){toast('活动结束时间不能早于开始时间');return}
+ const config=collectEditorConfig();
+ const moduleCount=config.tabs.length?config.tabs.reduce(function(n,t){return n+(t.modules||[]).length},0):config.modules.length;
+ if(publish&&!config.hero.imageKey){toast('发布前请配置顶部头图 Key');return}
+ if(publish&&!moduleCount){toast('发布前请至少添加一个页面内容模块');return}
+ let activity=editingId?activities.find(function(x){return Number(x.id)===Number(editingId)}):null;
+ const isNew=!activity;
+ if(!activity){
+  activity={id:Math.max(1600,...activities.map(function(x){return Number(x.id)||0})) + 1};
+  activities.unshift(activity);
+ }
+ const apps=checkedValues('app'),clients=checkedValues('client');
+ Object.assign(activity,{
+  name:name,type:$('a-type').value,sort:Number($('a-sort').value)||0,note:$('a-note').value.trim(),
+  preheat:preheat,start:start,end:end,timezone:$('a-zone').value,region:$('a-region').value.trim()||'全部重要地区',
+  apps:apps,clients:clients,app:apps.join('、'),online:publish?'上架':'下架',
+  status:getActivityStatus(start,end,preheat),updated:formatNow(),config:config,
+  url:activity.url||''
+ });
+ persist();
+ recordOperation(activity,isNew?'创建':(publish?'发布':'编辑'),isNew?'创建商城活动':(publish?'保存并发布活动':'保存活动配置'));
+ toast(publish?'活动已保存并发布':'活动草稿已保存');
+ showPage('list');
+}
+function copyActivity(id){
+ const original=activities.find(function(x){return Number(x.id)===Number(id)});if(!original)return;
+ const copy=clone(original);copy.id=Math.max(1600,...activities.map(function(x){return Number(x.id)||0}))+1;
+ copy.name=original.name+'（副本）';copy.online='下架';copy.updated=formatNow();
+ activities.unshift(copy);persist();recordOperation(copy,'复制','复制活动生成副本');renderTable();toast('已复制活动，请编辑副本配置');
+}
+function toggleOnline(id){
+ const activity=activities.find(function(x){return Number(x.id)===Number(id)});if(!activity)return;
+ activity.online=activity.online==='上架'?'下架':'上架';activity.updated=formatNow();
+ persist();recordOperation(activity,activity.online,activity.online==='上架'?'活动上架':'活动下架');renderTable();toast('活动已'+activity.online);
+}
+$('page-editor').addEventListener('input',function(){renderPreview()});
+$('page-editor').addEventListener('change',function(){renderPreview()});
 renderTable();
 </script></body></html>
