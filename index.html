@@ -654,7 +654,7 @@ function normalizedModule(item){
   if(!Array.isArray(m.jumpRules))m.jumpRules=m.targetValue?[{start:'',end:'',type:m.targetType||'activity',target:m.targetValue}]:[];
  }
  if(m.type==='ranking'){
-  m.rankingType=m.rankingType|| (m.defaultType==='voucher'?'voucher':'coin');
+  m.rankingType=m.rankingType|| (m.defaultType==='voucher'||(m.entryCondition&&m.entryCondition.metric==='voucher')?'voucher':'coin');
   m.displayMode=m.displayMode||'entry';
   m.entryCondition=m.entryCondition||{threshold:'',start:'',end:''};
   if(m.entryCondition.metric&& !m.rankingType)m.rankingType=m.entryCondition.metric==='voucher'?'voucher':'coin';
@@ -663,7 +663,7 @@ function normalizedModule(item){
   m.rewardRules=Array.isArray(m.rewardRules)?m.rewardRules:[];
   m.bottomImageKey=m.bottomImageKey||'';
  }
- if(m.type==='rank_reward')m.grantMode='auto';
+ if(m.type==='rank_reward'){m.grantMode='auto';m.rankingModuleId=m.rankingModuleId||'';}
  if(m.enabled===undefined)m.enabled=true;
  return m;
 }
@@ -677,7 +677,7 @@ function moduleSummary(raw){
   const typeName={coin:'金币榜',voucher:'荣誉券榜',activity:'活动榜'}[m.rankingType]||'未设置类型';
   return typeName+' · 入榜门槛：'+(m.entryCondition&&m.entryCondition.threshold||'待配置')+' · 奖励规则：'+(m.rewardRules||[]).length+' 条'+suffix;
  }
- if(m.type==='rank_reward')return '奖励展示：'+(m.rankingModuleId||'待关联本页面榜单')+' · 结算后自动下发'+suffix;
+ if(m.type==='rank_reward'){const linked=findRankingModule(m.rankingModuleId);return '奖励展示：'+(linked?linked.title:'待关联本页面榜单')+' · 按奖励条件自动下发'+suffix;}
  return '待配置';
 }
 function moduleListHTML(modules,scope){
@@ -751,7 +751,7 @@ function openModuleEditor(scope,id){
  moduleScope=scope;moduleEditingId=id||null;
  const arr=getModuleArray(scope),existing=id?arr.find(function(x){return x.id===id}):null;
  moduleDraft=existing?normalizedModule(existing):{id:'module_'+Date.now()+'_'+Math.floor(Math.random()*999),type:'promo',title:'',enabled:true,productIds:[],headingKey:'',cardFrameImageKey:'',badgeTextKey:'',badgeIconKey:'',badgeBackgroundImageKey:'',bundleProductId:'',buttonStyle:'gold-gradient',buttonIconKey:'',buttonFrameImageKey:'',buttonTextKey:'',jumpRules:[],rankingType:'coin',displayMode:'entry',imageKey:'',bottomImageKey:'',entryCondition:{threshold:'',start:'',end:''},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[]};
- if(moduleDraft.type==='rank_reward'&&!moduleDraft.rankingModuleId){const firstRanking=getModuleArray(scope).find(function(x){return x.type==='ranking'});if(firstRanking)moduleDraft.rankingModuleId=firstRanking.id;}
+ if(moduleDraft.type==='rank_reward'&&!moduleDraft.rankingModuleId){const scopedRankings=getModuleArray(scope).filter(function(x){return x.type==='ranking'});const legacyMatch=scopedRankings.find(function(x){return x.rankingId&&x.rankingId===moduleDraft.rankingId});const firstRanking=legacyMatch||scopedRankings[0];if(firstRanking)moduleDraft.rankingModuleId=firstRanking.id;}
  const body='<div class="control"><label class="required">业务模块类型</label><select id="module-type" onchange="renderModuleModalFields()">'+
   fieldOption('promo','① 促销商品',moduleDraft.type)+fieldOption('bundle','② 促销套装',moduleDraft.type)+
   fieldOption('jump','③ 活动跳转卡片',moduleDraft.type)+fieldOption('ranking','④ 榜单展示',moduleDraft.type)+fieldOption('rank_reward','⑤ 榜单奖励',moduleDraft.type)+'</select></div><div id="module-fields" style="margin-top:15px"></div>';
@@ -793,7 +793,7 @@ function renderRankingRewardRuleRow(rule,index){
   '<div class="control"><label>奖励类型</label><select id="m-reward-type-'+index+'" onchange="updateRankingRewardRule('+index+',\'rewardType\',this.value)">'+rewardOptions.map(function(x){return fieldOption(x[0],x[1],rewardType)}).join('')+'</select></div>'+
   (rewardType==='product'?'<div class="control"><label class="required">奖励商品 ID</label><input id="m-reward-product-'+index+'" value="'+esc(rule.productId||'')+'" placeholder="填写商品管理中的商品 ID" oninput="moduleDraft.rewardRules['+index+'].productId=this.value"></div>':'')+
   '<div class="control"><label class="required">奖励数量</label><input id="m-reward-quantity-'+index+'" type="number" min="1" value="'+esc(rule.quantity||'')+'" placeholder="例如 1 或 5000" oninput="moduleDraft.rewardRules['+index+'].quantity=this.value"></div>'+
-  '</div><div class="hint">奖励在对应条件达成后自动发放；商品奖励填写商品 ID 和数量，金币 / 荣誉券奖励填写对应数量。</div></div>';
+  '</div><div class="hint">奖励按所配置条件自动下发；排名区间奖励在榜单结算后下发。商品奖励填写商品 ID 和数量，金币 / 荣誉券奖励填写对应数量。</div></div>';
 }
 function updateRankingRewardRule(index,key,value){
  captureModuleFields();
@@ -887,7 +887,7 @@ function renderModuleModalFields(){
    mfSelect('m-ranking-module','关联本页面榜单配置',opts,m.rankingModuleId||'')+
    mfInput('m-reward-image','奖励展示图片 Key',m.rewardImageKey||'','配置榜单奖励展示区域图片')+
    mfInput('m-reward-title','奖励标题多语言 Key',m.rewardTitleKey||'','可选')+
-   '</div><div class="hint">奖励条件及奖励内容统一在对应的「榜单展示」模块中配置，这里只负责奖励区域的展示。榜单结算后由服务端按奖励规则自动下发，无需用户手动领取。</div>';
+   '</div><div class="hint">奖励条件及奖励内容统一在对应的「榜单展示」模块中配置，这里只负责奖励区域的展示。按对应奖励条件由服务端自动下发；排名区间奖励在榜单结算后下发，无需用户手动领取。</div>';
  }
  $('module-fields').innerHTML=common+fields;
 }
@@ -1226,7 +1226,7 @@ function renderPreviewModule(raw){
    const reward=rule.rewardType==='product'?'商品 '+esc(rule.productId)+' × '+esc(rule.quantity):rule.rewardType==='voucher'?'荣誉券 × '+esc(rule.quantity):'金币 × '+esc(rule.quantity);
    return '<div class="preview-rank-row"><span>'+condition+'</span><b>'+reward+'</b></div>';
   }).join('')||'<p>请先在榜单展示模块配置奖励规则</p>';
-  body+='<p>榜单结算后自动下发 · 无需手动领取</p>';
+  body+='<p>按奖励条件自动下发 · 无需手动领取</p>';
   }
  return '<div class="preview-block"><h4>'+title+'</h4>'+body+'</div>';
 }
