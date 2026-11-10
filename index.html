@@ -568,7 +568,7 @@ function moduleTypeName(type){return {promo:'促销商品',bundle:'促销套装'
 function moduleSummary(raw){
  const m=normalizedModule(raw),suffix=m.enabled===false?' · 已隐藏':'';
  if(m.type==='promo')return '商品 ID：'+((m.productIds||[]).join('、')||'待关联')+' · 促销 ID：'+(m.promotionId||'待关联')+suffix;
- if(m.type==='bundle')return '套装商品 ID：'+(m.bundleProductId||'待关联')+' · 促销 ID：'+(m.promotionId||'未关联')+suffix;
+ if(m.type==='bundle')return '套装商品 ID：'+(m.bundleProductId||'待关联')+(m.promotionId?' · 附加优惠：'+m.promotionId:'')+suffix;
  if(m.type==='jump')return (m.jumpRules||[]).length+' 个分时段跳转规则 · Banner：'+(m.bannerKey||'未配置')+suffix;
  if(m.type==='ranking')return '榜单：'+(m.rankingId||'待关联')+' · 上榜门槛：'+(m.entryCondition&&m.entryCondition.threshold||'待配置')+' · 入榜奖励：'+(m.entryReward&&m.entryReward.enabled?'已启用':'未启用')+suffix;
  if(m.type==='rank_reward')return '榜单：'+(m.rankingId||'待关联')+' · 奖励配置：'+(m.rewardConfigId||'待关联')+' · 结算后自动下发'+suffix;
