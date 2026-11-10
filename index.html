@@ -13,6 +13,10 @@
 .subsection-title{display:flex;align-items:center;justify-content:space-between;font-weight:650;margin:3px 0 13px;color:#465365}
 .builder-section .hint,.hint{font-size:11px;color:#98a3b1;line-height:1.6;margin-top:5px}
 .tab-empty,.module-empty{padding:17px 15px;border:1px dashed #dbe3ec;border-radius:5px;background:#fafcff;color:#929eac;font-size:12px}
+.page-mode-switch{display:flex;align-items:center;gap:3px;padding:3px;border:1px solid #e3eaf2;border-radius:6px;background:#f5f7fa}
+.page-mode-switch button{border:0;background:transparent;color:#778496;padding:6px 12px;border-radius:4px;font-size:12px;cursor:pointer}
+.page-mode-switch button.active{background:#fff;color:var(--blue);font-weight:650;box-shadow:0 1px 4px rgba(30,55,85,.12)}
+.page-mode-hint{margin:-7px 0 14px}
 .tab-config-card{border:1px solid #e3eaf2;border-radius:6px;padding:15px;margin-bottom:14px;background:#fff}
 .tab-config-card-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:13px;border-bottom:1px solid #eef1f5}
 .tab-heading{display:flex;align-items:center;gap:11px;min-width:0;flex:1}
@@ -199,17 +203,23 @@
   </div>
 
   <div class="section builder-section" id="tabs-section">
-    <div class="section-title"><span>04 Tab 导航与内容配置</span><div class="right"><span class="section-note">每个 Tab 独立配置多语言、选中/未选中样式及对应内容</span><button class="small" onclick="addTab()">＋ 新增 Tab</button></div></div>
+    <div class="section-title">
+      <span>04 页面内容</span>
+      <div class="right">
+        <div class="page-mode-switch" role="group" aria-label="页面结构">
+          <button type="button" id="page-mode-single" class="active" onclick="setPageMode('single')" aria-pressed="true">单页面</button>
+          <button type="button" id="page-mode-tabs" onclick="setPageMode('tabs')" aria-pressed="false">多 Tab</button>
+        </div>
+        <button type="button" class="small hidden" id="add-tab-btn" onclick="addTab()">＋ 新增 Tab</button>
+      </div>
+    </div>
+    <div class="hint page-mode-hint">单页面直接配置内容模块；多 Tab 可为每个 Tab 独立配置内容模块。</div>
     <div id="builder-tabs"></div>
-  </div>
-
-  <div class="section builder-section" id="modules-section">
-    <div class="section-title"><span>05 单页面内容模块</span><span class="section-note">仅不使用 Tab 时配置；使用 Tab 时在各 Tab 内分别配置</span></div>
     <div id="builder-content"></div>
   </div>
 
   <div class="section builder-section" id="skin-section">
-    <div class="section-title"><span>06 页面皮肤</span><span class="section-note">统一页面背景，不重复配置卡片或模块装饰</span></div>
+    <div class="section-title"><span>05 页面皮肤</span><span class="section-note">统一页面背景，不重复配置卡片或模块装饰</span></div>
     <div class="form-grid">
       <div class="control"><label>页面背景色（十六进制）</label><div class="hex-color-field"><input id="skin-bg-color" type="text" maxlength="7" value="#321B78" placeholder="#321B78" oninput="updateBgHexPreview()"><span class="hex-color-swatch" id="skin-bg-swatch"></span></div><div class="hint">支持填写 #RRGGBB 色值</div></div>
       <div class="control"><label>页面背景图 Key</label><input id="skin-bg-image" placeholder="可选，填写背景图资源 Key"></div>
@@ -217,7 +227,7 @@
   </div>
 
   <div class="section builder-section" id="publish-section">
-    <div class="section-title"><span>07 分享与发布</span><span class="section-note">独立选择分享渠道；新建活动默认下架</span></div>
+    <div class="section-title"><span>06 分享与发布</span><span class="section-note">独立选择分享渠道；新建活动默认下架</span></div>
     <div class="subsection-title">活动规则</div>
     <div class="form-grid"><div class="control full"><label>活动规则多语言 Key</label><input id="rules-key" placeholder="例如 yyhd_halloween_rules"></div></div>
     <div class="divider"></div>
@@ -414,6 +424,7 @@ function clone(value){return JSON.parse(JSON.stringify(value))}
 function blankConfig(){
  return {
   hero:{imageKey:''},
+  pageMode:'single',
   tabs:[],
   modules:[],
   skin:{bgColor:'#321B78',bgImageKey:''},
@@ -425,8 +436,10 @@ function normalizeConfig(value){
  const base=blankConfig(),c=value||{};
  const tabs=Array.isArray(c.tabs)?c.tabs.map(function(tab,index){return Object.assign({id:'tab_'+(index+1),name:'Tab '+(index+1),textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:index===0,modules:[]},tab,{modules:Array.isArray(tab.modules)?tab.modules:[]})}):[];
  if(tabs.length&&!tabs.some(function(tab){return tab.isDefault}))tabs[0].isDefault=true;
+ const pageMode=c.pageMode==='single'||c.pageMode==='tabs'?c.pageMode:(tabs.length?'tabs':'single');
  return {
   hero:{imageKey:(c.hero&&c.hero.imageKey)||''},
+  pageMode:pageMode,
   tabs:tabs,
   modules:Array.isArray(c.modules)?c.modules:[],
   skin:{bgColor:(c.skin&&c.skin.bgColor)||'#321B78',bgImageKey:(c.skin&&c.skin.bgImageKey)||''},
@@ -570,13 +583,20 @@ function syncEditorConfig(){
 }
 function renderTabsAndModules(){
  const tabs=editorConfig.tabs||[];
- if(!tabs.length){
-  $('builder-tabs').innerHTML='<div class="tab-empty">当前为单页面结构。无需配置 Tab，页面内容将直接按下方「单页面内容模块」配置。</div>';
-  $('modules-section').classList.remove('hidden');
-  $('builder-content').innerHTML='<div class="module-scope"><div class="module-scope-hd"><div><strong>单页面内容</strong><small>模块按添加顺序从上到下展示</small></div><button class="primary small" onclick="openModuleEditor(\'page\')">＋ 添加内容模块</button></div>'+moduleListHTML(editorConfig.modules,'page')+'</div>';
+ const mode=editorConfig.pageMode|| (tabs.length?'tabs':'single');
+ $('page-mode-single').classList.toggle('active',mode==='single');
+ $('page-mode-single').setAttribute('aria-pressed',mode==='single'?'true':'false');
+ $('page-mode-tabs').classList.toggle('active',mode==='tabs');
+ $('page-mode-tabs').setAttribute('aria-pressed',mode==='tabs'?'true':'false');
+ $('add-tab-btn').classList.toggle('hidden',mode!=='tabs');
+ if(mode==='single'){
+  $('builder-tabs').classList.add('hidden');
+  $('builder-content').classList.remove('hidden');
+  $('builder-content').innerHTML='<div class="module-scope"><div class="module-scope-hd"><div><strong>页面内容模块</strong><small>模块按添加顺序从上到下展示</small></div><button class="primary small" onclick="openModuleEditor(\'page\')">＋ 添加模块</button></div>'+moduleListHTML(editorConfig.modules,'page')+'</div>';
   return;
  }
- $('modules-section').classList.add('hidden');
+ $('builder-content').classList.add('hidden');
+ $('builder-tabs').classList.remove('hidden');
  $('builder-tabs').innerHTML=tabs.map(function(tab,index){
   const tabId=esc(tab.id);
   return '<div class="tab-config-card">'+
@@ -587,9 +607,29 @@ function renderTabsAndModules(){
     '<div class="control"><label>选中态（亮起）图片 Key</label><input value="'+esc(tab.activeImageKey||'')+'" placeholder="请输入选中态图片资源 Key" oninput="updateTabField(\''+tabId+'\',\'activeImageKey\',this.value)"></div>'+
     '<div class="control"><label>未选中态（暗下）图片 Key</label><input value="'+esc(tab.inactiveImageKey||'')+'" placeholder="请输入未选中态图片资源 Key" oninput="updateTabField(\''+tabId+'\',\'inactiveImageKey\',this.value)"></div>'+
    '</div>'+
-   '<div class="tab-content-block"><div class="module-scope-hd"><div><strong>Tab '+(index+1)+' 页面内容</strong><small>此 Tab 独立维护商品、促销套装、榜单及活动跳转等模块</small></div><button class="primary small" onclick="openModuleEditor(\''+tabId+'\')">＋ 添加模块</button></div>'+moduleListHTML(tab.modules||[],tab.id)+'</div>'+
+   '<div class="tab-content-block"><div class="module-scope-hd"><div><strong>Tab '+(index+1)+' 页面内容</strong><small>独立配置促销商品、套装、活动跳转及榜单模块</small></div><button class="primary small" onclick="openModuleEditor(\''+tabId+'\')">＋ 添加模块</button></div>'+moduleListHTML(tab.modules||[],tab.id)+'</div>'+
   '</div>';
  }).join('');
+}
+function setPageMode(mode){
+ if(!editorConfig|| (mode!=='single'&&mode!=='tabs'))return;
+ const current=editorConfig.pageMode|| (editorConfig.tabs.length?'tabs':'single');
+ if(mode===current)return;
+ if(mode==='tabs'){
+  const first={id:'tab_'+Date.now(),name:'Tab 1',textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:true,modules:editorConfig.modules||[]};
+  editorConfig.modules=[];
+  editorConfig.tabs=[first];
+  editorConfig.pageMode='tabs';
+  previewTabId=first.id;
+  renderTabsAndModules();renderPreview();toast('已切换为多 Tab，原页面模块已转入 Tab 1');
+  return;
+ }
+ if(editorConfig.tabs.length&&!confirm('切换为单页面后，各 Tab 的内容模块将按顺序合并；Tab 名称及亮态、暗态图片配置将清除。确定切换吗？'))return;
+ editorConfig.modules=(editorConfig.tabs||[]).reduce(function(all,tab){return all.concat((tab.modules||[]).map(function(item){return clone(item)}))},[]);
+ editorConfig.tabs=[];
+ editorConfig.pageMode='single';
+ previewTabId=null;
+ renderTabsAndModules();renderPreview();toast('已切换为单页面，原 Tab 模块已合并保留');
 }
 function normalizedModule(item){
  const m=clone(item||{});
@@ -643,7 +683,8 @@ function addTab(){
  }else{
   editorConfig.tabs.push({id:'tab_'+Date.now(),name:'Tab '+nextIndex,textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:false,modules:[]});
  }
- renderTabsAndModules();renderPreview();toast('Tab '+nextIndex+' 已添加，并已生成独立内容配置');
+ editorConfig.pageMode='tabs';
+ renderTabsAndModules();renderPreview();toast('Tab '+nextIndex+' 已添加');
 }
 function updateTabField(id,field,value){
  const tab=editorConfig.tabs.find(function(x){return x.id===id});
@@ -663,8 +704,14 @@ function moveTab(id,direction){
 function deleteTab(id){
  const index=editorConfig.tabs.findIndex(function(x){return x.id===id});if(index<0)return;
  const removed=editorConfig.tabs.splice(index,1)[0];
- if(!editorConfig.tabs.length)editorConfig.modules=removed.modules||[];
- else if(removed.isDefault)editorConfig.tabs[0].isDefault=true;
+ if(!editorConfig.tabs.length){
+  editorConfig.modules=removed.modules||[];
+  editorConfig.pageMode='single';
+  previewTabId=null;
+  renderTabsAndModules();renderPreview();toast('最后一个 Tab 已删除，已自动切换为单页面并保留模块');
+  return;
+ }
+ if(removed.isDefault)editorConfig.tabs[0].isDefault=true;
  renderTabsAndModules();renderPreview();toast('Tab 已删除');
 }
 function getModuleArray(scope){
@@ -957,7 +1004,7 @@ function loadChristmasDemo(){
   {id:'xmas_ranking_mod',type:'ranking',title:'圣诞金币消费榜',enabled:true,rankingId:'R-XMAS-26',imageKey:'xmas_tab_rank_on',displayMode:'entry',defaultType:'coin',entryCondition:{metric:'coin',threshold:'50000',start:'2026-12-25T00:00',end:'2026-12-31T23:59'},entryReward:{enabled:true,rewardConfigId:'ER-XMAS-26',maxPerCycle:1,grantMode:'auto'}},
   {id:'xmas_reward_mod',type:'rank_reward',title:'圣诞排名奖励（自动下发）',enabled:true,rankingId:'R-XMAS-26',rewardConfigId:'RR-XMAS-26',rewardImageKey:'xmas_rank_rewards_2026',rewardTitleKey:'xmas_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
  ]};
- editorConfig.tabs=[deals,rank];editorConfig.modules=[];previewTabId=deals.id;
+ editorConfig.tabs=[deals,rank];editorConfig.modules=[];editorConfig.pageMode='tabs';previewTabId=deals.id;
  renderTabsAndModules();renderPreview();toast('已填充完整圣诞活动测试配置，默认下架，请检查后保存');
 }
 function loadNewYearDemo(){
@@ -990,7 +1037,7 @@ function loadNewYearDemo(){
   {id:'newyear_ranking_mod',type:'ranking',title:'新年金币消费榜',enabled:true,rankingId:'R-2027-NY',imageKey:'newyear_tab_rank_on',displayMode:'entry',defaultType:'coin',entryCondition:{metric:'coin',threshold:'50000',start:'2027-01-01T00:00',end:'2027-01-07T23:59'},entryReward:{enabled:true,rewardConfigId:'ER-2027-NY',maxPerCycle:1,grantMode:'auto'}},
   {id:'newyear_reward_mod',type:'rank_reward',title:'新年排名奖励（自动下发）',enabled:true,rankingId:'R-2027-NY',rewardConfigId:'RR-2027-NY',rewardImageKey:'newyear_rank_rewards_2027',rewardTitleKey:'newyear_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
  ]};
- editorConfig.tabs=[deals,rank];editorConfig.modules=[];previewTabId=deals.id;
+ editorConfig.tabs=[deals,rank];editorConfig.modules=[];editorConfig.pageMode='tabs';previewTabId=deals.id;
  renderTabsAndModules();renderPreview();toast('已填充完整新年活动测试配置，默认下架，请检查后保存');
 }
 function renderPreviewModule(raw){
@@ -1095,9 +1142,9 @@ function saveActivity(){
  const publish=document.querySelector('input[name="publish-status"]:checked').value==='online';
  if(!validHex($('skin-bg-color').value)){toast('页面背景色需填写 #RRGGBB 十六进制色值');return}
  const config=collectEditorConfig();
- const moduleCount=config.tabs.length?config.tabs.reduce(function(n,t){return n+(t.modules||[]).length},0):config.modules.length;
+ const moduleCount=config.pageMode==='tabs'?config.tabs.reduce(function(n,t){return n+(t.modules||[]).length},0):config.modules.length;
  if(publish&&!config.hero.imageKey){toast('发布前请配置顶部头图 Key');return}
- if(publish&&config.tabs.some(function(t){return !t.textKey||!t.activeImageKey||!t.inactiveImageKey})){toast('请完成每个 Tab 的多语言文本 Key、选中态及未选中态图片 Key');return}
+ if(publish&&config.pageMode==='tabs'&&config.tabs.some(function(t){return !t.textKey||!t.activeImageKey||!t.inactiveImageKey})){toast('请完成每个 Tab 的多语言文本 Key、选中态及未选中态图片 Key');return}
  if(publish&&!moduleCount){toast('发布前请至少添加一个页面内容模块');return}
  let activity=editingId?activities.find(function(x){return Number(x.id)===Number(editingId)}):null;
  const isNew=!activity;
