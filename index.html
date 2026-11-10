@@ -101,6 +101,21 @@
 .preview-bundle-button.purple-gradient{background:linear-gradient(100deg,#a77bff,#7042d8)}
 .preview-bundle-button.solid{background:#f4a642}
 .preview-bundle-button img{width:15px;height:15px;object-fit:contain}
+.preview-bundle-button.has-frame{background-color:transparent!important;background-repeat:no-repeat;background-position:center;background-size:100% 100%;border-radius:0;min-height:38px}
+.preview-promo-panel{position:relative;margin:9px;padding:15px 12px 13px;border-radius:17px;background:linear-gradient(145deg,#6441c6,#321779);color:#fff;overflow:hidden;box-shadow:0 3px 10px rgba(48,20,115,.18)}
+.preview-promo-heading{display:flex;align-items:center;gap:6px;padding-right:5px;margin:0 0 14px;font-size:15px;font-weight:700;line-height:1.3;color:#fff;overflow-wrap:anywhere}
+.preview-promo-heading:before,.preview-promo-heading:after{content:'✦';color:#ffe18a;font-size:17px;flex:none}
+.preview-promo-badge{position:absolute;right:0;top:0;z-index:2;display:flex;align-items:center;gap:5px;max-width:58%;padding:5px 12px;border-radius:0 0 0 13px;background:linear-gradient(100deg,#fff0cb,#ffd78d);color:#a84c17;font-size:10px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview-promo-badge img{width:13px;height:13px;object-fit:contain;flex:none}
+.preview-promo-carousel{display:flex;gap:9px;width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding-bottom:2px}
+.preview-promo-carousel::-webkit-scrollbar{display:none}
+.preview-promo-item{position:relative;flex:0 0 116px;min-width:0;padding:8px 7px 9px;border-radius:15px;background:linear-gradient(160deg,#8063dc,#6244c4);background-position:center;background-size:100% 100%;background-repeat:no-repeat;color:#fff;text-align:left;scroll-snap-align:start;overflow:hidden;cursor:pointer}
+.preview-promo-product-image{width:100%;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:5px;border-radius:10px;background:rgba(255,255,255,.18);overflow:hidden}
+.preview-promo-product-image img{width:100%;height:100%;object-fit:contain;display:block}
+.preview-promo-product-name{display:block;width:100%;font-size:11px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+.preview-promo-product-price{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:5px;font-size:12px;font-weight:700;color:#fff}
+.preview-promo-product-price del{font-size:9px;font-weight:400;color:rgba(255,255,255,.58)}
+.preview-promo-empty{padding:16px;color:rgba(255,255,255,.8);font-size:11px}
 .preview-rank-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f1f3;font-size:10px;color:#7d8998}
 .preview-key-note{font-size:9px;color:#9aa4b2;overflow-wrap:anywhere}
 .modal.wide{width:min(760px,100%)}
@@ -576,10 +591,18 @@ function renderTabsAndModules(){
 function normalizedModule(item){
  const m=clone(item||{});
  if(m.type==='product'){m.type=m.layout==='bundle'?'bundle':'promo';if(m.type==='bundle')m.bundleProductId=m.bundleProductId||(m.productIds||[])[0]||''}
+ if(m.type==='promo'){
+  m.headingKey=m.headingKey||m.titleKey||'';
+  m.cardFrameImageKey=m.cardFrameImageKey||'';
+  m.badgeTextKey=m.badgeTextKey||'';
+  m.badgeIconKey=m.badgeIconKey||'';
+  m.badgeBackgroundImageKey=m.badgeBackgroundImageKey||'';
+ }
  if(m.type==='bundle'){
   m.headingKey=m.headingKey||m.titleKey||'';
   m.buttonStyle=m.buttonStyle||'gold-gradient';
   m.buttonIconKey=m.buttonIconKey||'';
+  m.buttonFrameImageKey=m.buttonFrameImageKey||'';
   m.clickBehavior='detail';
  }
  if(m.type==='rich'){m.type='jump';m.bannerKey=m.bannerKey||m.imageKey||''}
@@ -592,7 +615,7 @@ function normalizedModule(item){
 function moduleTypeName(type){return {promo:'促销商品',bundle:'促销套装',jump:'活动跳转',ranking:'榜单展示',rank_reward:'榜单奖励'}[type]||'业务模块'}
 function moduleSummary(raw){
  const m=normalizedModule(raw),suffix=m.enabled===false?' · 已隐藏':'';
- if(m.type==='promo')return '商品 ID：'+((m.productIds||[]).join('、')||'待关联')+' · 促销 ID：'+(m.promotionId||'待关联')+suffix;
+ if(m.type==='promo')return '商品 ID：'+((m.productIds||[]).join('、')||'待关联')+' · 标题 Key：'+(m.headingKey||'待配置')+' · 卡片框架：'+(m.cardFrameImageKey||'未配置')+suffix;
  if(m.type==='bundle')return '套装商品 ID：'+(m.bundleProductId||'待关联')+' · 标题 Key：'+(m.headingKey||'待配置')+suffix;
  if(m.type==='jump')return (m.jumpRules||[]).length+' 个分时段跳转规则 · Banner：'+(m.bannerKey||'未配置')+suffix;
  if(m.type==='ranking')return '榜单：'+(m.rankingId||'待关联')+' · 上榜门槛：'+(m.entryCondition&&m.entryCondition.threshold||'待配置')+' · 入榜奖励：'+(m.entryReward&&m.entryReward.enabled?'已启用':'未启用')+suffix;
@@ -662,7 +685,7 @@ function removeRegion(index){editorConfig.skin.regions.splice(index,1);renderReg
 function openModuleEditor(scope,id){
  moduleScope=scope;moduleEditingId=id||null;
  const arr=getModuleArray(scope),existing=id?arr.find(function(x){return x.id===id}):null;
- moduleDraft=existing?normalizedModule(existing):{id:'module_'+Date.now()+'_'+Math.floor(Math.random()*999),type:'promo',title:'',enabled:true,productIds:[],promotionId:'',layout:'grid',clickBehavior:'detail',headingKey:'',bundleProductId:'',buttonStyle:'gold-gradient',buttonIconKey:'',buttonTextKey:'',jumpRules:[],entryCondition:{metric:'coin',threshold:'',start:'',end:''},entryReward:{enabled:false,rewardConfigId:'',maxPerCycle:1,grantMode:'auto'}};
+ moduleDraft=existing?normalizedModule(existing):{id:'module_'+Date.now()+'_'+Math.floor(Math.random()*999),type:'promo',title:'',enabled:true,productIds:[],headingKey:'',cardFrameImageKey:'',badgeTextKey:'',badgeIconKey:'',badgeBackgroundImageKey:'',bundleProductId:'',buttonStyle:'gold-gradient',buttonIconKey:'',buttonFrameImageKey:'',buttonTextKey:'',jumpRules:[],entryCondition:{metric:'coin',threshold:'',start:'',end:''},entryReward:{enabled:false,rewardConfigId:'',maxPerCycle:1,grantMode:'auto'}};
  const body='<div class="control"><label class="required">业务模块类型</label><select id="module-type" onchange="renderModuleModalFields()">'+
   fieldOption('promo','① 促销商品',moduleDraft.type)+fieldOption('bundle','② 促销套装',moduleDraft.type)+
   fieldOption('jump','③ 活动跳转 Banner',moduleDraft.type)+fieldOption('ranking','④ 榜单展示',moduleDraft.type)+fieldOption('rank_reward','⑤ 榜单奖励',moduleDraft.type)+'</select></div><div id="module-fields" style="margin-top:15px"></div>';
@@ -704,20 +727,21 @@ function renderModuleModalFields(){
   '</div><div class="divider"></div>';
  let fields='';
  if(type==='promo'){
-  fields='<div class="subsection-title">促销商品配置</div><div class="modal-form-grid">'+
-   mfInput('m-products','商品 ID（多个用逗号分隔）',(m.productIds||[]).join(', '),'例如 990101, 990102',true,true)+
-   mfInput('m-promotion','促销配置 ID',m.promotionId,'关联现有促销配置 ID',true)+
-   mfSelect('m-layout','商品展示形式',[['single','单商品大卡'],['grid','多商品网格'],['carousel','横向轮播']],m.layout||'grid')+
-   mfInput('m-image','模块标题图 Key',m.imageKey,'可选')+
-   mfInput('m-button','按钮文案 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_buy')+
-   mfSelect('m-click','点击行为',[['detail','跳转商品详情'],['buy','直接购买'],['custom','自定义跳转']],m.clickBehavior||'detail')+
-   '</div>'+customTargetForm(m);
+  fields='<div class="subsection-title">促销商品卡片配置</div><div class="modal-form-grid">'+
+   mfInput('m-products','商品 ID（多个用逗号分隔）',(m.productIds||[]).join(', '),'可填写任意数量，例如 990101, 990102, 990103',true,true)+
+   mfInput('m-promo-heading','模块标题多语言 Key',m.headingKey,'例如 xmas_title_deals',true)+
+   mfInput('m-promo-card-frame','商品卡片框架图片 Key',m.cardFrameImageKey,'配置商品卡片底图/边框资源 Key')+
+   mfInput('m-promo-badge-text','右上角活动标签文案多语言 Key',m.badgeTextKey,'例如 xmas_badge_limited')+
+   mfInput('m-promo-badge-icon','活动标签图标 Key',m.badgeIconKey,'可选，例如时钟图标')+
+   mfInput('m-promo-badge-bg','活动标签背景图片 Key',m.badgeBackgroundImageKey,'可选，不填则使用默认标签样式')+
+   '</div><div class="hint">商品名称、图片、价格及原价均根据商品 ID 自动读取，不在此处配置。商品数量不设上限，前端固定采用横向轮播，用户可手动向右滑动查看更多；点击商品卡片进入对应商品详情。</div>';
  }else if(type==='bundle'){
   fields='<div class="subsection-title">套装卡片配置</div><div class="modal-form-grid">'+
    mfInput('m-bundle-heading','卡片大标题多语言 Key',m.headingKey,'例如 xmas_title_bundle',true)+
    mfInput('m-bundle-id','套装商品 ID',m.bundleProductId,'关联商品管理中已配置的套装商品 ID',true)+
    mfSelect('m-bundle-button-style','按钮样式',[['gold-gradient','金橙渐变胶囊'],['purple-gradient','紫色渐变胶囊'],['solid','主题纯色按钮']],m.buttonStyle||'gold-gradient')+
    mfInput('m-bundle-button-icon','按钮图标 Key',m.buttonIconKey,'可选，填写按钮左侧图标资源 Key')+
+   mfInput('m-bundle-button-frame','底部按钮框架图片 Key',m.buttonFrameImageKey,'配置购买按钮底图/框架资源 Key')+
    mfInput('m-bundle-button-text','按钮文案多语言 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_buy',true)+
    '</div><div class="hint">套装名称、价格、原价及包含商品均根据套装商品 ID 从商品管理读取；包含商品自动横向轮播。本模块不配置商品内容和价格，点击按钮固定跳转套装详情页。</div>';
  }else if(type==='jump'){
@@ -759,7 +783,6 @@ function renderModuleModalFields(){
    '</div><div class="hint">榜单结算完成后由服务端按最终排名自动下发，须处理发放资格、幂等去重和失败重试。此原型不会执行真实奖励发放。</div>';
  }
  $('module-fields').innerHTML=common+fields;
- if(type==='promo'){$('m-click').addEventListener('change',toggleCustomTarget);toggleCustomTarget()}
 }
 function readModuleInput(id){return $(id)?$(id).value.trim():''}
 function captureModuleFields(){
@@ -768,14 +791,14 @@ function captureModuleFields(){
  m.type=type;m.title=readModuleInput('m-title');m.enabled=readModuleInput('m-enabled')!=='no';
  m.displayStart=readModuleInput('m-display-start');m.displayEnd=readModuleInput('m-display-end');
  if(type==='promo'){
-  m.promotionId=readModuleInput('m-promotion');m.layout=readModuleInput('m-layout');m.imageKey=readModuleInput('m-image');
-  m.buttonTextKey=readModuleInput('m-button');m.clickBehavior=readModuleInput('m-click');
-  m.customTargetType=readModuleInput('m-custom-type');m.customTarget=readModuleInput('m-custom-target');
   m.productIds=readModuleInput('m-products').split(/[,，\s]+/).filter(Boolean);
+  m.headingKey=readModuleInput('m-promo-heading');m.cardFrameImageKey=readModuleInput('m-promo-card-frame');
+  m.badgeTextKey=readModuleInput('m-promo-badge-text');m.badgeIconKey=readModuleInput('m-promo-badge-icon');
+  m.badgeBackgroundImageKey=readModuleInput('m-promo-badge-bg');m.clickBehavior='detail';
  }else if(type==='bundle'){
   m.headingKey=readModuleInput('m-bundle-heading');m.bundleProductId=readModuleInput('m-bundle-id');
   m.buttonStyle=readModuleInput('m-bundle-button-style');m.buttonIconKey=readModuleInput('m-bundle-button-icon');
-  m.buttonTextKey=readModuleInput('m-bundle-button-text');m.clickBehavior='detail';
+  m.buttonFrameImageKey=readModuleInput('m-bundle-button-frame');m.buttonTextKey=readModuleInput('m-bundle-button-text');m.clickBehavior='detail';
  }else if(type==='jump'){
   m.bannerKey=readModuleInput('m-banner');m.titleKey=readModuleInput('m-title-key');
   m.descKey=readModuleInput('m-desc-key');m.buttonTextKey=readModuleInput('m-button');
@@ -805,7 +828,7 @@ function saveModuleFromModal(){
  const m=moduleDraft,type=m.type;
  if(!m.title){toast('请填写模块名称');return}
  if(m.displayStart&&m.displayEnd&&m.displayStart>=m.displayEnd){toast('模块展示结束时间必须晚于开始时间');return}
- if(type==='promo'&&(!m.productIds.length||!m.promotionId)){toast('促销商品必须填写商品 ID 和促销配置 ID');return}
+ if(type==='promo'&&(!m.productIds.length||!m.headingKey)){toast('促销商品必须填写商品 ID 和模块标题多语言 Key');return}
  if(type==='bundle'&&(!m.bundleProductId||!m.headingKey||!m.buttonTextKey)){toast('请填写卡片大标题 Key、套装商品 ID 和按钮文案 Key');return}
  if(type==='promo'&&m.clickBehavior==='custom'){
   if(!m.customTarget){toast('选择自定义跳转后必须填写跳转目标');return}
@@ -855,13 +878,13 @@ const demoTexts={
  xmas_tab_deals:'Special Deals',xmas_tab_rank:'Holiday Ranking',
  xmas_btn_buy:'Buy Now',xmas_btn_explore:'Explore Now',
  xmas_title_bundle:'Featured Christmas Set',xmas_title_deals:'Christmas Exclusives',
- xmas_title_rewards:'Holiday Ranking Rewards',
+ xmas_title_rewards:'Holiday Ranking Rewards',xmas_badge_limited:'Limited Time Only',
  xmas_share_title:'Christmas Special Sale',
  xmas_share_desc:'Limited-time deals, festive bundles and ranking rewards!',
  newyear_tab_deals:'New Year Deals',newyear_tab_rank:'New Year Ranking',
  newyear_btn_buy:'Buy Now',newyear_btn_explore:'Explore Now',
  newyear_title_bundle:'Featured New Year Set',newyear_title_deals:'New Year Specials',
- newyear_title_rewards:'New Year Ranking Rewards',
+ newyear_title_rewards:'New Year Ranking Rewards',newyear_badge_limited:'Limited Time Only',
  newyear_share_title:'New Year Special Sale',
  newyear_share_desc:'Celebrate 2027 with limited-time deals, festive bundles and ranking rewards!',
  newyear_rules_2027:'活动时间为 2026 年 12 月 28 日至 2027 年 1 月 7 日；商品价格及榜单奖励以活动页面为准。'
@@ -927,8 +950,8 @@ function loadChristmasDemo(){
  setValue('share-image-key','xmas_hero_2026');setValue('share-title-key','xmas_share_title');setValue('share-desc-key','xmas_share_desc');
  document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
  const deals={id:'tab_xmas_deals',name:'圣诞特惠',textKey:'xmas_tab_deals',activeImageKey:'xmas_tab_deals_on',inactiveImageKey:'xmas_tab_deals_off',isDefault:true,modules:[
-  {id:'xmas_bundle_mod',type:'bundle',title:'圣诞套装卡片',enabled:true,bundleProductId:'990501',headingKey:'xmas_title_bundle',buttonStyle:'gold-gradient',buttonIconKey:'',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
-  {id:'xmas_promo_mod',type:'promo',title:'圣诞限定促销商品',enabled:true,productIds:['990101','990102','990103'],promotionId:'PR-XMAS-DEALS-26',imageKey:'xmas_title_deals_2026',layout:'grid',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
+  {id:'xmas_bundle_mod',type:'bundle',title:'圣诞套装卡片',enabled:true,bundleProductId:'990501',headingKey:'xmas_title_bundle',buttonStyle:'gold-gradient',buttonIconKey:'',buttonFrameImageKey:'',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
+  {id:'xmas_promo_mod',type:'promo',title:'圣诞限定促销商品',enabled:true,productIds:['990101','990102','990103'],headingKey:'xmas_title_deals',cardFrameImageKey:'',badgeTextKey:'xmas_badge_limited',badgeIconKey:'',badgeBackgroundImageKey:''},
   {id:'xmas_jump_mod',type:'jump',title:'探索更多圣诞活动',enabled:true,bannerKey:'xmas_explore_2026',buttonTextKey:'xmas_btn_explore',jumpRules:[
    {start:'2026-12-20T00:00',end:'2026-12-24T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/xmas-preheat.html'},
    {start:'2026-12-25T00:00',end:'2026-12-31T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/xmas-event.html'}
@@ -960,8 +983,8 @@ function loadNewYearDemo(){
  document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
  setValue('preview-date','2027-01-01T12:00');
  const deals={id:'tab_newyear_deals',name:'新年特惠',textKey:'newyear_tab_deals',activeImageKey:'newyear_tab_deals_on',inactiveImageKey:'newyear_tab_deals_off',isDefault:true,modules:[
-  {id:'newyear_bundle_mod',type:'bundle',title:'新年套装卡片',enabled:true,bundleProductId:'990601',headingKey:'newyear_title_bundle',buttonStyle:'gold-gradient',buttonIconKey:'',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
-  {id:'newyear_promo_mod',type:'promo',title:'新年限定促销商品',enabled:true,productIds:['100201','100202','100203'],promotionId:'PR-2027-NY-DEALS',imageKey:'newyear_title_deals_2027',layout:'grid',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
+  {id:'newyear_bundle_mod',type:'bundle',title:'新年套装卡片',enabled:true,bundleProductId:'990601',headingKey:'newyear_title_bundle',buttonStyle:'gold-gradient',buttonIconKey:'',buttonFrameImageKey:'',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
+  {id:'newyear_promo_mod',type:'promo',title:'新年限定促销商品',enabled:true,productIds:['100201','100202','100203'],headingKey:'newyear_title_deals',cardFrameImageKey:'',badgeTextKey:'newyear_badge_limited',badgeIconKey:'',badgeBackgroundImageKey:''},
   {id:'newyear_jump_mod',type:'jump',title:'探索更多新年活动',enabled:true,bannerKey:'newyear_explore_2027',buttonTextKey:'newyear_btn_explore',jumpRules:[
    {start:'2026-12-28T00:00',end:'2026-12-31T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/newyear-preheat.html'},
    {start:'2027-01-01T00:00',end:'2027-01-07T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/newyear-event.html'}
@@ -981,17 +1004,26 @@ function renderPreviewModule(raw){
  let body='';
  if(m.type==='promo'){
   const ids=m.productIds||[];
-  if(m.imageKey)body+=imageByKey(m.imageKey,'促销商品标题','demo-preview-image');
-  body+='<div class="preview-product-row">';
-  ids.forEach(function(id){
-   const p=demoProducts[id];
-   body+='<div class="preview-product-item">'+
-    (p?imageByKey(p.imageKey,p.name,'preview-product-picture'):'<div class="asset-placeholder">商品 '+esc(id)+'</div>')+
-    '<b>'+esc(p?p.name:'商品 '+id)+'</b>'+
-    (p?'<del>'+esc(p.oldPrice)+'</del><span>🪙 '+esc(p.price)+'</span>':'<small>未关联演示商品</small>')+
-    '</div>';
-  });
-  body+='</div><button type="button" class="preview-cta preview-cta-link" onclick="toast(\'购买由正式商城商品系统处理，当前为演示预览\')">'+esc(demoText(m.buttonTextKey,'Buy Now'))+'</button>';
+  const cardFrameUrl=m.cardFrameImageKey?demoAssetUrl(m.cardFrameImageKey):'';
+  const cardFrameStyle=cardFrameUrl?' style="background-image:url(\''+esc(cardFrameUrl)+'\')"':'';
+  const badgeBgUrl=m.badgeBackgroundImageKey?demoAssetUrl(m.badgeBackgroundImageKey):'';
+  const badgeBgStyle=badgeBgUrl?' style="background-image:url(\''+esc(badgeBgUrl)+'\');background-size:100% 100%;background-repeat:no-repeat"':'';
+  const badgeIconUrl=m.badgeIconKey?demoAssetUrl(m.badgeIconKey):'';
+  const badgeIcon=badgeIconUrl?'<img src="'+esc(badgeIconUrl)+'" alt="">':'<span aria-hidden="true">◷</span>';
+  const badge=(m.badgeTextKey||m.badgeIconKey||m.badgeBackgroundImageKey)?'<div class="preview-promo-badge"'+badgeBgStyle+'>'+badgeIcon+esc(demoText(m.badgeTextKey,''))+'</div>':'';
+  const products=ids.map(function(id){
+   const p=demoProducts[id],image=p&&p.imageKey?imageByKey(p.imageKey,p.name,''):'<span class="preview-promo-empty">商品图片</span>';
+   const name=p?p.name:'商品 '+id;
+   const price=p?'<span>🪙 '+esc(p.price)+'</span>':'<span>价格由商品管理读取</span>';
+   const oldPrice=p&&p.oldPrice?'<del>'+esc(p.oldPrice)+'</del>':'';
+   return '<div class="preview-promo-item"'+cardFrameStyle+' onclick="toast(\'演示跳转：商品详情页 → 商品 ID '+esc(id)+'\')">'+
+    '<div class="preview-promo-product-image">'+image+'</div>'+
+    '<b class="preview-promo-product-name">'+esc(name)+'</b>'+
+    '<div class="preview-promo-product-price">'+price+oldPrice+'</div></div>';
+  }).join('');
+  return '<div class="preview-promo-panel">'+badge+
+   '<div class="preview-promo-heading">'+esc(demoText(m.headingKey,'促销商品'))+'</div>'+
+   '<div class="preview-promo-carousel">'+(products||'<div class="preview-promo-empty">请配置商品 ID</div>')+'</div></div>';
  }else if(m.type==='bundle'){
   const product=demoProducts[m.bundleProductId],included=demoBundleContents[m.bundleProductId]||[];
   const items=included.map(function(id){
@@ -1000,6 +1032,9 @@ function renderPreviewModule(raw){
   }).join('');
   const iconUrl=m.buttonIconKey?demoAssetUrl(m.buttonIconKey):'';
   const icon=iconUrl?'<img src="'+esc(iconUrl)+'" alt="">':'';
+  const buttonFrameUrl=m.buttonFrameImageKey?demoAssetUrl(m.buttonFrameImageKey):'';
+  const buttonFrameStyle=buttonFrameUrl?' style="background-image:url(\''+esc(buttonFrameUrl)+'\')"':'';
+  const buttonFrameClass=buttonFrameUrl?' has-frame':'';
   const buttonStyle=['gold-gradient','purple-gradient','solid'].includes(m.buttonStyle)?m.buttonStyle:'gold-gradient';
   const bundleName=product?product.name:'套装商品 '+(m.bundleProductId||'待关联');
   const bundlePrice=product?'<div class="preview-bundle-price">🪙 '+esc(product.price)+'</div>' : '<div class="preview-bundle-price">价格由商品管理读取</div>';
@@ -1008,7 +1043,7 @@ function renderPreviewModule(raw){
    '<div class="preview-bundle-heading">'+esc(demoText(m.headingKey,'精选活动套装'))+'</div>'+
    '<div class="preview-bundle-main"><div class="preview-bundle-carousel"><div class="preview-bundle-track">'+(items||'<div class="preview-bundle-item">套装内容由商品管理读取</div>')+'</div></div>'+
    '<div class="preview-bundle-info"><div class="preview-bundle-name">'+esc(bundleName)+'</div>'+bundlePrice+oldPrice+'</div></div>'+
-   '<button type="button" class="preview-bundle-button '+buttonStyle+'" onclick="toast(\'演示跳转：套装详情页 → 商品 ID '+esc(m.bundleProductId||'')+'\')">'+icon+esc(demoText(m.buttonTextKey,'Buy Now'))+'</button></div>';
+   '<button type="button" class="preview-bundle-button '+buttonStyle+buttonFrameClass+'"'+buttonFrameStyle+' onclick="toast(\'演示跳转：套装详情页 → 商品 ID '+esc(m.bundleProductId||'')+'\')">'+icon+esc(demoText(m.buttonTextKey,'Buy Now'))+'</button></div>';
  }else if(m.type==='jump'){
   body+=imageByKey(m.bannerKey||m.imageKey,'圣诞活动跳转 Banner','preview-jump-img');
   const rule=selectedJumpRule(m);
