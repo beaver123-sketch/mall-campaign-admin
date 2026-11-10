@@ -96,12 +96,10 @@
 .preview-bundle-name{font-size:12px;line-height:1.35;font-weight:600;overflow-wrap:anywhere;margin-bottom:7px}
 .preview-bundle-price{font-size:13px;font-weight:700;color:#ffe36b;white-space:nowrap}
 .preview-bundle-old-price{display:block;font-size:9px;color:rgba(255,255,255,.58);text-decoration:line-through;margin-top:3px}
-.preview-bundle-button{width:100%;border:0;border-radius:24px;padding:9px 12px;margin-top:12px;font-size:12px;font-weight:600;color:#fff;display:flex;justify-content:center;align-items:center;gap:6px;cursor:pointer}
-.preview-bundle-button.gold-gradient{background:linear-gradient(100deg,#ffd45c,#ff9d43)}
-.preview-bundle-button.purple-gradient{background:linear-gradient(100deg,#a77bff,#7042d8)}
-.preview-bundle-button.solid{background:#f4a642}
-.preview-bundle-button img{width:15px;height:15px;object-fit:contain}
-.preview-bundle-button.has-frame{background-color:transparent!important;background-repeat:no-repeat;background-position:center;background-size:100% 100%;border-radius:0;min-height:38px}
+.preview-bundle-button{position:relative;width:100%;border:0;padding:0;margin-top:12px;background:transparent;display:flex;justify-content:center;align-items:center;cursor:pointer;line-height:0;overflow:hidden}
+.preview-bundle-button img{display:block;width:100%;height:auto}
+.preview-bundle-button span{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;color:#fff;font-size:12px;line-height:1.2;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.28);pointer-events:none}
+.preview-bundle-button-placeholder{width:100%;min-height:40px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(255,255,255,.55);border-radius:8px;color:#fff;font-size:10px;line-height:1.3}
 .preview-promo-panel{position:relative;margin:9px;padding:15px 12px 13px;border-radius:17px;background:linear-gradient(145deg,#6441c6,#321779);color:#fff;overflow:hidden;box-shadow:0 3px 10px rgba(48,20,115,.18)}
 .preview-promo-heading{display:flex;align-items:center;gap:6px;padding-right:5px;margin:0 0 14px;font-size:15px;font-weight:700;line-height:1.3;color:#fff;overflow-wrap:anywhere}
 .preview-promo-heading:before,.preview-promo-heading:after{content:'✦';color:#ffe18a;font-size:17px;flex:none}
@@ -605,9 +603,8 @@ function normalizedModule(item){
  }
  if(m.type==='bundle'){
   m.headingKey=m.headingKey||m.titleKey||'';
-  m.buttonStyle=m.buttonStyle||'gold-gradient';
-  m.buttonIconKey=m.buttonIconKey||'';
-  m.buttonFrameImageKey=m.buttonFrameImageKey||'';
+  m.buttonImageKey=m.buttonImageKey||m.buttonFrameImageKey||'';
+  m.buttonTextKey=m.buttonTextKey||m.buttonText||'';
   m.clickBehavior='detail';
  }
  if(m.type==='rich'){m.type='jump';m.bannerKey=m.bannerKey||m.imageKey||''}
@@ -748,11 +745,9 @@ function renderModuleModalFields(){
   fields='<div class="subsection-title">套装卡片配置</div><div class="modal-form-grid">'+
    mfInput('m-bundle-heading','卡片大标题多语言 Key',m.headingKey,'例如 xmas_title_bundle',true)+
    mfInput('m-bundle-id','套装商品 ID',m.bundleProductId,'关联商品管理中已配置的套装商品 ID',true)+
-   mfSelect('m-bundle-button-style','按钮样式',[['gold-gradient','金橙渐变胶囊'],['purple-gradient','紫色渐变胶囊'],['solid','主题纯色按钮']],m.buttonStyle||'gold-gradient')+
-   mfInput('m-bundle-button-icon','按钮图标 Key',m.buttonIconKey,'可选，填写按钮左侧图标资源 Key')+
-   mfInput('m-bundle-button-frame','底部按钮框架图片 Key',m.buttonFrameImageKey,'配置购买按钮底图/框架资源 Key')+
+   mfInput('m-bundle-button-image','按钮图片 Key',m.buttonImageKey,'上传按钮底图后填写图片 Key；图片不含文字',true)+
    mfInput('m-bundle-button-text','按钮文案多语言 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_buy',true)+
-   '</div><div class="hint">套装名称、价格、原价及包含商品均根据套装商品 ID 从商品管理读取；包含商品自动横向轮播。本模块不配置商品内容和价格，点击按钮固定跳转套装详情页。</div>';
+   '</div><div class="hint">按钮外观由上传的按钮图片决定，不再使用固定渐变/纯色样式；按钮文案通过多语言 Key 单独配置并叠加显示。套装名称、价格、原价及包含商品均根据套装商品 ID 从商品管理读取；包含商品自动横向轮播，点击按钮固定跳转套装详情页。</div>';
  }else if(type==='jump'){
   m.jumpRules=Array.isArray(m.jumpRules)?m.jumpRules:[];
   fields='<div class="subsection-title">活动跳转卡片配置</div><div class="modal-form-grid">'+
@@ -803,8 +798,8 @@ function captureModuleFields(){
   m.badgeBackgroundImageKey=readModuleInput('m-promo-badge-bg');m.clickBehavior='detail';
  }else if(type==='bundle'){
   m.headingKey=readModuleInput('m-bundle-heading');m.bundleProductId=readModuleInput('m-bundle-id');
-  m.buttonStyle=readModuleInput('m-bundle-button-style');m.buttonIconKey=readModuleInput('m-bundle-button-icon');
-  m.buttonFrameImageKey=readModuleInput('m-bundle-button-frame');m.buttonTextKey=readModuleInput('m-bundle-button-text');m.clickBehavior='detail';
+  m.buttonImageKey=readModuleInput('m-bundle-button-image');
+  m.buttonTextKey=readModuleInput('m-bundle-button-text');m.clickBehavior='detail';
  }else if(type==='jump'){
   m.cardImageKey=readModuleInput('m-card-image');
   m.buttonImageKey=readModuleInput('m-jump-button-image');
@@ -834,7 +829,7 @@ function saveModuleFromModal(){
  if(!m.title){toast('请填写模块名称');return}
  if(m.displayStart&&m.displayEnd&&m.displayStart>=m.displayEnd){toast('模块展示结束时间必须晚于开始时间');return}
  if(type==='promo'&&(!m.productIds.length||!m.headingKey)){toast('促销商品必须填写商品 ID 和模块标题多语言 Key');return}
- if(type==='bundle'&&(!m.bundleProductId||!m.headingKey||!m.buttonTextKey)){toast('请填写卡片大标题 Key、套装商品 ID 和按钮文案 Key');return}
+ if(type==='bundle'&&(!m.bundleProductId||!m.headingKey||!m.buttonImageKey||!m.buttonTextKey)){toast('请填写卡片大标题 Key、套装商品 ID、按钮图片 Key 和按钮文案 Key');return}
  if(type==='promo'&&m.clickBehavior==='custom'){
   if(!m.customTarget){toast('选择自定义跳转后必须填写跳转目标');return}
   if(m.customTargetType==='url'&&!/^https?:\/\/\S+$/i.test(m.customTarget)){toast('自定义 URL 必须以 http:// 或 https:// 开头');return}
@@ -873,10 +868,10 @@ function deleteModule(scope,id){
 }
 const demoAssetKeys=new Set([
  'xmas_hero_2026','xmas_tab_deals_on','xmas_tab_deals_off','xmas_tab_rank_on','xmas_tab_rank_off',
- 'xmas_bundle_2026','xmas_hat_2026','xmas_antlers_2026','xmas_snowflake_2026',
+ 'xmas_bundle_2026','xmas_bundle_button_2026','xmas_hat_2026','xmas_antlers_2026','xmas_snowflake_2026',
  'xmas_explore_2026','xmas_explore_button_2026','xmas_rank_rewards_2026','xmas_title_bundle_2026','xmas_title_deals_2026',
  'newyear_hero_2027','newyear_tab_deals_on','newyear_tab_deals_off','newyear_tab_rank_on','newyear_tab_rank_off',
- 'newyear_bundle_2027','newyear_firework_2027','newyear_lantern_2027','newyear_dragon_frame_2027',
+ 'newyear_bundle_2027','newyear_bundle_button_2027','newyear_firework_2027','newyear_lantern_2027','newyear_dragon_frame_2027',
  'newyear_explore_2027','newyear_explore_button_2027','newyear_rank_rewards_2027','newyear_title_bundle_2027','newyear_title_deals_2027'
 ]);
 const demoTexts={
@@ -951,7 +946,7 @@ function loadChristmasDemo(){
  setValue('share-image-key','xmas_hero_2026');setValue('share-title-key','xmas_share_title');setValue('share-desc-key','xmas_share_desc');
  document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
  const deals={id:'tab_xmas_deals',name:'圣诞特惠',textKey:'xmas_tab_deals',activeImageKey:'xmas_tab_deals_on',inactiveImageKey:'xmas_tab_deals_off',isDefault:true,modules:[
-  {id:'xmas_bundle_mod',type:'bundle',title:'圣诞套装卡片',enabled:true,bundleProductId:'990501',headingKey:'xmas_title_bundle',buttonStyle:'gold-gradient',buttonIconKey:'',buttonFrameImageKey:'',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
+  {id:'xmas_bundle_mod',type:'bundle',title:'圣诞套装卡片',enabled:true,bundleProductId:'990501',headingKey:'xmas_title_bundle',buttonImageKey:'xmas_bundle_button_2026',buttonTextKey:'xmas_btn_buy',clickBehavior:'detail'},
   {id:'xmas_promo_mod',type:'promo',title:'圣诞限定促销商品',enabled:true,productIds:['990101','990102','990103'],headingKey:'xmas_title_deals',cardFrameImageKey:'',badgeTextKey:'xmas_badge_limited',badgeIconKey:'',badgeBackgroundImageKey:''},
   {id:'xmas_jump_mod',type:'jump',title:'探索更多圣诞活动',enabled:true,cardImageKey:'xmas_explore_2026',buttonImageKey:'xmas_explore_button_2026',jumpRules:[
    {start:'2026-12-20T00:00',end:'2026-12-24T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/xmas-preheat.html'},
@@ -984,7 +979,7 @@ function loadNewYearDemo(){
  document.querySelectorAll('input[name="publish-status"]').forEach(function(x){x.checked=x.value==='offline'});
  setValue('preview-date','2027-01-01T12:00');
  const deals={id:'tab_newyear_deals',name:'新年特惠',textKey:'newyear_tab_deals',activeImageKey:'newyear_tab_deals_on',inactiveImageKey:'newyear_tab_deals_off',isDefault:true,modules:[
-  {id:'newyear_bundle_mod',type:'bundle',title:'新年套装卡片',enabled:true,bundleProductId:'990601',headingKey:'newyear_title_bundle',buttonStyle:'gold-gradient',buttonIconKey:'',buttonFrameImageKey:'',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
+  {id:'newyear_bundle_mod',type:'bundle',title:'新年套装卡片',enabled:true,bundleProductId:'990601',headingKey:'newyear_title_bundle',buttonImageKey:'newyear_bundle_button_2027',buttonTextKey:'newyear_btn_buy',clickBehavior:'detail'},
   {id:'newyear_promo_mod',type:'promo',title:'新年限定促销商品',enabled:true,productIds:['100201','100202','100203'],headingKey:'newyear_title_deals',cardFrameImageKey:'',badgeTextKey:'newyear_badge_limited',badgeIconKey:'',badgeBackgroundImageKey:''},
   {id:'newyear_jump_mod',type:'jump',title:'探索更多新年活动',enabled:true,cardImageKey:'newyear_explore_2027',buttonImageKey:'newyear_explore_button_2027',jumpRules:[
    {start:'2026-12-28T00:00',end:'2026-12-31T23:59',type:'url',target:'https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/newyear-preheat.html'},
@@ -1031,12 +1026,8 @@ function renderPreviewModule(raw){
    const item=demoProducts[id];
    return '<div class="preview-bundle-item">'+(item?imageByKey(item.imageKey,item.name,''):'<div class="asset-placeholder">商品 '+esc(id)+'</div>')+'<b>'+esc(item?item.name:'商品 '+id)+'</b></div>';
   }).join('');
-  const iconUrl=m.buttonIconKey?demoAssetUrl(m.buttonIconKey):'';
-  const icon=iconUrl?'<img src="'+esc(iconUrl)+'" alt="">':'';
-  const buttonFrameUrl=m.buttonFrameImageKey?demoAssetUrl(m.buttonFrameImageKey):'';
-  const buttonFrameStyle=buttonFrameUrl?' style="background-image:url(\''+esc(buttonFrameUrl)+'\')"':'';
-  const buttonFrameClass=buttonFrameUrl?' has-frame':'';
-  const buttonStyle=['gold-gradient','purple-gradient','solid'].includes(m.buttonStyle)?m.buttonStyle:'gold-gradient';
+  const buttonUrl=m.buttonImageKey?demoAssetUrl(m.buttonImageKey):'';
+  const buttonImage=buttonUrl?'<img loading="lazy" src="'+esc(buttonUrl)+'" alt="套装购买按钮背景">':'<div class="preview-bundle-button-placeholder">未匹配按钮图片 Key：'+esc(m.buttonImageKey||'未填写')+'</div>';
   const bundleName=product?product.name:'套装商品 '+(m.bundleProductId||'待关联');
   const bundlePrice=product?'<div class="preview-bundle-price">🪙 '+esc(product.price)+'</div>' : '<div class="preview-bundle-price">价格由商品管理读取</div>';
   const oldPrice=product&&product.oldPrice?'<del class="preview-bundle-old-price">'+esc(product.oldPrice)+'</del>':'';
@@ -1044,7 +1035,7 @@ function renderPreviewModule(raw){
    '<div class="preview-bundle-heading">'+esc(demoText(m.headingKey,'精选活动套装'))+'</div>'+
    '<div class="preview-bundle-main"><div class="preview-bundle-carousel"><div class="preview-bundle-track">'+(items||'<div class="preview-bundle-item">套装内容由商品管理读取</div>')+'</div></div>'+
    '<div class="preview-bundle-info"><div class="preview-bundle-name">'+esc(bundleName)+'</div>'+bundlePrice+oldPrice+'</div></div>'+
-   '<button type="button" class="preview-bundle-button '+buttonStyle+buttonFrameClass+'"'+buttonFrameStyle+' onclick="toast(\'演示跳转：套装详情页 → 商品 ID '+esc(m.bundleProductId||'')+'\')">'+icon+esc(demoText(m.buttonTextKey,'Buy Now'))+'</button></div>';
+   '<button type="button" class="preview-bundle-button" onclick="toast(\'演示跳转：套装详情页 → 商品 ID '+esc(m.bundleProductId||'')+'\')">'+buttonImage+'<span>'+esc(demoText(m.buttonTextKey,'Buy Now'))+'</span></button></div>';
  }else if(m.type==='jump'){
   const cardUrl=demoAssetUrl(m.cardImageKey);
   const buttonUrl=demoAssetUrl(m.buttonImageKey);
