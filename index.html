@@ -95,6 +95,10 @@
 @media(max-width:1100px){.editor-layout{grid-template-columns:1fr}.phone-card{position:static}.phone{max-width:360px;margin:auto}.region-skin-row{grid-template-columns:1fr 100px}}
 @media(max-width:760px){.tab-config-row{align-items:flex-start;flex-direction:column}.tab-config-main{flex-wrap:wrap}.module-item{align-items:flex-start;flex-direction:column}.module-actions{width:100%;justify-content:flex-end}.modal-form-grid{grid-template-columns:1fr}.modal-form-grid .full{grid-column:auto}.builder-section{padding:15px}.region-skin-row{grid-template-columns:1fr 1fr}}
 
+
+.jump-rule-row{border:1px solid #e6ebf1;border-radius:6px;padding:12px;margin:10px 0;background:#fafcff}
+.jump-rule-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.custom-target-panel{margin-top:12px;padding:13px;border-radius:6px;border:1px solid #d7e7fb;background:#f7fbff}
 </style></head>
 <body><div class="app">
 <aside class="sidebar"><div class="brand"><span class="brand-mark">M</span><span>模块管理后台</span></div><div class="nav-group"><div class="nav-item"><span class="nav-icon">▣</span><span>商城管理</span></div><div class="nav-item nav-sub"><span>商城配置</span></div><div class="nav-item nav-sub"><span>商品管理</span></div><div class="nav-item nav-sub"><span>资源管理</span></div><div class="nav-item nav-sub"><span>订单管理</span></div><div class="nav-item nav-sub"><span>商城数据</span></div><div class="nav-item active" id="nav-campaign"><span class="nav-icon">▤</span><span>商城活动</span></div><div class="nav-item nav-sub active" data-page="list"><span>活动列表</span></div></div></aside>
@@ -531,20 +535,30 @@ function renderTabsAndModules(){
   '</div>';
  }).join('');
 }
-function moduleTypeName(type){return {product:'商品模块',ranking:'榜单模块',jump:'活动跳转模块',rich:'图文内容模块'}[type]||'页面模块'}
-function moduleSummary(m){
- if(m.type==='product'){
-  const layouts={single:'单品促销',grid:'商品列表',carousel:'横向轮播',bundle:'促销套装'};
-  return (layouts[m.layout]||'商品展示')+' · 商品 ID：'+((m.productIds||[]).join('、')||'待关联')+' · 促销 ID：'+(m.promotionId||'未关联');
- }
- if(m.type==='ranking')return (m.rankingId||'未关联榜单')+' · '+(m.displayMode==='embed'?'页面内嵌榜单':'榜单入口卡片');
- if(m.type==='jump')return (m.targetType||'跳转目标')+'：'+(m.targetValue||'待配置');
- return (m.displayMode||'图文内容')+' · 内容 Key：'+(m.contentKey||'待配置');
+function normalizedModule(item){
+ const m=clone(item||{});
+ if(m.type==='product'){m.type=m.layout==='bundle'?'bundle':'promo';if(m.type==='bundle')m.bundleProductId=m.bundleProductId||(m.productIds||[])[0]||''}
+ if(m.type==='rich'){m.type='jump';m.bannerKey=m.bannerKey||m.imageKey||''}
+ if(m.type==='jump'&&!Array.isArray(m.jumpRules))m.jumpRules=m.targetValue?[{start:'',end:'',type:m.targetType||'activity',target:m.targetValue}]:[];
+ if(m.type==='ranking'){m.entryCondition=m.entryCondition||{metric:'coin',threshold:'',start:'',end:''};m.entryReward=m.entryReward||{enabled:false,rewardConfigId:'',maxPerCycle:1,grantMode:'auto'}}
+ if(m.type==='rank_reward')m.grantMode='auto';
+ if(m.enabled===undefined)m.enabled=true;
+ return m;
+}
+function moduleTypeName(type){return {promo:'促销商品',bundle:'促销套装',jump:'活动跳转',ranking:'榜单展示',rank_reward:'榜单奖励'}[type]||'业务模块'}
+function moduleSummary(raw){
+ const m=normalizedModule(raw),suffix=m.enabled===false?' · 已隐藏':'';
+ if(m.type==='promo')return '商品 ID：'+((m.productIds||[]).join('、')||'待关联')+' · 促销 ID：'+(m.promotionId||'待关联')+suffix;
+ if(m.type==='bundle')return '套装商品 ID：'+(m.bundleProductId||'待关联')+' · 促销 ID：'+(m.promotionId||'未关联')+suffix;
+ if(m.type==='jump')return (m.jumpRules||[]).length+' 个分时段跳转规则 · Banner：'+(m.bannerKey||'未配置')+suffix;
+ if(m.type==='ranking')return '榜单：'+(m.rankingId||'待关联')+' · 上榜门槛：'+(m.entryCondition&&m.entryCondition.threshold||'待配置')+' · 入榜奖励：'+(m.entryReward&&m.entryReward.enabled?'已启用':'未启用')+suffix;
+ if(m.type==='rank_reward')return '榜单：'+(m.rankingId||'待关联')+' · 奖励配置：'+(m.rewardConfigId||'待关联')+' · 结算后自动下发'+suffix;
+ return '待配置';
 }
 function moduleListHTML(modules,scope){
  if(!modules||!modules.length)return '<div class="module-empty">暂无内容模块，点击「添加模块」开始配置。</div>';
  return '<div class="module-list">'+modules.map(function(m,index){
-  return '<div class="module-item"><div class="meta"><span class="module-icon">'+({product:'▦',ranking:'♛',jump:'↗',rich:'▤'}[m.type]||'＋')+'</span><div><b>'+esc(m.title||moduleTypeName(m.type))+'</b><small><span class="module-kind">'+moduleTypeName(m.type)+'</span>　'+esc(moduleSummary(m))+'</small></div></div><div class="module-actions"><button class="small" onclick="moveModule(\''+esc(scope)+'\',\''+esc(m.id)+'\',-1)">↑</button><button class="small" onclick="moveModule(\''+esc(scope)+'\',\''+esc(m.id)+'\',1)">↓</button><button class="small" onclick="openModuleEditor(\''+esc(scope)+'\',\''+esc(m.id)+'\')">编辑</button><button class="text small" onclick="deleteModule(\''+esc(scope)+'\',\''+esc(m.id)+'\')">删除</button></div></div>';
+  return '<div class="module-item"><div class="meta"><span class="module-icon">'+({promo:'▦',bundle:'▣',ranking:'♛',rank_reward:'★',jump:'↗'}[normalizedModule(m).type]||'＋')+'</span><div><b>'+esc(m.title||moduleTypeName(m.type))+'</b><small><span class="module-kind">'+moduleTypeName(normalizedModule(m).type)+'</span>　'+esc(moduleSummary(m))+'</small></div></div><div class="module-actions"><button class="small" onclick="moveModule(\''+esc(scope)+'\',\''+esc(m.id)+'\',-1)">↑</button><button class="small" onclick="moveModule(\''+esc(scope)+'\',\''+esc(m.id)+'\',1)">↓</button><button class="small" onclick="openModuleEditor(\''+esc(scope)+'\',\''+esc(m.id)+'\')">编辑</button><button class="text small" onclick="deleteModule(\''+esc(scope)+'\',\''+esc(m.id)+'\')">删除</button></div></div>';
  }).join('')+'</div>';
 }
 function addTab(){
@@ -604,50 +618,173 @@ function removeRegion(index){editorConfig.skin.regions.splice(index,1);renderReg
 function openModuleEditor(scope,id){
  moduleScope=scope;moduleEditingId=id||null;
  const arr=getModuleArray(scope),existing=id?arr.find(function(x){return x.id===id}):null;
- moduleDraft=existing?clone(existing):{id:'module_'+Date.now(),type:'product',title:'',layout:'grid',productIds:[],promotionId:'',buttonText:'Buy Now',clickBehavior:'detail'};
- const body='<div class="control"><label class="required">模块类型</label><select id="module-type" onchange="renderModuleModalFields()"><option value="product">商品模块</option><option value="ranking">榜单模块</option><option value="jump">活动跳转模块</option><option value="rich">图文内容模块</option></select></div><div id="module-fields" style="margin-top:15px"></div>';
- openModal(id?'编辑页面模块':'添加页面模块',body,saveModuleFromModal,true);
- $('module-type').value=moduleDraft.type||'product';
+ moduleDraft=existing?normalizedModule(existing):{id:'module_'+Date.now()+'_'+Math.floor(Math.random()*999),type:'promo',title:'',enabled:true,productIds:[],promotionId:'',layout:'grid',clickBehavior:'detail',jumpRules:[],entryCondition:{metric:'coin',threshold:'',start:'',end:''},entryReward:{enabled:false,rewardConfigId:'',maxPerCycle:1,grantMode:'auto'}};
+ const body='<div class="control"><label class="required">业务模块类型</label><select id="module-type" onchange="renderModuleModalFields()">'+
+  fieldOption('promo','① 促销商品',moduleDraft.type)+fieldOption('bundle','② 促销套装',moduleDraft.type)+
+  fieldOption('jump','③ 活动跳转 Banner',moduleDraft.type)+fieldOption('ranking','④ 榜单展示',moduleDraft.type)+fieldOption('rank_reward','⑤ 榜单奖励',moduleDraft.type)+'</select></div><div id="module-fields" style="margin-top:15px"></div>';
+ openModal(id?'编辑业务模块':'添加业务模块',body,saveModuleFromModal,true);
  renderModuleModalFields();
 }
-function fieldOption(value,label,current){return '<option value="'+esc(value)+'" '+(value===current?'selected':'')+'>'+esc(label)+'</option>'}
+function fieldOption(value,label,current){return '<option value="'+esc(value)+'" '+(value===current?' selected':'')+'>'+esc(label)+'</option>'}
+function mfInput(id,label,value,placeholder,required,full,type){
+ return '<div class="control'+(full?' full':'')+'"><label'+(required?' class="required"':'')+'>'+label+'</label><input id="'+id+'" type="'+(type||'text')+'" value="'+esc(value==null?'':value)+'" placeholder="'+esc(placeholder||'')+'"></div>';
+}
+function mfSelect(id,label,options,value,full){
+ return '<div class="control'+(full?' full':'')+'"><label>'+label+'</label><select id="'+id+'">'+options.map(function(opt){return fieldOption(opt[0],opt[1],value)}).join('')+'</select></div>';
+}
+const targetOptions=[['activity','活动页面 ID'],['product','商品详情 ID'],['category','商城分类 ID'],['url','自定义 URL']];
+function customTargetForm(m){
+ return '<div id="m-custom-targets" class="modal-form-grid custom-target-panel">'+
+  mfSelect('m-custom-type','自定义跳转类型',targetOptions,m.customTargetType||'url')+
+  mfInput('m-custom-target','跳转目标 ID / URL',m.customTarget||'','自定义跳转时必填',true)+
+  '</div>';
+}
+function toggleCustomTarget(){const node=$('m-custom-targets');if(node)node.classList.toggle('hidden',$('m-click').value!=='custom')}
+function renderJumpRuleRow(rule,index){
+ return '<div class="jump-rule-row"><div class="jump-rule-head"><b>时段 '+(index+1)+'</b><button type="button" class="text small" onclick="removeJumpRule('+index+')">删除时段</button></div><div class="modal-form-grid">'+
+  '<div class="control"><label class="required">开始时间</label><input type="datetime-local" value="'+esc(rule.start||'')+'" oninput="moduleDraft.jumpRules['+index+'].start=this.value"></div>'+
+  '<div class="control"><label class="required">结束时间</label><input type="datetime-local" value="'+esc(rule.end||'')+'" oninput="moduleDraft.jumpRules['+index+'].end=this.value"></div>'+
+  '<div class="control"><label>跳转类型</label><select onchange="moduleDraft.jumpRules['+index+'].type=this.value">'+targetOptions.map(function(x){return fieldOption(x[0],x[1],rule.type||'activity')}).join('')+'</select></div>'+
+  '<div class="control"><label class="required">目标 ID / URL</label><input value="'+esc(rule.target||'')+'" placeholder="活动 ID / 商品 ID / URL" oninput="moduleDraft.jumpRules['+index+'].target=this.value"></div>'+
+  '</div></div>';
+}
 function renderModuleModalFields(){
  const type=$('module-type').value;
  if(!moduleDraft)moduleDraft={};
  moduleDraft.type=type;
- let body='';
- if(type==='product'){
-  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title)+'" placeholder="例如 Featured Halloween Set"></div><div class="control"><label class="required">展示类型</label><select id="m-layout">'+fieldOption('single','单品促销',moduleDraft.layout)+fieldOption('grid','商品列表',moduleDraft.layout)+fieldOption('carousel','横向轮播',moduleDraft.layout)+fieldOption('bundle','促销套装',moduleDraft.layout)+'</select></div><div class="control"><label>关联促销配置 ID</label><input id="m-promotion" value="'+esc(moduleDraft.promotionId)+'" placeholder="可选，关联现有促销 ID"></div><div class="control full"><label class="required">关联商品 ID</label><input id="m-products" value="'+esc((moduleDraft.productIds||[]).join(', '))+'" placeholder="多个商品 ID 用逗号分隔，例如 1386, 1385"></div><div class="control"><label>按钮文案</label><input id="m-button" value="'+esc(moduleDraft.buttonText||'Buy Now')+'" placeholder="Buy Now"></div><div class="control"><label>点击行为</label><select id="m-click">'+fieldOption('detail','跳转商品详情页',moduleDraft.clickBehavior||'detail')+fieldOption('buy','直接购买',moduleDraft.clickBehavior)+fieldOption('custom','自定义跳转',moduleDraft.clickBehavior)+'</select></div></div><div class="hint">商品名称、图片、价格、支付方式及商品属性均由商品管理读取；促销规则由现有促销系统负责。真正的组合购买需商品系统支持套装商品。</div>';
- }else if(type==='ranking'){
-  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title||'活动排行榜')+'"></div><div class="control"><label class="required">关联商城榜单</label><select id="m-ranking">'+fieldOption('R-007','R-007 · 7日金币消费榜',moduleDraft.rankingId)+fieldOption('R-008','R-008 · 7日荣誉券消费榜',moduleDraft.rankingId)+fieldOption('R-009','R-009 · 7日赠送榜',moduleDraft.rankingId)+fieldOption('R-021','R-021 · 7日金币充值榜（需确认接入）',moduleDraft.rankingId)+'</select></div><div class="control"><label>展示方式</label><select id="m-display">'+fieldOption('entry','榜单入口卡片',moduleDraft.displayMode||'entry')+fieldOption('embed','页面内嵌榜单',moduleDraft.displayMode)+'</select></div><div class="control"><label>入口图片 Key</label><input id="m-image" value="'+esc(moduleDraft.imageKey)+'" placeholder="可选"></div><div class="control"><label>默认榜单类型</label><select id="m-ranking-default">'+fieldOption('coin','金币',moduleDraft.defaultType||'coin')+fieldOption('voucher','荣誉券',moduleDraft.defaultType)+'</select></div></div><div class="hint">榜单数据、排名、用户信息、倒计时及奖励规则由商城现有榜单系统提供；此处仅配置关联和展示方式。榜单 ID 列表为原型示例，正式接入时读取真实榜单。</div>';
+ const m=moduleDraft;
+ const common='<div class="modal-form-grid">'+mfInput('m-title','模块名称（后台识别）',m.title,'例如：圣诞节限时促销',true,true)+
+  mfSelect('m-enabled','模块展示',[['yes','展示'],['no','隐藏']],m.enabled===false?'no':'yes')+
+  mfInput('m-display-start','展示开始时间',m.displayStart||'','默认跟随活动时间',false,false,'datetime-local')+
+  mfInput('m-display-end','展示结束时间',m.displayEnd||'','默认跟随活动时间',false,false,'datetime-local')+
+  '</div><div class="divider"></div>';
+ let fields='';
+ if(type==='promo'){
+  fields='<div class="subsection-title">促销商品配置</div><div class="modal-form-grid">'+
+   mfInput('m-products','商品 ID（多个用逗号分隔）',(m.productIds||[]).join(', '),'例如 990101, 990102',true,true)+
+   mfInput('m-promotion','促销配置 ID',m.promotionId,'关联现有促销配置 ID',true)+
+   mfSelect('m-layout','商品展示形式',[['single','单商品大卡'],['grid','多商品网格'],['carousel','横向轮播']],m.layout||'grid')+
+   mfInput('m-image','模块标题图 Key',m.imageKey,'可选')+
+   mfInput('m-button','按钮文案 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_buy')+
+   mfSelect('m-click','点击行为',[['detail','跳转商品详情'],['buy','直接购买'],['custom','自定义跳转']],m.clickBehavior||'detail')+
+   '</div>'+customTargetForm(m);
+ }else if(type==='bundle'){
+  fields='<div class="subsection-title">促销套装配置</div><div class="modal-form-grid">'+
+   mfInput('m-bundle-id','套装商品 ID',m.bundleProductId,'关联现有可购买的套装商品 ID',true)+
+   mfInput('m-promotion','促销配置 ID',m.promotionId,'可选')+
+   mfInput('m-image','套装主视觉 Key',m.imageKey||m.bundleImageKey,'可选')+
+   mfSelect('m-layout','展示样式',[['featured','主推大卡'],['carousel','套装轮播']],m.layout||'featured')+
+   mfInput('m-button','购买按钮文案 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_buy')+
+   mfSelect('m-click','点击行为',[['detail','套装商品详情'],['buy','直接购买'],['custom','自定义跳转']],m.clickBehavior||'detail')+
+   '</div>'+customTargetForm(m)+'<div class="hint">组合价格、支付及发货由现有商品系统负责，活动后台仅关联套装商品。</div>';
  }else if(type==='jump'){
-  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title)+'" placeholder="例如 Explore More Halloween Events"></div><div class="control"><label>入口图片 Key</label><input id="m-image" value="'+esc(moduleDraft.imageKey)+'" placeholder="请输入图片 Key"></div><div class="control"><label>按钮文案</label><input id="m-button" value="'+esc(moduleDraft.buttonText||'Explore Now')+'"></div><div class="control"><label>跳转类型</label><select id="m-target-type">'+fieldOption('activity','活动页面',moduleDraft.targetType||'activity')+fieldOption('product','商品详情页',moduleDraft.targetType)+fieldOption('category','商城分类',moduleDraft.targetType)+fieldOption('url','指定 URL',moduleDraft.targetType)+'</select></div><div class="control"><label class="required">跳转目标</label><input id="m-target-value" value="'+esc(moduleDraft.targetValue)+'" placeholder="填写活动 ID / 商品 ID / 分类 ID / URL"></div><div class="control full"><label>描述文案 Key</label><input id="m-desc-key" value="'+esc(moduleDraft.descKey)+'" placeholder="可选，多语言 Key"></div></div>';
- }else{
-  body='<div class="modal-form-grid"><div class="control full"><label class="required">模块标题</label><input id="m-title" value="'+esc(moduleDraft.title)+'" placeholder="请输入模块标题"></div><div class="control"><label>内容展示形式</label><select id="m-display">'+fieldOption('image','图片',moduleDraft.displayMode||'image')+fieldOption('text','纯文本',moduleDraft.displayMode)+fieldOption('imageText','图文组合',moduleDraft.displayMode)+'</select></div><div class="control"><label>图片 Key</label><input id="m-image" value="'+esc(moduleDraft.imageKey)+'" placeholder="可选"></div><div class="control full"><label>正文内容 Key</label><input id="m-content-key" value="'+esc(moduleDraft.contentKey)+'" placeholder="请输入多语言 Key"></div></div><div class="hint">可用于活动规则、奖励说明、注意事项及宣传图文。</div>';
+  m.jumpRules=Array.isArray(m.jumpRules)?m.jumpRules:[];
+  fields='<div class="subsection-title">活动跳转 Banner</div><div class="modal-form-grid">'+
+   mfInput('m-banner','Banner 图片 Key',m.bannerKey||m.imageKey,'例如：xmas_explore_2026',true,true)+
+   mfInput('m-title-key','标题多语言 Key',m.titleKey,'可选，图片已含文字时留空')+
+   mfInput('m-desc-key','描述多语言 Key',m.descKey,'可选')+
+   mfInput('m-button','按钮文案 Key',m.buttonTextKey||m.buttonText,'例如 xmas_btn_explore')+
+   mfInput('m-button-image','按钮图片 Key',m.buttonImageKey,'可选')+
+   '</div><div class="divider"></div><div class="subsection-title">分时段跳转地址 <button class="small" type="button" onclick="addJumpRule()">＋ 添加时段</button></div>'+
+   '<div class="hint">每个时段独立配置开始、结束、跳转类型和目标；时间段不能重叠。</div>'+
+   '<div id="jump-rules">'+(m.jumpRules.length?m.jumpRules.map(renderJumpRuleRow).join(''):'<div class="module-empty">暂无跳转时段，请添加</div>')+'</div>';
+ }else if(type==='ranking'){
+  const c=m.entryCondition||{},r=m.entryReward||{};
+  fields='<div class="subsection-title">榜单基础配置</div><div class="modal-form-grid">'+
+   mfInput('m-ranking','关联商城榜单 ID',m.rankingId,'例如 R-XMAS-2026',true)+
+   mfSelect('m-display','榜单展示方式',[['entry','榜单入口（复用现有弹窗）'],['embed','页面内嵌（需服务端支持）']],m.displayMode||'entry')+
+   mfInput('m-image','榜单入口图片 Key',m.imageKey,'可选')+
+   mfSelect('m-ranking-default','默认类型',[['coin','金币'],['voucher','荣誉券']],m.defaultType||'coin')+
+   '</div><div class="divider"></div><div class="subsection-title">上榜条件配置</div><div class="modal-form-grid">'+
+   mfSelect('m-metric','统计口径',[['coin','金币消费'],['voucher','荣誉券消费'],['recharge','金币充值']],c.metric||'coin')+
+   mfInput('m-threshold','上榜门槛',c.threshold,'例如 50000',true,false,'number')+
+   mfInput('m-condition-start','统计开始时间',c.start||'','可选，默认跟随活动时间',false,false,'datetime-local')+
+   mfInput('m-condition-end','统计结束时间',c.end||'','可选，默认跟随活动时间',false,false,'datetime-local')+
+   '</div><div class="divider"></div><div class="subsection-title">入榜奖励配置</div><div class="modal-form-grid">'+
+   mfSelect('m-entry-reward-enabled','是否启用入榜奖励',[['no','不启用'],['yes','启用']],r.enabled?'yes':'no')+
+   mfInput('m-entry-reward-id','关联奖励配置 ID',r.rewardConfigId||'','例如 ER-XMAS-2026')+
+   mfInput('m-entry-max','每人每期最多奖励次数',r.maxPerCycle||1,'默认1',false,false,'number')+
+   '</div><div class="hint">入榜资格、去重及奖励发放需接入服务端榜单/奖励系统。入榜奖励与排名奖励独立。</div>';
+ }else if(type==='rank_reward'){
+  fields='<div class="subsection-title">榜单排名奖励配置</div><div class="modal-form-grid">'+
+   mfInput('m-ranking','关联商城榜单 ID',m.rankingId,'例如 R-XMAS-2026',true)+
+   mfInput('m-reward-id','排名奖励配置 ID',m.rewardConfigId,'例如 RR-XMAS-2026',true)+
+   mfInput('m-reward-image','奖励展示图片 Key',m.rewardImageKey||'','例如 xmas_rank_rewards_2026')+
+   mfInput('m-reward-title','奖励标题多语言 Key',m.rewardTitleKey||'','可选')+
+   mfSelect('m-reward-timing','发放触发时机',[['after_settlement','榜单结算完成后']],m.grantTrigger||'after_settlement')+
+   mfSelect('m-reward-delivery','发放方式',[['auto','自动下发（无需领取）']],'auto')+
+   '</div><div class="hint">榜单结算完成后由服务端按最终排名自动下发，须处理发放资格、幂等去重和失败重试。此原型不会执行真实奖励发放。</div>';
  }
- $('module-fields').innerHTML=body;
+ $('module-fields').innerHTML=common+fields;
+ if(type==='promo'||type==='bundle'){$('m-click').addEventListener('change',toggleCustomTarget);toggleCustomTarget()}
+}
+function readModuleInput(id){return $(id)?$(id).value.trim():''}
+function captureModuleFields(){
+ if(!$('m-title'))return;
+ const m=moduleDraft,type=$('module-type').value;
+ m.type=type;m.title=readModuleInput('m-title');m.enabled=readModuleInput('m-enabled')!=='no';
+ m.displayStart=readModuleInput('m-display-start');m.displayEnd=readModuleInput('m-display-end');
+ if(type==='promo'||type==='bundle'){
+  m.promotionId=readModuleInput('m-promotion');m.layout=readModuleInput('m-layout');m.imageKey=readModuleInput('m-image');
+  m.buttonTextKey=readModuleInput('m-button');m.clickBehavior=readModuleInput('m-click');
+  m.customTargetType=readModuleInput('m-custom-type');m.customTarget=readModuleInput('m-custom-target');
+  if(type==='promo')m.productIds=readModuleInput('m-products').split(/[,，\s]+/).filter(Boolean);
+  else m.bundleProductId=readModuleInput('m-bundle-id');
+ }else if(type==='jump'){
+  m.bannerKey=readModuleInput('m-banner');m.titleKey=readModuleInput('m-title-key');
+  m.descKey=readModuleInput('m-desc-key');m.buttonTextKey=readModuleInput('m-button');
+  m.buttonImageKey=readModuleInput('m-button-image');
+ }else if(type==='ranking'){
+  m.rankingId=readModuleInput('m-ranking');m.displayMode=readModuleInput('m-display');
+  m.imageKey=readModuleInput('m-image');m.defaultType=readModuleInput('m-ranking-default');
+  m.entryCondition={metric:readModuleInput('m-metric'),threshold:readModuleInput('m-threshold'),start:readModuleInput('m-condition-start'),end:readModuleInput('m-condition-end')};
+  m.entryReward={enabled:readModuleInput('m-entry-reward-enabled')==='yes',rewardConfigId:readModuleInput('m-entry-reward-id'),maxPerCycle:Number(readModuleInput('m-entry-max')||1),grantMode:'auto'};
+ }else if(type==='rank_reward'){
+  m.rankingId=readModuleInput('m-ranking');m.rewardConfigId=readModuleInput('m-reward-id');
+  m.rewardImageKey=readModuleInput('m-reward-image');m.rewardTitleKey=readModuleInput('m-reward-title');
+  m.grantTrigger='after_settlement';m.grantMode='auto';
+ }
+}
+function addJumpRule(){
+ captureModuleFields();
+ moduleDraft.jumpRules=moduleDraft.jumpRules||[];
+ moduleDraft.jumpRules.push({start:'',end:'',type:'activity',target:''});
+ renderModuleModalFields();
+}
+function removeJumpRule(index){
+ captureModuleFields();moduleDraft.jumpRules.splice(index,1);renderModuleModalFields();
 }
 function saveModuleFromModal(){
- const type=$('module-type').value,title=$('m-title')?$('m-title').value.trim():'';
- if(!title){toast('请填写模块标题');return}
- const next=Object.assign({},moduleDraft,{type:type,title:title});
- if(type==='product'){
-  const ids=$('m-products').value.split(/[,，\s]+/).map(function(x){return x.trim()}).filter(Boolean);
-  if(!ids.length){toast('请至少关联一个商品 ID');return}
-  next.layout=$('m-layout').value;next.productIds=ids;next.promotionId=$('m-promotion').value.trim();next.buttonText=$('m-button').value.trim();next.clickBehavior=$('m-click').value;
- }else if(type==='ranking'){
-  next.rankingId=$('m-ranking').value;next.displayMode=$('m-display').value;next.imageKey=$('m-image').value.trim();next.defaultType=$('m-ranking-default').value;
- }else if(type==='jump'){
-  next.imageKey=$('m-image').value.trim();next.buttonText=$('m-button').value.trim();next.targetType=$('m-target-type').value;next.targetValue=$('m-target-value').value.trim();next.descKey=$('m-desc-key').value.trim();
-  if(!next.targetValue){toast('请填写跳转目标');return}
- }else{
-  next.displayMode=$('m-display').value;next.imageKey=$('m-image').value.trim();next.contentKey=$('m-content-key').value.trim();
+ captureModuleFields();
+ const m=moduleDraft,type=m.type;
+ if(!m.title){toast('请填写模块名称');return}
+ if(m.displayStart&&m.displayEnd&&m.displayStart>=m.displayEnd){toast('模块展示结束时间必须晚于开始时间');return}
+ if(type==='promo'&&(!m.productIds.length||!m.promotionId)){toast('促销商品必须填写商品 ID 和促销配置 ID');return}
+ if(type==='bundle'&&!m.bundleProductId){toast('请填写套装商品 ID');return}
+ if((type==='promo'||type==='bundle')&&m.clickBehavior==='custom'){
+  if(!m.customTarget){toast('选择自定义跳转后必须填写跳转目标');return}
+  if(m.customTargetType==='url'&&!/^https?:\/\/\S+$/i.test(m.customTarget)){toast('自定义 URL 必须以 http:// 或 https:// 开头');return}
  }
+ if(type==='jump'){
+  if(!m.bannerKey||!m.jumpRules.length){toast('请配置 Banner Key 及至少一个跳转时段');return}
+  const sorted=m.jumpRules.slice().sort(function(a,b){return String(a.start).localeCompare(String(b.start))});
+  for(let i=0;i<sorted.length;i++){
+   const r=sorted[i];
+   if(!r.start||!r.end||r.start>=r.end||!r.target){toast('请完整配置各跳转时段的时间和目标');return}
+   if(r.type==='url'&&!/^https?:\/\/\S+$/i.test(r.target)){toast('跳转 URL 需要以 http:// 或 https:// 开头');return}
+   if(i&&sorted[i-1].end>r.start){toast('不同跳转时段不能重叠');return}
+  }
+  m.jumpRules=sorted;
+ }
+ if(type==='ranking'){
+  if(!m.rankingId||!m.entryCondition.threshold||Number(m.entryCondition.threshold)<=0){toast('请填写榜单 ID 及正数上榜门槛');return}
+  if(m.entryReward.enabled&&(!m.entryReward.rewardConfigId||m.entryReward.maxPerCycle<1)){toast('启用入榜奖励时需填写奖励配置 ID 及次数');return}
+ }
+ if(type==='rank_reward'&&(!m.rankingId||!m.rewardConfigId)){toast('请填写榜单 ID 和排名奖励配置 ID');return}
  const arr=getModuleArray(moduleScope);
- if(moduleEditingId){
-  const index=arr.findIndex(function(x){return x.id===moduleEditingId});if(index>=0)arr[index]=next;
- }else arr.push(next);
- renderTabsAndModules();renderPreview();closeModal();toast('页面模块已保存');
+ if(moduleEditingId){const i=arr.findIndex(function(x){return x.id===moduleEditingId});if(i>=0)arr[i]=clone(m)}
+ else arr.push(clone(m));
+ renderTabsAndModules();renderPreview();closeModal();toast('业务模块已保存');
 }
 function moveModule(scope,id,direction){
  const arr=getModuleArray(scope),index=arr.findIndex(function(x){return x.id===id}),next=index+direction;
