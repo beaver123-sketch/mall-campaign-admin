@@ -13,12 +13,25 @@
 .subsection-title{display:flex;align-items:center;justify-content:space-between;font-weight:650;margin:3px 0 13px;color:#465365}
 .builder-section .hint,.hint{font-size:11px;color:#98a3b1;line-height:1.6;margin-top:5px}
 .tab-empty,.module-empty{padding:17px 15px;border:1px dashed #dbe3ec;border-radius:5px;background:#fafcff;color:#929eac;font-size:12px}
-.tab-config-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid #e6ebf1;border-radius:5px;margin-bottom:8px;background:#fff}
-.tab-config-main{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
-.tab-index{width:28px;height:28px;border-radius:5px;background:#eef5ff;color:#438be2;display:grid;place-items:center;font-weight:650;flex:none}
-.tab-config-main input[type=text]{height:34px;max-width:280px;width:100%;border:1px solid #d9e0e8;border-radius:4px;padding:6px 9px}
-.tab-default{font-size:12px;color:#738093;white-space:nowrap}
+.tab-config-card{border:1px solid #e3eaf2;border-radius:6px;padding:15px;margin-bottom:14px;background:#fff}
+.tab-config-card-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:13px;border-bottom:1px solid #eef1f5}
+.tab-heading{display:flex;align-items:center;gap:11px;min-width:0;flex:1}
+.tab-heading>div{min-width:58px}
+.tab-heading b{display:block;font-size:14px;color:#3c4b5e}
+.tab-heading small{display:block;font-size:11px;color:#98a3b1;margin-top:2px}
+.tab-index{width:30px;height:30px;border-radius:5px;background:#eef5ff;color:#438be2;display:grid;place-items:center;font-weight:650;flex:none}
+.tab-admin-name{height:34px;max-width:210px;width:100%;border:1px solid #d9e0e8;border-radius:4px;padding:6px 9px}
+.tab-card-actions{display:flex;align-items:center;gap:6px;flex:none}
+.tab-default{font-size:12px;color:#738093;white-space:nowrap;margin-right:5px}
 .tab-default input{vertical-align:middle}
+.tab-nav-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px 15px;padding:14px 0;border-bottom:1px solid #eef1f5}
+.tab-nav-fields .control input{height:35px}
+.tab-content-block{padding-top:14px}
+.preview-tab-item{display:flex;flex-direction:column;gap:3px;min-width:0}
+.preview-tab-item small{font-size:8px;color:#9aa4b2;white-space:normal;max-width:100px}
+.preview-tab-item.selected small{color:#5489c9}
+.preview-tab-item.selected b{color:#286bce}
+@media(max-width:760px){.tab-config-card-hd{align-items:flex-start;flex-direction:column}.tab-heading{width:100%;flex-wrap:wrap}.tab-admin-name{max-width:none}.tab-card-actions{width:100%;justify-content:flex-end}.tab-nav-fields{grid-template-columns:1fr}}
 .module-scope{border:1px solid #e6ebf1;border-radius:6px;padding:14px;margin-bottom:13px;background:#fff}
 .module-scope-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
 .module-scope-hd strong{font-size:14px}
@@ -76,9 +89,6 @@
       <div class="control"><label class="required">活动类型</label><select id="a-type"><option>综合活动</option><option>商品促销</option><option>榜单活动</option></select></div>
       <div class="control"><label>活动排序</label><input id="a-sort" type="number" value="0"></div>
       <div class="control"><label>活动备注</label><input id="a-note" placeholder="仅后台可见"></div>
-      <div class="control"><label>预热开始时间</label><input id="a-preheat" type="datetime-local"></div>
-      <div class="control"><label class="required">活动开始时间</label><input id="a-start" type="datetime-local"></div>
-      <div class="control"><label class="required">活动结束时间</label><input id="a-end" type="datetime-local"></div>
       <div class="control"><label>时区</label><select id="a-zone"><option>UTC+8</option><option>UTC</option><option>UTC+5:30</option><option>UTC+5</option><option>UTC+3</option></select></div>
       <div class="control full"><label>国家地区</label><input id="a-region" value="全部重要地区" placeholder="例如：全部重要地区 / 印度、巴基斯坦"><div class="hint">此处设置活动投放范围；区域皮肤仅覆盖视觉样式，不改变活动内容。</div></div>
       <div class="control full"><label>适用 APP</label><div class="inline-checks" id="app-checks"><label><input type="checkbox" name="app" value="poppo" checked> poppo</label><label><input type="checkbox" name="app" value="vone"> vone</label><label><input type="checkbox" name="app" value="mimi"> mimi</label><label><input type="checkbox" name="app" value="jolly"> jolly</label><label><input type="checkbox" name="app" value="miti"> miti</label><label><input type="checkbox" name="app" value="pc_client"> pc_client</label></div></div>
@@ -86,8 +96,18 @@
     </div>
   </div>
 
+  <div class="section builder-section" id="schedule-section">
+    <div class="section-title"><span>02 活动时间配置</span><span class="section-note">统一控制预热、正式活动及结束时间</span></div>
+    <div class="form-grid">
+      <div class="control"><label>预热开始时间</label><input id="a-preheat" type="datetime-local"><div class="hint">到达该时间后，活动状态进入预热中；不填写则不启用预热。</div></div>
+      <div class="control"><label>预热结束时间</label><input id="a-preheat-end" type="datetime-local"><div class="hint">默认与活动开始时间一致；预热结束后进入正式活动。</div></div>
+      <div class="control"><label class="required">活动开始时间</label><input id="a-start" type="datetime-local"></div>
+      <div class="control"><label class="required">活动结束时间</label><input id="a-end" type="datetime-local"></div>
+    </div>
+  </div>
+
   <div class="section builder-section" id="hero-section">
-    <div class="section-title"><span>02 顶部头图</span><span class="tag green">必选模块</span></div>
+    <div class="section-title"><span>03 顶部头图</span><span class="tag green">必选模块</span></div>
     <div class="form-grid">
       <div class="control full"><label class="required">活动头图 Key</label><input id="hero-image-key" placeholder="请输入头图图片资源 Key" oninput="renderPreview()"><div class="hint">头图视觉中已包含的主标题、副标题不再单独配置，避免重复维护。</div></div>
       <div class="control full"><div class="hint">头图仅用于展示活动视觉，不配置点击跳转。如需设置页面入口，请通过下方「活动跳转模块」单独配置。</div></div>
@@ -95,23 +115,22 @@
   </div>
 
   <div class="section builder-section" id="tabs-section">
-    <div class="section-title"><span>03 Tab 导航</span><div class="right"><span class="section-note">可选；不添加 Tab 时直接配置单页面内容</span><button class="small" onclick="addTab()">＋ 新增 Tab</button></div></div>
+    <div class="section-title"><span>04 Tab 导航与内容配置</span><div class="right"><span class="section-note">每个 Tab 独立配置多语言、选中/未选中样式及对应内容</span><button class="small" onclick="addTab()">＋ 新增 Tab</button></div></div>
     <div id="builder-tabs"></div>
   </div>
 
   <div class="section builder-section" id="modules-section">
-    <div class="section-title"><span>04 页面内容模块</span><span class="section-note">按前台展示顺序配置；支持重复添加及排序</span></div>
+    <div class="section-title"><span>05 单页面内容模块</span><span class="section-note">仅不使用 Tab 时配置；使用 Tab 时在各 Tab 内分别配置</span></div>
     <div id="builder-content"></div>
   </div>
 
   <div class="section builder-section" id="skin-section">
-    <div class="section-title"><span>05 页面皮肤</span><span class="section-note">只控制视觉样式，不重复配置业务内容</span></div>
+    <div class="section-title"><span>06 页面皮肤</span><span class="section-note">只控制视觉样式，不重复配置业务内容</span></div>
     <div class="subsection-title">默认皮肤</div>
     <div class="form-grid">
       <div class="control"><label>页面背景色</label><input id="skin-bg-color" type="color" value="#321b78"></div>
       <div class="control"><label>页面背景图 Key</label><input id="skin-bg-image" placeholder="可选，填写背景图资源 Key"></div>
       <div class="control"><label>商品卡片样式</label><select id="skin-card-style"><option value="rounded">圆角卡片</option><option value="flat">简洁平铺</option><option value="glass">半透明卡片</option></select></div>
-      <div class="control"><label>Tab 导航样式</label><select id="skin-tab-style"><option value="underline">底部横线选中</option><option value="pill">胶囊选中</option><option value="block">色块选中</option></select></div>
       <div class="control full"><label>装饰资源 Key</label><input id="skin-decoration" placeholder="可选，填写页面底部或模块装饰资源 Key"></div>
     </div>
     <div class="divider"></div>
@@ -121,7 +140,7 @@
   </div>
 
   <div class="section builder-section" id="publish-section">
-    <div class="section-title"><span>06 发布设置</span><span class="section-note">活动规则与分享为可选配置</span></div>
+    <div class="section-title"><span>07 发布设置</span><span class="section-note">活动规则与分享为可选配置</span></div>
     <div class="subsection-title">活动规则</div>
     <div class="form-grid">
       <div class="control full"><label>活动规则内容 Key</label><input id="rules-key" placeholder="例如 yyhd_halloween_rules"><div class="hint">完整规则建议使用一个多语言 Key 管理；也可通过图文内容模块在页面内展示。</div></div>
@@ -191,7 +210,7 @@ function blankConfig(){
   hero:{imageKey:''},
   tabs:[],
   modules:[],
-  skin:{bgColor:'#321b78',bgImageKey:'',cardStyle:'rounded',tabStyle:'underline',decorationKey:'',regions:[]},
+  skin:{bgColor:'#321b78',bgImageKey:'',cardStyle:'rounded',decorationKey:'',regions:[]},
   rulesKey:'',
   share:{enabled:true,imageKey:'',titleKey:'',descKey:''},
   publish:{autoCloseEntry:true,autoHidePage:true,autoOfflineProducts:false}
@@ -201,7 +220,7 @@ function normalizeConfig(value){
  const base=blankConfig(),c=value||{};
  return {
   hero:{imageKey:(c.hero&&c.hero.imageKey)||''},
-  tabs:Array.isArray(c.tabs)?c.tabs:[],
+  tabs:Array.isArray(c.tabs)?c.tabs.map(function(tab,index){return Object.assign({id:'tab_'+(index+1),name:'Tab '+(index+1),textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:index===0,modules:[]},tab,{modules:Array.isArray(tab.modules)?tab.modules:[]})}):[],
   modules:Array.isArray(c.modules)?c.modules:[],
   skin:Object.assign(base.skin,c.skin||{},{regions:Array.isArray(c.skin&&c.skin.regions)?c.skin.regions:[]}),
   rulesKey:c.rulesKey||'',
@@ -216,11 +235,11 @@ function statusTag(s){
  return '<span class="tag '+c+'">'+esc(s)+'</span>';
 }
 function formatNow(){return new Date().toLocaleString('zh-CN',{hour12:false}).replaceAll('/','-')}
-function getActivityStatus(start,end,preheat){
- const now=new Date(),s=new Date(String(start||'').replace(' ','T')),e=new Date(String(end||'').replace(' ','T')),p=preheat?new Date(String(preheat).replace(' ','T')):null;
+function getActivityStatus(start,end,preheat,preheatEnd){
+ const now=new Date(),s=new Date(String(start||'').replace(' ','T')),e=new Date(String(end||'').replace(' ','T')),p=preheat?new Date(String(preheat).replace(' ','T')):null,pe=preheatEnd?new Date(String(preheatEnd).replace(' ','T')):s;
  if(!isNaN(e)&&now>e)return '已结束';
  if(!isNaN(s)&&now>=s)return '进行中';
- if(p&&!isNaN(p)&&now>=p)return '预热中';
+ if(p&&!isNaN(p)&&now>=p&&now<pe)return '预热中';
  return '未开始';
 }
 function renderTable(){
@@ -298,6 +317,7 @@ function openEditor(id){
  setValue('a-sort',activity&&activity.sort!=null?activity.sort:0);
  setValue('a-note',activity&&activity.note);
  setValue('a-preheat',activity&&activity.preheat?String(activity.preheat).replace(' ','T'):'');
+ setValue('a-preheat-end',activity&&activity.preheatEnd?String(activity.preheatEnd).replace(' ','T'):(activity&&activity.start?String(activity.start).replace(' ','T'):'2026-11-25T00:00'));
  setValue('a-start',activity&&activity.start?String(activity.start).replace(' ','T'):'2026-11-25T00:00');
  setValue('a-end',activity&&activity.end?String(activity.end).replace(' ','T'):'2026-12-01T23:59');
  setValue('a-zone',activity&&activity.timezone||'UTC+8');
@@ -310,7 +330,6 @@ function openEditor(id){
  setValue('skin-bg-color',editorConfig.skin.bgColor||'#321b78');
  setValue('skin-bg-image',editorConfig.skin.bgImageKey);
  setValue('skin-card-style',editorConfig.skin.cardStyle||'rounded');
- setValue('skin-tab-style',editorConfig.skin.tabStyle||'underline');
  setValue('skin-decoration',editorConfig.skin.decorationKey);
  setValue('rules-key',editorConfig.rulesKey);
  setValue('share-enabled',editorConfig.share.enabled===false?'no':'yes');
@@ -333,7 +352,6 @@ function syncEditorConfig(){
   bgColor:$('skin-bg-color').value,
   bgImageKey:$('skin-bg-image').value.trim(),
   cardStyle:$('skin-card-style').value,
-  tabStyle:$('skin-tab-style').value,
   decorationKey:$('skin-decoration').value.trim(),
   regions:editorConfig.skin.regions||[]
  };
@@ -344,15 +362,24 @@ function syncEditorConfig(){
 function renderTabsAndModules(){
  const tabs=editorConfig.tabs||[];
  if(!tabs.length){
-  $('builder-tabs').innerHTML='<div class="tab-empty">当前为单页面结构。无需配置 Tab，页面内容将直接按下方模块顺序展示。</div>';
+  $('builder-tabs').innerHTML='<div class="tab-empty">当前为单页面结构。无需配置 Tab，页面内容将直接按下方「单页面内容模块」配置。</div>';
+  $('modules-section').classList.remove('hidden');
   $('builder-content').innerHTML='<div class="module-scope"><div class="module-scope-hd"><div><strong>单页面内容</strong><small>模块按添加顺序从上到下展示</small></div><button class="primary small" onclick="openModuleEditor(\'page\')">＋ 添加内容模块</button></div>'+moduleListHTML(editorConfig.modules,'page')+'</div>';
   return;
  }
+ $('modules-section').classList.add('hidden');
  $('builder-tabs').innerHTML=tabs.map(function(tab,index){
-  return '<div class="tab-config-row"><div class="tab-config-main"><span class="tab-index">'+(index+1)+'</span><input type="text" value="'+esc(tab.name)+'" placeholder="请输入 Tab 名称" onchange="updateTabName(\''+esc(tab.id)+'\',this.value)"><label class="tab-default"><input type="radio" name="default-tab" '+(tab.isDefault?'checked':'')+' onclick="setDefaultTab(\''+esc(tab.id)+'\')"> 默认展示</label></div><div class="right"><button class="small" onclick="moveTab(\''+esc(tab.id)+'\',-1)">↑</button><button class="small" onclick="moveTab(\''+esc(tab.id)+'\',1)">↓</button><button class="text small" onclick="deleteTab(\''+esc(tab.id)+'\')">删除</button></div></div>';
- }).join('');
- $('builder-content').innerHTML=tabs.map(function(tab,index){
-  return '<div class="module-scope"><div class="module-scope-hd"><div><strong>'+esc(tab.name||('Tab '+(index+1)))+'</strong><small>此 Tab 下的内容模块，按添加顺序展示</small></div><button class="primary small" onclick="openModuleEditor(\''+esc(tab.id)+'\')">＋ 添加模块</button></div>'+moduleListHTML(tab.modules||[],tab.id)+'</div>';
+  const tabId=esc(tab.id);
+  return '<div class="tab-config-card">'+
+   '<div class="tab-config-card-hd"><div class="tab-heading"><span class="tab-index">'+(index+1)+'</span><div><b>Tab '+(index+1)+'</b><small>独立导航样式与页面内容</small></div><input class="tab-admin-name" type="text" value="'+esc(tab.name||('Tab '+(index+1)))+'" placeholder="后台备注名称" oninput="updateTabField(\''+tabId+'\',\'name\',this.value)"></div>'+
+   '<div class="tab-card-actions"><label class="tab-default"><input type="radio" name="default-tab" '+(tab.isDefault?'checked':'')+' onclick="setDefaultTab(\''+tabId+'\')"> 默认展示</label><button class="small" onclick="moveTab(\''+tabId+'\',-1)">↑</button><button class="small" onclick="moveTab(\''+tabId+'\',1)">↓</button><button class="text small" onclick="deleteTab(\''+tabId+'\')">删除 Tab</button></div></div>'+
+   '<div class="tab-nav-fields">'+
+    '<div class="control"><label class="required">Tab 多语言文本 Key</label><input value="'+esc(tab.textKey||'')+'" placeholder="例如 yyhd_halloween_tab_sale" oninput="updateTabField(\''+tabId+'\',\'textKey\',this.value)"><div class="hint">前台 Tab 名称通过此多语言 Key 展示。</div></div>'+
+    '<div class="control"><label>选中态（亮起）图片 Key</label><input value="'+esc(tab.activeImageKey||'')+'" placeholder="请输入选中态图片资源 Key" oninput="updateTabField(\''+tabId+'\',\'activeImageKey\',this.value)"></div>'+
+    '<div class="control"><label>未选中态（暗下）图片 Key</label><input value="'+esc(tab.inactiveImageKey||'')+'" placeholder="请输入未选中态图片资源 Key" oninput="updateTabField(\''+tabId+'\',\'inactiveImageKey\',this.value)"></div>'+
+   '</div>'+
+   '<div class="tab-content-block"><div class="module-scope-hd"><div><strong>Tab '+(index+1)+' 页面内容</strong><small>此 Tab 独立维护商品、促销套装、榜单及活动跳转等模块</small></div><button class="primary small" onclick="openModuleEditor(\''+tabId+'\')">＋ 添加模块</button></div>'+moduleListHTML(tab.modules||[],tab.id)+'</div>'+
+  '</div>';
  }).join('');
 }
 function moduleTypeName(type){return {product:'商品模块',ranking:'榜单模块',jump:'活动跳转模块',rich:'图文内容模块'}[type]||'页面模块'}
@@ -372,18 +399,21 @@ function moduleListHTML(modules,scope){
  }).join('')+'</div>';
 }
 function addTab(){
+ const nextIndex=editorConfig.tabs.length+1;
  if(!editorConfig.tabs.length){
-  const first={id:'tab_'+Date.now(),name:'Tab 1',isDefault:true,modules:editorConfig.modules||[]};
+  const first={id:'tab_'+Date.now(),name:'Tab 1',textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:true,modules:editorConfig.modules||[]};
   editorConfig.modules=[];
   editorConfig.tabs.push(first);
  }else{
-  editorConfig.tabs.push({id:'tab_'+Date.now(),name:'Tab '+(editorConfig.tabs.length+1),isDefault:false,modules:[]});
+  editorConfig.tabs.push({id:'tab_'+Date.now(),name:'Tab '+nextIndex,textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:false,modules:[]});
  }
- renderTabsAndModules();renderPreview();toast('Tab 已添加');
+ renderTabsAndModules();renderPreview();toast('Tab '+nextIndex+' 已添加，并已生成独立内容配置');
 }
-function updateTabName(id,name){
- const tab=editorConfig.tabs.find(function(x){return x.id===id});if(tab){tab.name=name;renderTabsAndModules();renderPreview()}
+function updateTabField(id,field,value){
+ const tab=editorConfig.tabs.find(function(x){return x.id===id});
+ if(tab){tab[field]=value;renderPreview()}
 }
+function updateTabName(id,name){updateTabField(id,'name',name)}
 function setDefaultTab(id){
  editorConfig.tabs.forEach(function(tab){tab.isDefault=tab.id===id});
  renderTabsAndModules();renderPreview();
@@ -503,7 +533,7 @@ function renderPreview(){
  let body='<div class="preview-hero" style="background:linear-gradient(135deg,'+esc(bg)+',#7653bd)"><small>商城活动 · 顶部头图</small><h3>'+esc(name)+'</h3><div class="preview-key">头图资源：'+esc(imageKey)+'</div></div>';
  if(tabs&&tabs.length){
   const active=tabs.find(function(t){return t.isDefault})||tabs[0];
-  body+='<div class="preview-tabs">'+tabs.map(function(t){return '<span class="'+(t.id===active.id?'selected':'')+'">'+esc(t.name)+'</span>'}).join('')+'</div>';
+  body+='<div class="preview-tabs">'+tabs.map(function(t){const selected=t.id===active.id;const stateKey=selected?t.activeImageKey:t.inactiveImageKey;return '<span class="preview-tab-item '+(selected?'selected':'')+'" title="多语言 Key：'+esc(t.textKey||'未配置')+'"><b>'+esc(t.name||'Tab')+'</b><small>'+(selected?'亮态':'暗态')+'图片：'+esc(stateKey||'未配置')+'</small></span>'}).join('')+'</div>';
   (active.modules||[]).forEach(function(m){body+=renderPreviewModule(m)});
   if(!(active.modules||[]).length)body+='<div class="preview-block"><p>当前 Tab 暂无内容模块</p></div>';
  }else{
@@ -520,10 +550,12 @@ function collectEditorConfig(){
  return clone(editorConfig);
 }
 function saveActivity(publish){
- const name=$('a-name').value.trim(),start=$('a-start').value.replace('T',' '),end=$('a-end').value.replace('T',' '),preheat=$('a-preheat').value.replace('T',' ');
+ const name=$('a-name').value.trim(),start=$('a-start').value.replace('T',' '),end=$('a-end').value.replace('T',' '),preheat=$('a-preheat').value.replace('T',' '),preheatEnd=$('a-preheat-end').value?$('a-preheat-end').value.replace('T',' '):start;
  if(!name){toast('请填写活动名称');$('a-name').focus();return}
  if(!start||!end){toast('请填写活动开始及结束时间');return}
  if(new Date(start.replace(' ','T'))>new Date(end.replace(' ','T'))){toast('活动结束时间不能早于开始时间');return}
+ if(preheat&&new Date(preheat.replace(' ','T'))>new Date(preheatEnd.replace(' ','T'))){toast('预热结束时间不能早于预热开始时间');return}
+ if(preheatEnd&&new Date(preheatEnd.replace(' ','T'))>new Date(start.replace(' ','T'))){toast('预热结束时间不能晚于活动开始时间');return}
  const config=collectEditorConfig();
  const moduleCount=config.tabs.length?config.tabs.reduce(function(n,t){return n+(t.modules||[]).length},0):config.modules.length;
  if(publish&&!config.hero.imageKey){toast('发布前请配置顶部头图 Key');return}
@@ -537,9 +569,9 @@ function saveActivity(publish){
  const apps=checkedValues('app'),clients=checkedValues('client');
  Object.assign(activity,{
   name:name,type:$('a-type').value,sort:Number($('a-sort').value)||0,note:$('a-note').value.trim(),
-  preheat:preheat,start:start,end:end,timezone:$('a-zone').value,region:$('a-region').value.trim()||'全部重要地区',
+  preheat:preheat,preheatEnd:preheatEnd,start:start,end:end,timezone:$('a-zone').value,region:$('a-region').value.trim()||'全部重要地区',
   apps:apps,clients:clients,app:apps.join('、'),online:publish?'上架':'下架',
-  status:getActivityStatus(start,end,preheat),updated:formatNow(),config:config,
+  status:getActivityStatus(start,end,preheat,preheatEnd),updated:formatNow(),config:config,
   url:activity.url||''
  });
  persist();
