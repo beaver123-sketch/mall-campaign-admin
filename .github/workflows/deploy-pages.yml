@@ -23,6 +23,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Validate inline JavaScript
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('index.html', 'utf8');
+          const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+          if (!scripts.length) throw new Error('No inline JavaScript found');
+          fs.writeFileSync('/tmp/mall-campaign-inline.js', scripts.map(item => item[1]).join('\n'));
+          NODE
+          node --check /tmp/mall-campaign-inline.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
