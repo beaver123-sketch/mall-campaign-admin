@@ -218,9 +218,11 @@ function blankConfig(){
 }
 function normalizeConfig(value){
  const base=blankConfig(),c=value||{};
+ const tabs=Array.isArray(c.tabs)?c.tabs.map(function(tab,index){return Object.assign({id:'tab_'+(index+1),name:'Tab '+(index+1),textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:index===0,modules:[]},tab,{modules:Array.isArray(tab.modules)?tab.modules:[]})}):[];
+ if(tabs.length&&!tabs.some(function(tab){return tab.isDefault}))tabs[0].isDefault=true;
  return {
   hero:{imageKey:(c.hero&&c.hero.imageKey)||''},
-  tabs:Array.isArray(c.tabs)?c.tabs.map(function(tab,index){return Object.assign({id:'tab_'+(index+1),name:'Tab '+(index+1),textKey:'',activeImageKey:'',inactiveImageKey:'',isDefault:index===0,modules:[]},tab,{modules:Array.isArray(tab.modules)?tab.modules:[]})}):[],
+  tabs:tabs,
   modules:Array.isArray(c.modules)?c.modules:[],
   skin:Object.assign(base.skin,c.skin||{},{regions:Array.isArray(c.skin&&c.skin.regions)?c.skin.regions:[]}),
   rulesKey:c.rulesKey||'',
@@ -559,6 +561,7 @@ function saveActivity(publish){
  const config=collectEditorConfig();
  const moduleCount=config.tabs.length?config.tabs.reduce(function(n,t){return n+(t.modules||[]).length},0):config.modules.length;
  if(publish&&!config.hero.imageKey){toast('发布前请配置顶部头图 Key');return}
+ if(publish&&config.tabs.some(function(t){return !t.textKey||!t.activeImageKey||!t.inactiveImageKey})){toast('请完成每个 Tab 的多语言文本 Key、选中态及未选中态图片 Key');return}
  if(publish&&!moduleCount){toast('发布前请至少添加一个页面内容模块');return}
  let activity=editingId?activities.find(function(x){return Number(x.id)===Number(editingId)}):null;
  const isNew=!activity;
