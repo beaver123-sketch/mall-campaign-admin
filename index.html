@@ -159,7 +159,7 @@
 .preview-jump-action img{display:block;width:100%;height:auto}
 .preview-jump-button-placeholder{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:3.55;border-radius:999px;background:linear-gradient(100deg,#ffd45c,#ff8b43);color:#fff;font-size:12px;font-weight:700;line-height:1.2}
 .demo-guide-link{padding:6px 9px;border:1px solid #dce5f0;border-radius:4px;color:#409eff;background:#fff;text-decoration:none;font-size:12px;white-space:nowrap}.demo-guide-link:hover{background:#eef6ff}
-</style></head>
+.inline-fields input{min-width:0;width:100%}\n</style></head>
 <body><div class="app">
 <aside class="sidebar"><div class="brand"><span class="brand-mark">M</span><span>模块管理后台</span></div><div class="nav-group"><div class="nav-item"><span class="nav-icon">▣</span><span>商城管理</span></div><div class="nav-item nav-sub"><span>商城配置</span></div><div class="nav-item nav-sub"><span>商品管理</span></div><div class="nav-item nav-sub"><span>资源管理</span></div><div class="nav-item nav-sub"><span>订单管理</span></div><div class="nav-item nav-sub"><span>商城数据</span></div><div class="nav-item active" id="nav-campaign"><span class="nav-icon">▤</span><span>商城活动</span></div><div class="nav-item nav-sub active" data-page="list"><span>活动列表</span></div></div></aside>
 <main class="main"><header class="topbar"><div class="crumb">☰　 商城管理　/　<b id="crumb-current">商城活动</b></div><div class="top-actions"><span>◐</span><span>文</span><span>♟ LunaY张悦</span></div></header><div class="content">
@@ -788,7 +788,7 @@ function renderRankingRewardRuleRow(rule,index){
  return '<div class="jump-rule-row"><div class="jump-rule-head"><b>奖励规则 '+(index+1)+'</b><button type="button" class="text small" onclick="removeRankingRewardRule('+index+')">删除规则</button></div>'+
   '<div class="modal-form-grid">'+
   '<div class="control"><label>奖励条件</label><select id="m-reward-condition-'+index+'" onchange="updateRankingRewardRule('+index+',\'conditionType\',this.value)">'+conditionOptions.map(function(x){return fieldOption(x[0],x[1],condition)}).join('')+'</select></div>'+
-  (condition==='rank'?'<div class="control"><label class="required">排名区间</label><div class="inline-fields"><input id="m-reward-rank-start-'+index+'" type="number" min="1" value="'+esc(rule.rankStart||'1')+'" placeholder="起始名次" oninput="moduleDraft.rewardRules['+index+'].rankStart=this.value"><span>至</span><input id="m-reward-rank-end-'+index+'" type="number" min="1" value="'+esc(rule.rankEnd||'3')+'" placeholder="结束名次" oninput="moduleDraft.rewardRules['+index+'].rankEnd=this.value"></div></div>':'')+
+  (condition==='rank'?'<div class="control"><label class="required">排名区间</label><div class="inline-fields" style="display:flex;align-items:center;gap:8px"><input id="m-reward-rank-start-'+index+'" type="number" min="1" value="'+esc(rule.rankStart||'1')+'" placeholder="起始名次" oninput="moduleDraft.rewardRules['+index+'].rankStart=this.value"><span>至</span><input id="m-reward-rank-end-'+index+'" type="number" min="1" value="'+esc(rule.rankEnd||'3')+'" placeholder="结束名次" oninput="moduleDraft.rewardRules['+index+'].rankEnd=this.value"></div></div>':'')+
   (condition==='score'?'<div class="control"><label class="required">最低统计值</label><input id="m-reward-min-score-'+index+'" type="number" min="1" value="'+esc(rule.minScore||'')+'" placeholder="例如 50000" oninput="moduleDraft.rewardRules['+index+'].minScore=this.value"></div>':'')+
   '<div class="control"><label>奖励类型</label><select id="m-reward-type-'+index+'" onchange="updateRankingRewardRule('+index+',\'rewardType\',this.value)">'+rewardOptions.map(function(x){return fieldOption(x[0],x[1],rewardType)}).join('')+'</select></div>'+
   (rewardType==='product'?'<div class="control"><label class="required">奖励商品 ID</label><input id="m-reward-product-'+index+'" value="'+esc(rule.productId||'')+'" placeholder="填写商品管理中的商品 ID" oninput="moduleDraft.rewardRules['+index+'].productId=this.value"></div>':'')+
@@ -1091,8 +1091,8 @@ function loadChristmasDemo(){
   ]}
  ]};
  const rank={id:'tab_xmas_rank',name:'圣诞排行榜',textKey:'xmas_tab_rank',activeImageKey:'xmas_tab_rank_on',inactiveImageKey:'xmas_tab_rank_off',isDefault:false,modules:[
-  {id:'xmas_ranking_mod',type:'ranking',title:'圣诞金币消费榜',enabled:true,rankingId:'R-XMAS-26',imageKey:'xmas_tab_rank_on',displayMode:'entry',defaultType:'coin',entryCondition:{metric:'coin',threshold:'50000',start:'2026-12-25T00:00',end:'2026-12-31T23:59'},entryReward:{enabled:true,rewardConfigId:'ER-XMAS-26',maxPerCycle:1,grantMode:'auto'}},
-  {id:'xmas_reward_mod',type:'rank_reward',title:'圣诞排名奖励（自动下发）',enabled:true,rankingId:'R-XMAS-26',rewardConfigId:'RR-XMAS-26',rewardImageKey:'xmas_rank_rewards_2026',rewardTitleKey:'xmas_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
+  {id:'xmas_ranking_mod',type:'ranking',title:'圣诞金币消费榜',enabled:true,rankingType:'coin',imageKey:'xmas_tab_rank_on',bottomImageKey:'xmas_rank_rewards_2026',displayMode:'entry',entryCondition:{threshold:'50000',start:'2026-12-25T00:00',end:'2026-12-31T23:59'},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[{conditionType:'entry',rewardType:'coin',quantity:'5000'},{conditionType:'rank',rankStart:'1',rankEnd:'3',rewardType:'product',productId:'990103',quantity:'1'}]},
+  {id:'xmas_reward_mod',type:'rank_reward',title:'圣诞排名奖励（自动下发）',enabled:true,rankingModuleId:'xmas_ranking_mod',rewardImageKey:'xmas_rank_rewards_2026',rewardTitleKey:'xmas_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
  ]};
  editorConfig.tabs=[deals,rank];editorConfig.modules=[];editorConfig.pageMode='tabs';previewTabId=deals.id;
  renderTabsAndModules();renderPreview();toast('已填充完整圣诞活动测试配置，默认下架，请检查后保存');
@@ -1137,8 +1137,8 @@ function loadNewYearDemo(){
   ]}
  ]};
  const rank={id:'tab_newyear_rank',name:'新年排行榜',textKey:'newyear_tab_rank',activeImageKey:'newyear_tab_rank_on',inactiveImageKey:'newyear_tab_rank_off',isDefault:false,modules:[
-  {id:'newyear_ranking_mod',type:'ranking',title:'新年金币消费榜',enabled:true,rankingId:'R-2027-NY',imageKey:'newyear_tab_rank_on',displayMode:'entry',defaultType:'coin',entryCondition:{metric:'coin',threshold:'50000',start:'2027-01-01T00:00',end:'2027-01-07T23:59'},entryReward:{enabled:true,rewardConfigId:'ER-2027-NY',maxPerCycle:1,grantMode:'auto'}},
-  {id:'newyear_reward_mod',type:'rank_reward',title:'新年排名奖励（自动下发）',enabled:true,rankingId:'R-2027-NY',rewardConfigId:'RR-2027-NY',rewardImageKey:'newyear_rank_rewards_2027',rewardTitleKey:'newyear_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
+  {id:'newyear_ranking_mod',type:'ranking',title:'新年金币消费榜',enabled:true,rankingType:'coin',imageKey:'newyear_tab_rank_on',bottomImageKey:'newyear_rank_rewards_2027',displayMode:'entry',entryCondition:{threshold:'50000',start:'2027-01-01T00:00',end:'2027-01-07T23:59'},activityCondition:{productIds:[],metricMode:'coin',coinRatio:'1',voucherRatio:'1'},rewardRules:[{conditionType:'entry',rewardType:'coin',quantity:'5000'},{conditionType:'rank',rankStart:'1',rankEnd:'3',rewardType:'product',productId:'100203',quantity:'1'}]},
+  {id:'newyear_reward_mod',type:'rank_reward',title:'新年排名奖励（自动下发）',enabled:true,rankingModuleId:'newyear_ranking_mod',rewardImageKey:'newyear_rank_rewards_2027',rewardTitleKey:'newyear_title_rewards',grantTrigger:'after_settlement',grantMode:'auto'}
  ]};
  editorConfig.tabs=[deals,rank];editorConfig.modules=[];editorConfig.pageMode='tabs';previewTabId=deals.id;
  renderTabsAndModules();renderPreview();toast('已填充完整新年活动测试配置，默认下架，请检查后保存');
