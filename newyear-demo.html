@@ -1,0 +1,62 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>新年商城活动 · 测试配置手册</title><style>
+:root{--ink:#203142;--muted:#788697;--accent:#a5162a;--line:#e8e9ed;--green:#07654b}
+*{box-sizing:border-box}body{margin:0;background:#f6f7f9;color:var(--ink);font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1160px;margin:auto;padding:32px 20px 80px}h1{font-size:29px;margin:4px 0 9px}h2{font-size:19px;margin:0 0 17px}h3{font-size:15px;margin:26px 0 11px}p{margin:5px 0 12px;color:#657486}
+.top{background:white;padding:25px 30px;border:1px solid var(--line);border-radius:14px;box-shadow:0 5px 24px #25384c0a}.tag{font-size:12px;color:var(--green);background:#e9f7f1;border-radius:5px;padding:3px 8px}
+.actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}a.link{background:var(--accent);color:white;border-radius:7px;text-decoration:none;padding:9px 16px}a.secondary{background:white;color:var(--accent);border:1px solid #d6c2c8}
+section{background:white;border:1px solid var(--line);border-radius:12px;padding:25px 28px;margin-top:18px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.asset{border:1px solid #e4e7ec;border-radius:10px;overflow:hidden;background:#fff}.asset img{display:block;width:100%;height:150px;object-fit:contain;background:#fbf6ee}.assetname{font-weight:650;margin:10px 12px 4px}
+.copyrow{display:flex;gap:6px;align-items:center;margin:0 12px 12px}code{font-size:11px;background:#f4f6fa;padding:7px 8px;border-radius:5px;overflow-wrap:anywhere;flex:1}
+button{border:1px solid #d9dde5;background:white;padding:6px 9px;border-radius:5px;color:#51616f;cursor:pointer;white-space:nowrap}button:hover{border-color:var(--accent);color:var(--accent)}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:660px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{background:#f8f9fb;color:#647285}
+.notice{background:#fff6e9;border-left:3px solid #e4a447;padding:12px 14px;color:#7f5f32;border-radius:4px}
+.tree{font:13px/1.9 ui-monospace,SFMono-Regular,Menlo,monospace;background:#f9fafc;padding:17px;border-radius:8px;white-space:pre-wrap;color:#475467}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}section{padding:20px 15px}}@media(max-width:520px){.grid{grid-template-columns:1fr}.top{padding:19px}}
+</style></head><body><main>
+<div class="top"><span class="tag">完整测试包 · 2027 New Year Demo</span><h1>🎆 新年商城活动｜配置手册</h1><p>已准备 13 张新年主题 SVG 图片，并接入后台 Key 解析和手机预览。商品、促销、榜单及奖励 ID 均为演示数据，不会触发真实购买或奖励下发。</p><div class="actions"><a class="link" href="./index.html">打开活动管理后台</a><a class="link secondary" href="./christmas-demo.html">查看圣诞测试包</a><a class="link secondary" href="#assets">查看全部图片 Key</a></div></div>
+<section><h2>01 · 活动基本信息</h2><div class="tablewrap"><table><thead><tr><td>字段</td><td>测试填写值</td><td>说明</td></tr></thead><tbody>
+<tr><td>活动名称</td><td>2027 新年商城特别活动</td><td>后台识别名称</td></tr>
+<tr><td>活动类型</td><td>综合活动</td><td></td></tr>
+<tr><td>APP</td><td>poppo</td><td>iOS、Android</td></tr>
+<tr><td>地区</td><td>全部重要地区</td><td>复用现有国家地区树形组件</td></tr>
+<tr><td>预热开始</td><td>2026-12-28 00:00</td><td>UTC+8</td></tr>
+<tr><td>预热结束</td><td>2027-01-01 00:00</td><td>UTC+8</td></tr>
+<tr><td>活动开始</td><td>2027-01-01 00:00</td><td>UTC+8</td></tr>
+<tr><td>活动结束</td><td>2027-01-07 23:59</td><td>UTC+8</td></tr>
+<tr><td>页面背景色</td><td>#821B31</td><td>十六进制色值</td></tr>
+<tr><td>顶部头图 Key</td><td>newyear_hero_2027</td><td>可解析本仓库图片</td></tr>
+<tr><td>分享</td><td>站内分享 + 站外分享</td><td>多选</td></tr>
+<tr><td>发布状态</td><td>下架</td><td>保存默认下架</td></tr>
+</tbody></table></div></section>
+<section id="assets"><h2>02 · 图片资源与对应 Key（可复制）</h2><div class="grid"><article class="asset"><img src="demo-assets/newyear_hero_2027.svg" alt="活动顶部头图"><div class="assetname">活动顶部头图</div><div class="copyrow"><code>newyear_hero_2027</code><button onclick="copyKey('newyear_hero_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_tab_deals_on.svg" alt="新年特惠 Tab 亮态"><div class="assetname">新年特惠 Tab 亮态</div><div class="copyrow"><code>newyear_tab_deals_on</code><button onclick="copyKey('newyear_tab_deals_on')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_tab_deals_off.svg" alt="新年特惠 Tab 暗态"><div class="assetname">新年特惠 Tab 暗态</div><div class="copyrow"><code>newyear_tab_deals_off</code><button onclick="copyKey('newyear_tab_deals_off')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_tab_rank_on.svg" alt="新年榜单 Tab 亮态"><div class="assetname">新年榜单 Tab 亮态</div><div class="copyrow"><code>newyear_tab_rank_on</code><button onclick="copyKey('newyear_tab_rank_on')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_tab_rank_off.svg" alt="新年榜单 Tab 暗态"><div class="assetname">新年榜单 Tab 暗态</div><div class="copyrow"><code>newyear_tab_rank_off</code><button onclick="copyKey('newyear_tab_rank_off')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_bundle_2027.svg" alt="新年套装主视觉"><div class="assetname">新年套装主视觉</div><div class="copyrow"><code>newyear_bundle_2027</code><button onclick="copyKey('newyear_bundle_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_title_bundle_2027.svg" alt="套装标题装饰图"><div class="assetname">套装标题装饰图</div><div class="copyrow"><code>newyear_title_bundle_2027</code><button onclick="copyKey('newyear_title_bundle_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_title_deals_2027.svg" alt="促销商品标题图"><div class="assetname">促销商品标题图</div><div class="copyrow"><code>newyear_title_deals_2027</code><button onclick="copyKey('newyear_title_deals_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_firework_2027.svg" alt="商品：烟花特效"><div class="assetname">商品：烟花特效</div><div class="copyrow"><code>newyear_firework_2027</code><button onclick="copyKey('newyear_firework_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_lantern_2027.svg" alt="商品：新年灯笼"><div class="assetname">商品：新年灯笼</div><div class="copyrow"><code>newyear_lantern_2027</code><button onclick="copyKey('newyear_lantern_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_dragon_frame_2027.svg" alt="商品：金龙头像框"><div class="assetname">商品：金龙头像框</div><div class="copyrow"><code>newyear_dragon_frame_2027</code><button onclick="copyKey('newyear_dragon_frame_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_explore_2027.svg" alt="活动跳转 Banner"><div class="assetname">活动跳转 Banner</div><div class="copyrow"><code>newyear_explore_2027</code><button onclick="copyKey('newyear_explore_2027')">复制 Key</button></div></article><article class="asset"><img src="demo-assets/newyear_rank_rewards_2027.svg" alt="榜单奖励主视觉"><div class="assetname">榜单奖励主视觉</div><div class="copyrow"><code>newyear_rank_rewards_2027</code><button onclick="copyKey('newyear_rank_rewards_2027')">复制 Key</button></div></article></div></section>
+<section><h2>03 · 多语言文案 Key</h2><div class="tablewrap"><table><thead><tr><td>Key</td><td>简体中文</td><td>English</td></tr></thead><tbody><tr><td>newyear_tab_deals</td><td>新年特惠</td><td>New Year Deals</td></tr><tr><td>newyear_tab_rank</td><td>新年排行</td><td>New Year Ranking</td></tr><tr><td>newyear_btn_buy</td><td>立即购买</td><td>Buy Now</td></tr><tr><td>newyear_btn_explore</td><td>探索更多</td><td>Explore Now</td></tr><tr><td>newyear_title_bundle</td><td>精选新年套装</td><td>Featured New Year Set</td></tr><tr><td>newyear_title_deals</td><td>新年限定好礼</td><td>New Year Specials</td></tr><tr><td>newyear_title_rewards</td><td>新年排行奖励</td><td>New Year Ranking Rewards</td></tr><tr><td>newyear_share_title</td><td>新年特惠来啦！</td><td>New Year Special Sale</td></tr><tr><td>newyear_share_desc</td><td>迎接 2027，限时优惠、主题套装及榜单奖励！</td><td>Celebrate 2027 with limited-time deals, festive bundles and ranking rewards!</td></tr><tr><td>newyear_rules_2027</td><td>活动时间为 2026 年 12 月 28 日至 2027 年 1 月 7 日；商品价格及榜单奖励以活动页面为准。</td><td>This is a seasonal promotion. Product details and ranking rewards are subject to the final event rules.</td></tr></tbody></table></div><p>手机预览使用英文测试文案；正式环境需接入实际多语言服务。</p></section>
+<section><h2>04 · 商品、促销、榜单与奖励测试数据</h2><h3>商城商品与促销</h3><div class="tablewrap"><table><thead><tr><td>商品 ID</td><td>商品名称</td><td>示例图片 Key</td><td>原价金币</td><td>优惠价金币</td><td>促销配置 ID</td></tr></thead><tbody><tr><td>990601</td><td>新年豪华套装</td><td>newyear_bundle_2027</td><td>139,000</td><td>99,900</td><td>PR-2027-NY-SET</td></tr><tr><td>100201</td><td>烟花特效</td><td>newyear_firework_2027</td><td>29,900</td><td>19,900</td><td>PR-2027-NY-DEALS</td></tr><tr><td>100202</td><td>新年灯笼</td><td>newyear_lantern_2027</td><td>39,900</td><td>25,900</td><td>PR-2027-NY-DEALS</td></tr><tr><td>100203</td><td>金龙头像框</td><td>newyear_dragon_frame_2027</td><td>49,900</td><td>35,900</td><td>PR-2027-NY-DEALS</td></tr></tbody></table></div>
+<h3>榜单及奖励</h3><div class="tablewrap"><table><thead><tr><td>配置 ID</td><td>配置类型</td><td>示例说明</td></tr></thead><tbody>
+<tr><td>R-2027-NY</td><td>新年金币消费榜</td><td>活动期间累计消费金币，达到 50,000 金币入榜</td></tr>
+<tr><td>ER-2027-NY</td><td>入榜奖励配置</td><td>每人每期至多 1 次；示例：金币 500 + 荣誉券 3</td></tr>
+<tr><td>RR-2027-NY</td><td>榜单排名奖励配置</td><td>结算后自动下发；示例：第 1 名荣誉券 10,000、第 2 名 5,000、第 3 名 3,000</td></tr>
+</tbody></table></div><p class="notice">所有商品、促销、榜单及奖励 ID 都是虚拟测试值。正式使用时需要替换成后台真实配置，并确认对应服务端已接入。</p></section>
+<section><h2>05 · 页面与 Tab 模块组合</h2><div class="tree">顶部头图：newyear_hero_2027
+├── Tab 1：新年特惠
+│   ├── 多语言 Key：newyear_tab_deals
+│   ├── 亮态图：newyear_tab_deals_on
+│   ├── 暗态图：newyear_tab_deals_off
+│   ├── 促销套装：990601 + PR-2027-NY-SET
+│   ├── 促销商品：100201 / 100202 / 100203 + PR-2027-NY-DEALS
+│   └── 活动跳转 Banner：newyear_explore_2027
+└── Tab 2：新年排行榜
+    ├── 多语言 Key：newyear_tab_rank
+    ├── 亮态图：newyear_tab_rank_on
+    ├── 暗态图：newyear_tab_rank_off
+    ├── 榜单展示：R-2027-NY
+    │   ├── 入榜门槛：累计金币消费 50,000
+    │   └── 入榜奖励：ER-2027-NY（每人每期 1 次）
+    └── 榜单奖励：RR-2027-NY
+        ├── 奖励展示图：newyear_rank_rewards_2027
+        └── 榜单结算后自动下发，无需手动领取</div>
+<h3>活动跳转 Banner 分时段配置</h3><div class="tablewrap"><table><thead><tr><td>起始时间</td><td>结束时间</td><td>跳转类型</td><td>跳转链接（可直接测试）</td></tr></thead><tbody>
+<tr><td>2026-12-28 00:00</td><td>2026-12-31 23:59</td><td>自定义 URL</td><td>https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/newyear-preheat.html</td></tr>
+<tr><td>2027-01-01 00:00</td><td>2027-01-07 23:59</td><td>自定义 URL</td><td>https://beaver123-sketch.github.io/mall-campaign-admin/demo-pages/newyear-event.html</td></tr>
+</tbody></table></div><p>在后台手机预览修改「预览日期」，检查预热期和正式活动期分别命中不同跳转链接。</p></section>
+<section><h2>06 · 推荐测试方式</h2><p>活动列表 → 新建活动 → 点击「🎆 填充新年示例」→ 检查两个 Tab 和五类业务模块 → 切换预览日期 → 保存（默认下架）→ 回到列表重新编辑，检查配置回显。</p></section>
+</main><script>function copyKey(v){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(v).then(function(){alert('已复制：'+v)})}else{const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();alert('已复制：'+v)}}</script></body></html>
