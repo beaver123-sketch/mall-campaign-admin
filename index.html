@@ -158,7 +158,6 @@
     <div class="form-grid">
       <div class="control"><label>发布状态</label><select id="a-publish"><option value="draft">保存为草稿 / 下架</option><option value="online">发布并上架</option></select></div>
       <div class="control"><label>活动页面 URL</label><input id="a-url" placeholder="保存后由活动服务生成" readonly></div>
-      <div class="control full"><label>活动结束处理</label><div class="inline-checks"><label><input type="checkbox" id="auto-close-entry" checked> 自动关闭活动入口</label><label><input type="checkbox" id="auto-hide-page" checked> 活动结束后停止展示页面</label><label><input type="checkbox" id="auto-offline-products"> 自动下架关联商品</label></div><div class="hint">默认不自动下架商品；活动结束不改变已购买权益的原有生效规则。</div></div>
     </div>
   </div>
 
@@ -213,7 +212,6 @@ function blankConfig(){
   skin:{bgColor:'#321b78',bgImageKey:'',cardStyle:'rounded',decorationKey:'',regions:[]},
   rulesKey:'',
   share:{enabled:true,imageKey:'',titleKey:'',descKey:''},
-  publish:{autoCloseEntry:true,autoHidePage:true,autoOfflineProducts:false}
  };
 }
 function normalizeConfig(value){
@@ -226,8 +224,7 @@ function normalizeConfig(value){
   modules:Array.isArray(c.modules)?c.modules:[],
   skin:Object.assign(base.skin,c.skin||{},{regions:Array.isArray(c.skin&&c.skin.regions)?c.skin.regions:[]}),
   rulesKey:c.rulesKey||'',
-  share:Object.assign(base.share,c.share||{}),
-  publish:Object.assign(base.publish,c.publish||{})
+  share:Object.assign(base.share,c.share||{})
  };
 }
 function persist(){localStorage.setItem('mallCampaigns',JSON.stringify(activities))}
@@ -340,9 +337,6 @@ function openEditor(id){
  setValue('share-desc-key',editorConfig.share.descKey);
  setValue('a-publish',activity&&activity.online==='上架'?'online':'draft');
  setValue('a-url',activity&&activity.url||'');
- $('auto-close-entry').checked=editorConfig.publish.autoCloseEntry!==false;
- $('auto-hide-page').checked=editorConfig.publish.autoHidePage!==false;
- $('auto-offline-products').checked=!!editorConfig.publish.autoOfflineProducts;
  renderTabsAndModules();
  renderRegionSkins();
  renderPreview();
@@ -359,7 +353,6 @@ function syncEditorConfig(){
  };
  editorConfig.rulesKey=$('rules-key').value.trim();
  editorConfig.share={enabled:$('share-enabled').value==='yes',imageKey:$('share-image-key').value.trim(),titleKey:$('share-title-key').value.trim(),descKey:$('share-desc-key').value.trim()};
- editorConfig.publish={autoCloseEntry:$('auto-close-entry').checked,autoHidePage:$('auto-hide-page').checked,autoOfflineProducts:$('auto-offline-products').checked};
 }
 function renderTabsAndModules(){
  const tabs=editorConfig.tabs||[];
